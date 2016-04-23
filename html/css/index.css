@@ -62,3 +62,19 @@ body {
 .head-nav > .active > a:hover{
   border-bottom-color: rgba(0,0,0,.25);
 }
+
+
+/*
+* footer
+*/
+.footer{
+    margin-top: 50px;
+    color: #777;
+    border-top: 3px solid #e5e5e5;
+}
+.copy-right {
+    height: 50px;
+    line-height: 50px;
+    margin-top: 10px;
+    text-align: center;
+}
