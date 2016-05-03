@@ -1,8 +1,9 @@
 # --coding:utf8--
-from flask import Flask, request, render_template, session, redirect
+from flask import Flask, request, render_template, session,\
+    redirect, flash, jsonify
 import Util
 app = Flask(__name__)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
 
 
 @app.route('/')
@@ -24,7 +25,8 @@ def register():
         request.form["registPassword"])
     if result == "success":
         return render_template('home01.html')
-    else:
+    elif result == "exist":
+        flash(u'Username is used, please try another', 'error')  # 用户名已经被使用
         return render_template('index.html')
 
 
@@ -36,20 +38,23 @@ def login():
     result = Util.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        return render_template('home00.html')
+        return render_template('home01.html')
     else:
+        flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
 
 
 @app.route('/reserve')
 def reserve():
     """ information about book"""
+    flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
     return render_template('reserve.html')
 
 
 @app.route('/customer_index')
 def customer_index():
-    pass
+    data = []
+    render_template('home01.html', data=data)    # 根据data判断如何显示
 
 
 @app.route('/logout')
@@ -61,6 +66,12 @@ def logout():
 @app.errorhandler(404)             # 扑捉错误并作出响应
 def page_not_found(error):
     return render_template('page_not_found.html'), 404   # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    # db.session .rollback()    考虑数据库可能处于不正常的状态
+    return render_template('internal_error.html'), 500
 
 
 if __name__ == '__main__':

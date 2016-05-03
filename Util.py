@@ -10,7 +10,7 @@ def get_conn():
 
 def user_exist(cur="", name="", password=""):
     if cur != "":
-        cur.execute("SELECT * FROM `user` WHERE  `Name`='%s'" % (name))
+        cur.execute("SELECT * FROM `user` WHERE  `Name`='%s'" % name)
         return len(cur.fetchall())
     else:
         conn = get_conn()
@@ -32,7 +32,6 @@ def user_login(Name, Password):
 def user_register(name, email, phonenumber, password):
     conn = get_conn()
     cur = conn.cursor()
-
     if user_exist(cur, name) == 0:
         try:
             cur.execute("INSERT INTO `user`( `Name`, `Email`, `PhoneNumber`, \

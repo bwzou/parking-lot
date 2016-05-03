@@ -7,14 +7,14 @@
     <title>Reserve</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-slider-pips.min.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/reserve.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-slider-pips.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reserve.css') }}">
 
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/reserve.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-slider-pips.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/reserve.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-slider-pips.js') }}"></script>
 </head>
 <body>
 
@@ -22,16 +22,17 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand"  href="#">Parking Lot</a>
+            <a class="navbar-brand" href="#">Parking Lot</a>
         </div>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
-            <ul  class="nav navbar-nav head-nav">
+            <ul class="nav navbar-nav head-nav">
                 <li class="active">
                     <a href="#">Home</a>
                 </li>
@@ -52,20 +53,30 @@
 
 <div class="container">
     <!--日期选择器-->
-    <form id="reserve-form" >
+    <form id="reserve-form">
         <div class="form-item form-group">
             <label for="picker" class="form-label">Reserve date</label>
             <input type="text" id="picker" readonly="true" class="form-control">
         </div>
         <div class="form-item form-group">
             <label for="slider" class="form-label">Time interval</label>
-            <input type="text" id="slider_value" readonly="truw" style="border:0; color:#f6931f; background:white; font-weight:bold;">
+            <input type="text" id="slider_value" readonly="truw"
+                   style="border:0; color:#f6931f; background:white; font-weight:bold;">
             <div id="slider" class="slider"></div>
         </div>
         <div class="form-item form-group">
             <label for="plate" class="form-label">Plate number</label>
             <input type="text" id="plate" class="form-control">
         </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {# 添加消息闪现 #}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <p class="{{ category }}" style="font-size: 14px; color:#FF0000;align-content: center">{{ message }}</p> {# category 为消息闪现类型 #}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">reserve</button>
     </form>
 </div>
