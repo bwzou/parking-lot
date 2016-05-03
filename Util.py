@@ -15,7 +15,7 @@ def user_exist(cur="", name="", password=""):
     else:
         conn = get_conn()
         cur = conn.cursor()
-        cur.execute("SELECT * FROM `user` WHERE `Email`='%s' AND PassWord='%s'"
+        cur.execute("SELECT * FROM `user` WHERE `Name`='%s' AND PassWord='%s'"
                     % (name, password))
         result = len(cur.fetchall())
         conn.close()
