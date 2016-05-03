@@ -11,7 +11,6 @@ def before_request():
 
 
 @app.route('/')
-<<<<<<< HEAD
 def hello_world():
     return render_template('index.html')
 
@@ -60,7 +59,8 @@ def index():
 @app.route('/pad2')
 def pad2():
     return render_template('pad2.html')
-=======
+
+"""
 @app.route('/index')
 def index():
     if 'username' in session:
@@ -99,7 +99,7 @@ def select_by_custom():
 @app.errorhandler(404)             # 扑捉错误并作出响应
 def page_not_found(error):
     return render_template('page_not_found.html'), 404   # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
->>>>>>> 02c42cd98ff72abdf0a7510e4e5f61fbcaa8e141
+"""
 
 
 if __name__ == '__main__':
