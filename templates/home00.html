@@ -42,7 +42,7 @@
                     <h3 class="masthead-brand">Home</h3>
                     <nav>
                         <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">Reservation</a></li>
+							<li class="active"><a href="{{ url_for('reserve') }}">Reservation</a></li>
                             <li><a href="#">AboutMe</a></li>
                             <li><a href="#">Help</a></li>
                         </ul>
@@ -54,7 +54,7 @@
                 <h1 class="cover-heading">Thank u for registration! :)</h1>
                 <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try now!</p>
                 <p class="lead">
-                    <a href="#" class="btn btn-primary">Add a Reservation</a>
+				<a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
                 </p>
             </div>
 
