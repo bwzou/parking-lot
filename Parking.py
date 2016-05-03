@@ -1,7 +1,7 @@
 # --coding:utf8--
 from flask import Flask, request, render_template, session,\
     redirect, flash, jsonify
-import time
+import datetime
 import Util
 
 
@@ -27,7 +27,7 @@ def register():
         request.form["registUsername"],
         request.form["registPassword"])
     if result == "success":
-        return render_template('home01.html')
+        return render_template('home01.html', data=None)
     elif result == "exist":
         flash(u'Username is used, please try another', 'error')  # 用户名已经被使用
         return render_template('index.html')
@@ -41,7 +41,8 @@ def login():
     result = Util.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        return render_template('home01.html')
+        data = Util.diplay_book(session["username"])
+        return render_template('home01.html', data=data)
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
@@ -50,17 +51,39 @@ def login():
 @app.route('/reserve')
 def reserve():
     """ information about book"""
-    now = int(time.time())       # 作为订单产生ID,但是可能会出现重复
-    print "现在时间戳：%s" % now
 
     flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
     return render_template('reserve.html')
 
 
+@app.route('/reserver', methods=["POST", "GET"])
+def reserver():
+    if request.method == "POST":
+        Time = request.form['slider_value']
+        beginTime, endTime = Time[6:11], Time[16:21]
+
+        temp = request.form["picker"] + "/" + beginTime
+        beginTime = datetime.datetime.strptime(temp, '%d/%m/%Y/%H:%M')
+        temp = request.form["picker"] + "/" + endTime
+        endTime = datetime.datetime.strptime(temp, '%d/%m/%Y/%H:%M')
+
+        Book = Util.Booking(Name=session["username"],
+                            StartTime=beginTime,
+                            EndTime=endTime,
+                            PlateNumber=request.form["plate"])
+        result = Book.book()
+        if result == "success":
+            return redirect('/customer_index')
+        else:
+            return result
+    else:
+        return redirect('/customer_index')
+
+
 @app.route('/customer_index')
 def customer_index():
-    data = []
-    render_template('home01.html', data=data)    # 根据data判断如何显示
+    data = Util.diplay_book(session["username"])
+    return render_template('home01.html', data=data)    # 根据data判断如何显示
 
 
 @app.route('/logout')

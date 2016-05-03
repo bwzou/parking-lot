@@ -42,7 +42,7 @@
                     <a href="#">Home</a>
                 </li>
                 <li>
-                    <a href="#">Reserve</a>
+                    <a href="{{ url_for('reserve') }}">Reserve</a>
                 </li>
                 <li>
                     <a href="#">Edit</a>
@@ -57,107 +57,94 @@
 <div class="container">
     <!--显示当前预定状态-->
     {% if data %}
-    <div class="tabcontent">
-        <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="#reservTbl" aria-controls="reservTbl" role="tab"
-                                                      data-toggle="tab" id="tri-login">Valid Reservation</a>
-            </li>
-            <li role="presentation"><a href="#historyTbl" aria-controls="historyTbl" role="tab" data-toggle="tab"
-                                       id="tri-register">History</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <form role="tabpanel" class="tab-pane fade in active" id="reservTbl">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>Order_ID</th>
-                        <th>StartTime</th>
-                        <th>EndTime</th>
-                        <th>Edit</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2016-4-26 12:00</td>
-                        <td>2016-4-26 16:00</td>
-                        <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"
-                                                                                                   class="btn btn-primary">Cancel</a>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2016-4-29 8:00</td>
-                        <td>2016-4-29 10:15</td>
-                        <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"
-                                                                                                   class="btn btn-primary">Cancel</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>2016-5-1 7:30</td>
-                        <td>2016-5-1 18:45</td>
-                        <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"
-                                                                                                   class="btn btn-primary">Cancel</a>
-                    </tr>
-                    </tbody>
-                </table>
-                <p class="lead">
-                    <a href="#" class="btn btn-primary">Add a Reservation</a>
-                </p>
-            </form>
-            <form role="tabpanel" class="tab-pane fade" id="historyTbl">
-                <table class="table table-bordered table-striped table-hover" id="histry">
-                    <thead>
-                    <tr>
-                        <th>Order_ID</th>
-                        <th>StartTime</th>
-                        <th>EndTime</th>
-                        <th>Payment</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2016-4-01 12:00</td>
-                        <td>2016-4-01 13:00</td>
-                        <td>$10</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2016-4-29 8:00</td>
-                        <td>2016-4-29 10:15</td>
-                        <td>$22.5</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>2016-5-1 7:30</td>
-                        <td>2016-5-1 18:45</td>
-                        <td>$112.5</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </form>
-        </div>
-    </div>
-    {% else %}
-    <div class="inner cover">
-        <h1 class="cover-heading">Thank u for registration! :)</h1>
-        <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try
-            now!</p>
-        <p class="lead">
-            <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
-        </p>
-    </div>
-    {% endif %}
+        <div class="tabcontent">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#reservTbl" aria-controls="reservTbl" role="tab"
+                                                          data-toggle="tab" id="tri-login">Valid Reservation</a>
+                </li>
+                <li role="presentation"><a href="#historyTbl" aria-controls="historyTbl" role="tab" data-toggle="tab"
+                                           id="tri-register">History</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <form role="tabpanel" class="tab-pane fade in active" id="reservTbl">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Order_ID</th>
+                            <th>StartTime</th>
+                            <th>EndTime</th>
+                            <th>Edit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for book in data %}
+                            <tr>
+                                <td>{{ book.ID }}</td>
+                                <td>{{ book.StartTime }}</td>
+                                <td>{{ book.EndTime }}</td>
+                                <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"
+                                                                                                           class="btn btn-primary">Cancel</a>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <p class="lead">
+                        <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+                    </p>
+                </form>
 
-    <div class="mastfoot">
-        <div class="inner">
-            <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.
+                <form role="tabpanel" class="tab-pane fade" id="historyTbl">
+                    <table class="table table-bordered table-striped table-hover" id="histry">
+                        <thead>
+                        <tr>
+                            <th>Order_ID</th>
+                            <th>StartTime</th>
+                            <th>EndTime</th>
+                            <th>Payment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2016-4-01 12:00</td>
+                            <td>2016-4-01 13:00</td>
+                            <td>$10</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2016-4-29 8:00</td>
+                            <td>2016-4-29 10:15</td>
+                            <td>$22.5</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>2016-5-1 7:30</td>
+                            <td>2016-5-1 18:45</td>
+                            <td>$112.5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="inner cover">
+            <h1 class="cover-heading">Thank u for registration! :)</h1>
+            <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try
+                now!</p>
+            <p class="lead">
+                <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
             </p>
         </div>
-    </div>
+    {% endif %}
 </div>
-
+{#<div class="mastfoot">#}          {# 这里有问题，日后再改 #}
+{#    <div class="inner">#}
+{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a#}
+{#                href="https://twitter.com/mdo">@mdo</a>.#}
+{#        </p>#}
+{#    </div>#}
+{#</div>#}
 </body>
 </html>

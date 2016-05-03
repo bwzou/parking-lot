@@ -1,4 +1,4 @@
-import MySQLdb
+import MySQLdb,time
 
 
 def get_conn():
@@ -49,20 +49,44 @@ def user_register(name, email, phonenumber, password):
         return "exist"
 
 
+def get_timenow():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+
+
 class Booking(object):
 
     """Docstring for Booking. """
 
-    def __init__(self, id="", name="", beginTime="", endTime="", carNumber=""):
+    def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStstus="",
+                 ProduceTime="", StartTime="", EndTime="", PID=""):
         """TODO: to be defined1. """
-        self.id = id
-        self.name = name
-        self.beginTime = beginTime
-        self.endTime = endTime
-        self.carNumber = carNumber
+        self.ID = ID
+        self.Name = Name
+        self.StartTime = StartTime
+        self.EndTime = EndTime
+        self.PlateNumber = PlateNumber
+        self.ProduceTime = ProduceTime
+        self.Price = Price
+        self.PayStstus = PayStstus
+        self.PID = PID
 
     def book(self):
-        pass
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            self.ProduceTime = get_timenow()
+            cur.execute("INSERT INTO `order`( `StartTime`, `EndTime`, \
+                        `PlateNumber`, `Name`, `ProduceTime`) VALUES \
+                        ('%s','%s','%s','%s','%s')" %
+                        (self.StartTime, self.EndTime, self.PlateNumber,
+                         self.Name, self.ProduceTime))
+            conn.commit()
+            conn.close()
+            return "success"
+        except:
+            conn.rollback()
+            conn.close()
+            return "fail"
 
     def alter_book(self):
         pass
@@ -71,3 +95,24 @@ class Booking(object):
         pass
 
 
+def diplay_book(Name):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(("SELECT * FROM `order` WHERE  `Name`='%s'" % (Name)))
+    result = cur.fetchall()
+    if len(result) == 0:
+        return None
+    else:
+        temp = []
+        for row in result:
+            book = Booking(ID=row[8],
+                           Name=row[0],
+                           PlateNumber=row[1],
+                           Price=row[2],
+                           PayStstus=row[3],
+                           ProduceTime=row[4],
+                           PID=row[5],
+                           StartTime=row[6],
+                           EndTime=row[7])
+            temp.append(book)
+        return temp
