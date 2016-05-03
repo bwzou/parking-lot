@@ -1,7 +1,10 @@
 # --coding:utf8--
 from flask import Flask, request, render_template, session,\
     redirect, flash, jsonify
+import time
 import Util
+
+
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
 
@@ -47,6 +50,9 @@ def login():
 @app.route('/reserve')
 def reserve():
     """ information about book"""
+    now = int(time.time())       # 作为订单产生ID,但是可能会出现重复
+    print "现在时间戳：%s" % now
+
     flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
     return render_template('reserve.html')
 
@@ -61,6 +67,11 @@ def customer_index():
 def logout():
     session.pop('username', None)
     redirect('/')
+
+
+@app.route('/get_lot')
+def get_lot():
+    pass
 
 
 @app.errorhandler(404)             # 扑捉错误并作出响应
