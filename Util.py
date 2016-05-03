@@ -63,7 +63,12 @@ class Booking(object):
         self.carNumber = carNumber
 
     def book(self):
-        pass
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            pass
+        except:
+            pass
 
     def alter_book(self):
         pass
