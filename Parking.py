@@ -47,18 +47,8 @@ def login():
         return render_template('index.html')
 
 
-@app.route('/home')
-def home():
-    result = Util.diplay_book(session["username"])
-    if result is None:
-        return render_template('home00.html')
-    else:
-        return render_template('home01.html', result=result)
-    pass
-
-
 @app.route('/reserve')
-def display_reserve():
+def reserve():
     """ information about book"""
 
     flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
