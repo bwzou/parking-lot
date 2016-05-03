@@ -20,7 +20,7 @@ def register():
     result = Util.user_register(
         request.form["registUsername"],
         request.form["registEmail"],
-        "110120",
+        request.form["registUsername"],
         request.form["registPassword"])
     if result == "success":
         return render_template('home01.html')
@@ -31,11 +31,11 @@ def register():
 @app.route('/login', methods=["POST"])
 def login():
     """  check ording"""
-    email = request.form.get('inputEmail')
+    phone = request.form.get('inputPhoneNumber')
     password = request.form.get('inputPassword')
-    result = Util.user_login(email, password)
+    result = Util.user_login(phone, password)
     if result == "success":
-        session['username'] = email                     # 添加到session
+        session['username'] = phone                     # 添加到session
         return render_template('home00.html')
     else:
         return render_template('index.html')
