@@ -44,7 +44,7 @@ GetDefaultFromTime = function(){
 }
 GetDefaultToTime = function(){
     var to=new Date();
-    to.setHours(to.getHours()+4);
+    to.setHours(to.getHours()+4>24?24:to.getHours()+4);
     if($("#time-to").val()=="") {
         $("#time-to").val(to.getTime());
     }

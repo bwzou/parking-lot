@@ -222,13 +222,13 @@ Parking_insert(PyObject *self, PyObject *args) {
 }
 
 static PyMethodDef 
-ParkingMethods[] = {
+ParkingAlgorithmMethods[] = {
     {"insert", Parking_insert, METH_VARARGS},
     {NULL, NULL},
 };
 
-void initParking() {
-    Py_InitModule("Parking", ParkingMethods);
+void initParkingAlgorithm() {
+    Py_InitModule("ParkingAlgorithm", ParkingAlgorithmMethods);
 }
 
 int test() {
