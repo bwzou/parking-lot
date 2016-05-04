@@ -3,6 +3,9 @@ from flask import Flask, request, render_template, session,\
     redirect, flash, jsonify
 import datetime
 import Util, gl
+import sys
+sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
+from ParkingAlgorithm import insert
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
@@ -66,23 +69,29 @@ def reserver():
         temp = request.form["picker"] + "/" + endTime
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
-        Book = Util.Booking(Name=session["username"],
-                            StartTime=beginTime,
-                            EndTime=endTime,
-                            PlateNumber=request.form["plate"])
-
         """ we should ascertain whether there is a lot available """
         orders, begin, sustain = Util.all_lot(beginTime, endTime)
-        print orders
-        print gl.Lots_len
-        print begin
-        print sustain
+        mov_dict = insert(orders, gl.Lots_len, begin, sustain)
+        print mov_dict
+        dict_len = len(mov_dict)
+        if dict_len == 0:             # 如果没有可以用返回[]
+            return False
+
+        for i in range(dict_len):
+            if i == 0:
+                Book = Util.Booking(PID=gl.dict1[mov_dict[0].get('to')],
+                                    Name=session["username"],
+                                    StartTime=beginTime,
+                                    EndTime=endTime,
+                                    PlateNumber=request.form["plate"])
+            else:
+                Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
 
         result = Book.book()
         if result == "success":
             return redirect('/customer_index')
         else:
-            return result
+            return "failed to summit the order"
     else:
         return redirect('/customer_index')
 
@@ -106,8 +115,8 @@ def get_lot():
 
 @app.errorhandler(404)             # 扑捉错误并作出响应
 def page_not_found(error):
-    return render_template('page_not_found.html'), 404
     # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
+    return render_template('page_not_found.html'), 404
 
 
 @app.errorhandler(500)

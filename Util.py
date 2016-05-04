@@ -76,10 +76,10 @@ class Booking(object):
         cur = conn.cursor()
         try:
             self.ProduceTime = get_timenow()             # 获取现在时间
-            cur.execute("INSERT INTO `order`( `StartTime`, `EndTime`, \
+            cur.execute("INSERT INTO `order`( `PID`, `StartTime`, `EndTime`, \
                         `PlateNumber`, `Name`, `ProduceTime`) VALUES \
-                        ('%s','%s','%s','%s','%s')" %
-                        (self.StartTime, self.EndTime, self.PlateNumber,
+                        ('%s','%s','%s','%s','%s','%s')" %
+                        (self.PID, self.StartTime, self.EndTime, self.PlateNumber,
                          self.Name, self.ProduceTime))
             conn.commit()
             conn.close()
@@ -94,6 +94,21 @@ class Booking(object):
 
     def cancel_book(self):
         pass
+
+    @staticmethod
+    def update_Lot(new,id):
+        sql = "UPDATE `order` SET `PID` = '%s' WHERE `order`.`ID` = '%s' " % (gl.dict1[new], id)
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+            return True
+        except:
+            conn.rollback()
+            conn.close()
+            return False
 
     @staticmethod
     def diplay_book(Name):
@@ -205,7 +220,7 @@ def all_lot(beginTime, endTime):
         for row in orders:
             startime = int(((row.StartTime - flag) / 900).total_seconds()) + 1
             sustaine = int(((row.EndTime - row.StartTime) / 900).total_seconds()) + 1
-            order_datas.append([row.ID, gl.dict2[row.PID], startime, sustaine])
+            order_datas.append((row.ID, gl.dict2[row.PID], startime, sustaine))
         print order_datas
 
     startime = int(((beginTime - flag) / 900).total_seconds()) + 1
