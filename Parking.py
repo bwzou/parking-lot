@@ -40,7 +40,7 @@ def login():
     result = Util.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        data = Util.diplay_book(session["username"])
+        data = Util.Booking.diplay_book(session["username"])
         return render_template('home01.html', data=data)
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示

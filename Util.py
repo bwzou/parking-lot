@@ -56,7 +56,6 @@ def get_timenow():
 class Booking(object):
 
     """Docstring for Booking. """
-
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStstus="",
                  ProduceTime="", StartTime="", EndTime="", PID=""):
         """TODO: to be defined1. """
@@ -74,7 +73,7 @@ class Booking(object):
         conn = get_conn()
         cur = conn.cursor()
         try:
-            self.ProduceTime = get_timenow()
+            self.ProduceTime = get_timenow()             # 获取现在时间
             cur.execute("INSERT INTO `order`( `StartTime`, `EndTime`, \
                         `PlateNumber`, `Name`, `ProduceTime`) VALUES \
                         ('%s','%s','%s','%s','%s')" %
@@ -94,26 +93,27 @@ class Booking(object):
     def cancel_book(self):
         pass
 
+    @staticmethod
+    def diplay_book(Name):
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(("SELECT * FROM `order` WHERE  `Name`='%s'" % (Name)))
+        result = cur.fetchall()
+        if len(result) == 0:
+            return None
+        else:
+            temp = []
+            for row in result:
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStstus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7])
+                temp.append(book)
+            return temp
 
-def diplay_book(Name):
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute(("SELECT * FROM `order` WHERE  `Name`='%s'" % (Name)))
-    result = cur.fetchall()
-    if len(result) == 0:
-        return None
-    else:
-        temp = []
-        for row in result:
-            book = Booking(ID=row[8],
-                           Name=row[0],
-                           PlateNumber=row[1],
-                           Price=row[2],
-                           PayStstus=row[3],
-                           ProduceTime=row[4],
-                           PID=row[5],
-                           StartTime=row[6],
-                           EndTime=row[7])
-            temp.append(book)
-        return temp
 
