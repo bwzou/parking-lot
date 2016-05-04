@@ -84,8 +84,8 @@
                                 <td>{{ book.ID }}</td>
                                 <td>{{ book.StartTime }}</td>
                                 <td>{{ book.EndTime }}</td>
-                                <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"
-                                                                                                           class="btn btn-primary">Cancel</a>
+								<td><a href="/changereserve/{{ book.ID }}" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="/cancelreserve/{{ book.ID }}" class="btn btn-primary">Cancel</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

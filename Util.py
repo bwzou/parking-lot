@@ -1,6 +1,8 @@
 # --coding:utf8--
-import MySQLdb, time
 import gl
+import MySQLdb
+import time
+
 
 
 def get_conn():
@@ -55,6 +57,20 @@ def get_timenow():
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
 
+def change_time(result):
+    return time.mktime(result.timetuple())*1000
+
+
+def change_timetostr(result):
+    return result.strftime("%m/%d/%Y")
+
+
+def change_bookto(result):
+    result.ProduceTime = change_timetostr(result.StartTime)
+    result.StartTime = change_time(result.StartTime)
+    result.EndTime = change_time(result.EndTime)
+    return result
+
 class Booking(object):
 
     """Docstring for Booking. """
@@ -90,10 +106,60 @@ class Booking(object):
             return "fail"
 
     def alter_book(self):
-        pass
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "update `order` set `StartTime` = '%s' , `EndTime` = '%s'  \
+            where `ID`='%s'" % (self.StartTime, self.EndTime, self.ID)
+        try:
+            cur.execute(sql)
+            conn.commit()
+            result = "success"
+        except:
+            conn.rollback()
+            result = "fail"
+        conn.close()
+        return result
 
-    def cancel_book(self):
-        pass
+    @staticmethod
+    def query_book(ID):
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "select * from `order` where `ID`='%s'" % ID
+        try:
+            cur.execute(sql)
+            results = cur.fetchall()
+            for row in results:
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStstus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7])
+                result = book
+            conn.commit()
+        except:
+            conn.rollback()
+            result = None
+        conn.close()
+        return result
+
+    @staticmethod
+    def cancel_book(ID):
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "delete from `order` where `ID`='%s'" % ID
+        try:
+            cur.execute(sql)
+            conn.commit()
+            result = "success"
+        except:
+            conn.rollback()
+            result = "fail"
+        conn.close()
+        return result
 
     @staticmethod
     def update_Lot(new,id):
@@ -226,3 +292,4 @@ def all_lot(beginTime, endTime):
     startime = int(((beginTime - flag) / 900).total_seconds()) + 1
     sustaine = int(((endTime - beginTime) / 900).total_seconds()) + 1
     return order_datas, startime, sustaine
+

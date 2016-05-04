@@ -13,7 +13,7 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/reserve.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/reserve.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-slider-pips.js') }}"></script>
 </head>
 <body>
@@ -53,15 +53,30 @@
 
 <div class="container">
     <!--日期选择器-->
-    <form id="reserve-form" action="/reserver" method="post">
+	{% if not result %}
+	<form id="reserve-form" action="/reserver" method="post">
+	{% else %}
+	<form id="reserve-form" action="/change/{{ result.ID }}" method="post">
+	{% endif %}
         <div class="form-item form-group">
             <label for="picker" class="form-label">Reserve date</label>
+			{% if not result %}
             <input type="text" name="picker"  id="picker" readonly="true" class="form-control">
+			{% else %}
+			<input type="text" name="picker"  id="picker" readonly="true" class="form-control" value="{{ result.ProduceTime }}">
+			{% endif %}
         </div>
         <div class="form-item form-group">
             <label for="slider" class="form-label">Time interval</label>
-            <input type="text" name="slider_value" id="slider_value" readonly="truw"
+            <input type="text" name="slider_value" id="slider_value" readonly="true"
                    style="border:0; color:#f6931f; background:white; font-weight:bold;">
+			{% if not result %}
+			<input type="hidden" id="time-from" readonly="true" >
+			<input type="hidden" id="time-to" readonly="true" >
+			{% else %}
+			<input type="hidden" id="time-from" readonly="true" value="{{ result.StartTime }}">
+			<input type="hidden" id="time-to" readonly="true" value="{{ result.EndTime }}">
+			{% endif %}
             <div id="slider" class="slider"></div>
         </div>
         <div class="form-item form-group">
@@ -76,8 +91,13 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-
+		
+		
+		{% if not result %}
         <button class="btn btn-lg btn-primary btn-block" type="submit">reserve</button>
+		{%  else %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">change</button>
+		{% endif %}
     </form>
 </div>
 

@@ -1,6 +1,6 @@
 # --coding:utf8--
 from flask import Flask, request, render_template, session,\
-    redirect, flash, jsonify
+    redirect, flash
 import datetime
 import Util, gl
 import sys
@@ -96,6 +96,50 @@ def reserver():
         return redirect('/customer_index')
 
 
+@app.route('/changereserve/<ID>', methods=["POST", "GET"])
+def changereserve(ID):
+    result = Util.Booking.query_book(ID)
+    print result.StartTime
+    print result.EndTime
+    if result is not None:
+        result = Util.change_bookto(result)
+    return render_template('reserve.html', result=result)
+
+
+@app.route('/change/<Id>', methods=["POST", "GET"])
+def change(Id):
+    if request.method == "POST":
+        Time = request.form['slider_value']
+        beginTime, endTime = Time[6:11], Time[16:21]
+        print beginTime
+        print endTime
+
+        temp = request.form["picker"] + "/" + beginTime
+        beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
+        temp = request.form["picker"] + "/" + endTime
+        endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
+
+        Book = Util.Booking(ID=Id,
+                            Name=session["username"],
+                            StartTime=beginTime,
+                            EndTime=endTime,
+                            PlateNumber=request.form["plate"])
+        result = Book.alter_book()
+        if result == "success":
+            return redirect('/customer_index')
+        else:
+            return result
+
+
+@app.route('/cancelreserve/<ID>', methods=["POST", "GET"])
+def cancelreserve(ID):
+    result = Util.Booking.cancel_book(ID)
+    if result == "success":
+        return redirect('/customer_index')
+    else:
+        return result
+
+
 @app.route('/customer_index')
 def customer_index():
     data = Util.Booking.diplay_book(session["username"])
@@ -108,12 +152,7 @@ def logout():
     redirect('/')
 
 
-@app.route('/get_lot')
-def get_lot():
-    pass
-
-
-@app.errorhandler(404)             # 扑捉错误并作出响应
+@app.errorhandler(404)                # 扑捉错误并作出响应
 def page_not_found(error):
     # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
     return render_template('page_not_found.html'), 404
