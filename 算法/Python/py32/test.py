@@ -7,5 +7,5 @@
 # return [(rid,-1,pid),(rid,from,to),...] when success.
 import sys
 sys.path.append("./build/lib.win32-2.7")
-from Parking import insert
+from ParkingAlgorithm import insert
 print insert([(1,1,1,3),(2,1,6,3),(3,2,2,5),(4,3,1,4),(5,3,7,2)],3,4,3)
