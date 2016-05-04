@@ -128,17 +128,18 @@ class Booking(object):
         try:
             cur.execute(sql)
             results = cur.fetchall()
+            result = None
             for row in results:
-                book = Booking(ID=row[8],
-                               Name=row[0],
-                               PlateNumber=row[1],
-                               Price=row[2],
-                               PayStstus=row[3],
-                               ProduceTime=row[4],
-                               PID=row[5],
-                               StartTime=row[6],
-                               EndTime=row[7])
-                result = book
+                print row
+                result = Booking(ID=row[8],
+                                 Name=row[0],
+                                 PlateNumber=row[1],
+                                 Price=row[2],
+                                 PayStatus=row[3],
+                                 ProduceTime=row[4],
+                                 PID=row[5],
+                                 StartTime=row[6],
+                                 EndTime=row[7])
             conn.commit()
         except:
             conn.rollback()
