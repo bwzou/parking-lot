@@ -1,4 +1,6 @@
-import MySQLdb,time
+# --coding:utf8--
+import MySQLdb, time
+import gl
 
 
 def get_conn():
@@ -56,7 +58,7 @@ def get_timenow():
 class Booking(object):
 
     """Docstring for Booking. """
-    def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStstus="",
+    def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStatus="",
                  ProduceTime="", StartTime="", EndTime="", PID=""):
         """TODO: to be defined1. """
         self.ID = ID
@@ -66,7 +68,7 @@ class Booking(object):
         self.PlateNumber = PlateNumber
         self.ProduceTime = ProduceTime
         self.Price = Price
-        self.PayStstus = PayStstus
+        self.PayStatus = PayStatus
         self.PID = PID
 
     def book(self):
@@ -100,6 +102,8 @@ class Booking(object):
         cur.execute(("SELECT * FROM `order` WHERE  `Name`='%s'" % (Name)))
         result = cur.fetchall()
         if len(result) == 0:
+            conn.commit()
+            conn.close()
             return None
         else:
             temp = []
@@ -108,12 +112,102 @@ class Booking(object):
                                Name=row[0],
                                PlateNumber=row[1],
                                Price=row[2],
-                               PayStstus=row[3],
+                               PayStatus=row[3],
                                ProduceTime=row[4],
                                PID=row[5],
                                StartTime=row[6],
                                EndTime=row[7])
                 temp.append(book)
+            conn.commit()
+            conn.close()
+            return temp
+
+    @staticmethod
+    def select_order(start_time):   # 根据时间查询当前订单及往后两天内的所有预定
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "SELECT * FROM `order` WHERE  `EndTime`>='%s'ORDER BY `order`.`StartTime` ASC" % start_time
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return None
+        else:
+            temp = []
+            for row in result:
+                print row
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStatus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7])
+                temp.append(book)
+            conn.commit()
+            conn.close()
             return temp
 
 
+class ParkingLot(object):
+    def __init__(self, ID, Status, Price):
+        self.ID = ID
+        self.Status = Status
+        self.Price = Price
+
+    @staticmethod
+    def all_Lot():
+        sql = "SELECT * FROM `parkingspace` WHERE `Status`= 1 ORDER BY `parkingspace`.`ID` ASC"
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return None
+        else:
+            temp = []
+            for row in result:
+                Lot = ParkingLot(ID=row[0],
+                                 Status=row[1],
+                                 Price=row[2])
+                temp.append(Lot)
+            conn.commit()
+            conn.close()
+            return temp
+
+
+# match ParkingLot
+def match_Lot():
+    Lots = ParkingLot.all_Lot()
+    gl.Lots_len = len(Lots)
+    for i in range(gl.Lots_len):
+        gl.dict1[i+1] = Lots[i].ID
+    gl.dict2 = {v: k for k, v in gl.dict1.items()}
+    return True
+
+
+def all_lot(beginTime, endTime):
+    orders = Booking.select_order(beginTime)
+    key = match_Lot()
+    order_datas = []
+    if orders == None:     # 最新一笔订单
+        flag = beginTime
+    else:
+        if orders[0].StartTime > beginTime:
+            flag = beginTime
+        else:
+            flag = orders[0].StartTime
+        for row in orders:
+            startime = int(((row.StartTime - flag) / 900).total_seconds()) + 1
+            sustaine = int(((row.EndTime - row.StartTime) / 900).total_seconds()) + 1
+            order_datas.append([row.ID, gl.dict2[row.PID], startime, sustaine])
+        print order_datas
+
+    startime = int(((beginTime - flag) / 900).total_seconds()) + 1
+    sustaine = int(((endTime - beginTime) / 900).total_seconds()) + 1
+    return order_datas, startime, sustaine

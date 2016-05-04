@@ -2,7 +2,7 @@
 from flask import Flask, request, render_template, session,\
     redirect, flash, jsonify
 import datetime
-import Util
+import Util, gl
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
@@ -62,14 +62,22 @@ def reserver():
         beginTime, endTime = Time[6:11], Time[16:21]
 
         temp = request.form["picker"] + "/" + beginTime
-        beginTime = datetime.datetime.strptime(temp, '%d/%m/%Y/%H:%M')
+        beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
         temp = request.form["picker"] + "/" + endTime
-        endTime = datetime.datetime.strptime(temp, '%d/%m/%Y/%H:%M')
+        endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
         Book = Util.Booking(Name=session["username"],
                             StartTime=beginTime,
                             EndTime=endTime,
                             PlateNumber=request.form["plate"])
+
+        """ we should ascertain whether there is a lot available """
+        orders, begin, sustain = Util.all_lot(beginTime, endTime)
+        print orders
+        print gl.Lots_len
+        print begin
+        print sustain
+
         result = Book.book()
         if result == "success":
             return redirect('/customer_index')
@@ -79,10 +87,9 @@ def reserver():
         return redirect('/customer_index')
 
 
-
 @app.route('/customer_index')
 def customer_index():
-    data = Util.diplay_book(session["username"])
+    data = Util.Booking.diplay_book(session["username"])
     return render_template('home01.html', data=data)    # 根据data判断如何显示
 
 
