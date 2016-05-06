@@ -59,7 +59,7 @@ $(document).ready(function(){
     $("#picker").datepicker({
         changeMonth: true,
         changeYear: true,
-        minDate: date,
+        minDate: new Date(),
         showAnim: "slideDown",
         defaultDate: date,
         preText: "pre Month",
