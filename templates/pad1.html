@@ -38,23 +38,23 @@
 <body>
 <div class="container" >
     <div id="hea">
-    <form class="form-signin">
+    <form class="form-signin" action="/getlotname" method="post">
         <div id="accordion" >
             <div class="hint">
                 <span class="glyphicon glyphicon-menu-right"></span>
-                <span style="cursor:pointer">Please input number</span>
+                <span style="cursor:pointer">Please input order number</span>
             </div>
             <div class="input-content">
-                <label for="inputNumber" class="sr-only">Number</label>
-                <input type="text" id="inputNumber" class="form-control" placeholder="Number" required autofocus>
+                <label for="inputNumber" class="sr-only"> Order number</label>
+                <input type="text" id="inputNumber" name="inputNumber" class="form-control" placeholder="Number" autofocus>
             </div>
             <div class="hint">
                 <span class="glyphicon glyphicon-menu-right"></span>
-                <span style="cursor:pointer">or license number</span>
+                <span style="cursor:pointer">or license plate number</span>
             </div>
             <div class="input-content">
-                <label for="inputLicenseNumber" class="sr-only">License number</label>
-                <input type="text" id="inputLicenseNumber" class="form-control" placeholder="License number" required>
+                <label for="inputLicenseNumber" class="sr-only">License plate number</label>
+                <input type="text" id="inputLicenseNumber" name="inputLicenseNumber" class="form-control" placeholder="License number" >
             </div>
         </div>
 

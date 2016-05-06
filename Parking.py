@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
 
 
+# ------------------------用户登录注册--------------------------------------------
 @app.route('/')
 def hello_world():
     return render_template('index.html')
@@ -50,6 +51,19 @@ def login():
         return render_template('index.html')
 
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    redirect('/')
+
+
+@app.route('/customer_index')
+def customer_index():
+    data = Util.Booking.diplay_book(session["username"])
+    return render_template('home01.html', data=data)    # 根据data判断如何显示
+
+
+# ------------------------用户预定和修改订单--------------------------------------------
 @app.route('/reserve')
 def reserve():
     """ information about book"""
@@ -140,7 +154,7 @@ def change(Id):
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
             dict_len = len(mov_dict)
-            if dict_len == 0:  # 如果没有可以用返回[]
+            if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
                 return False
             for i in range(dict_len):
                 if i == 0:
@@ -169,18 +183,33 @@ def cancelreserve(ID):
         return result
 
 
-@app.route('/customer_index')
-def customer_index():
-    data = Util.Booking.diplay_book(session["username"])
-    return render_template('home01.html', data=data)    # 根据data判断如何显示
+# ---------------------------获取停车位信息--------------------------------------
+@app.route('/lot')
+def lot():
+    return render_template('pad1.html')
 
 
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    redirect('/')
+@app.route('/getlotname', methods=["POST", "GET"])
+def getlotname():
+    print "nihao"
+    if request.method == "POST":
+        print "nibuhao"
+        order_number = request.form['inputNumber']
+        plate_number = request.form['inputLicenseNumber']
+        print order_number
+        print plate_number
+        if order_number == "" and plate_number == "":
+            redirect('/lot')
+        else:
+            if order_number != "":
+                result = Util.Booking.query_book(order_number)
+            else:
+                result = Util.Booking.query_book_by_plate(plate_number)
+        return render_template('pad2.html', result=result)
+    return render_template('pad2.html', result=None)
 
 
+# ---------------------------系统错误处理----------------------------------------
 @app.errorhandler(404)                # 扑捉错误并作出响应
 def page_not_found(error):
     # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200

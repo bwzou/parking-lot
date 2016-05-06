@@ -72,7 +72,6 @@ def change_bookto(result):
     return result
 
 class Booking(object):
-
     """Docstring for Booking. """
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStatus="",
                  ProduceTime="", StartTime="", EndTime="", PID=""):
@@ -125,6 +124,33 @@ class Booking(object):
         conn = get_conn()
         cur = conn.cursor()
         sql = "select * from `order` where `ID`='%s'" % ID
+        try:
+            cur.execute(sql)
+            results = cur.fetchall()
+            result = None
+            for row in results:
+                print row
+                result = Booking(ID=row[8],
+                                 Name=row[0],
+                                 PlateNumber=row[1],
+                                 Price=row[2],
+                                 PayStatus=row[3],
+                                 ProduceTime=row[4],
+                                 PID=row[5],
+                                 StartTime=row[6],
+                                 EndTime=row[7])
+            conn.commit()
+        except:
+            conn.rollback()
+            result = None
+        conn.close()
+        return result
+
+    @staticmethod
+    def query_book_by_plate(plate_number):
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "select * from `order` where `PlateNumber`='%s'" % plate_number
         try:
             cur.execute(sql)
             results = cur.fetchall()
