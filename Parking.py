@@ -1,9 +1,13 @@
 # --coding:utf8--
+import datetime
+import sys
+
 from flask import Flask, request, render_template, session,\
     redirect, flash
-import datetime
-import Util, gl
-import sys
+
+import Util
+from globle import gl
+
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")   # 请把该路径改成你项目lib.win32-2.7的路径
 from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 

@@ -1,9 +1,10 @@
 # --coding:utf8--
-import gl
-import MySQLdb
-import time
 import datetime
+import time
 
+import MySQLdb
+
+from globle import gl
 
 
 def get_conn():
@@ -332,7 +333,7 @@ def match_Lot():
     Lots = ParkingLot.all_Lot()
     gl.Lots_len = len(Lots)
     for i in range(gl.Lots_len):
-        gl.dict1[i+1] = Lots[i].ID
+        gl.dict1[i + 1] = Lots[i].ID
     gl.dict2 = {v: k for k, v in gl.dict1.items()}
     return True
 
