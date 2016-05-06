@@ -10,7 +10,7 @@ function checkTime(i)
     return i
 }
 
-//×ª»»Ê±¼ä¼ä¸ô
+//×ªï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
 Num2Str = function(num){
     hour=Math.floor(num/4);
     minute=(num%4)*15;
@@ -54,19 +54,19 @@ GetDefaultToTime = function(){
     return to.getHours()*4+Math.floor(to.getMinutes()/15);
 }
 $(document).ready(function(){
-    //³õÊ¼»¯datepicker
+    //ï¿½ï¿½Ê¼ï¿½ï¿½datepicker
     var date = GetDefaultDate();
     $("#picker").datepicker({
         changeMonth: true,
         changeYear: true,
-        minDate: date,
+        minDate: new Date(),
         showAnim: "slideDown",
         defaultDate: date,
         preText: "pre Month",
         nextText: "Next Month"
     });
     $("#picker").datepicker( "setDate", date );
-    //³õÊ¼»¯slider
+    //ï¿½ï¿½Ê¼ï¿½ï¿½slider
     note = new Array([97]);
     for(var i=0;i<=96;i++){
         note[i]=Num2Str(i);
