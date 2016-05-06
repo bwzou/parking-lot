@@ -26,7 +26,7 @@ def register():
         request.form["registUsername"],
         request.form["registPassword"])
     if result == "success":
-        return render_template('home01.html', data=None)
+        return render_template('home01.html', data=None, history=None)
     elif result == "exist":
         flash(u'Username is used, please try another', 'error')  # 用户名已经被使用
         return render_template('index.html')
@@ -40,8 +40,9 @@ def login():
     result = Util.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        data = Util.Booking.diplay_book(session["username"])
-        return render_template('home01.html', data=data)
+        data, history = Util.Booking.diplay_book(session["username"])
+        # data, history = Util.divide_data(data)
+        return render_template('home01.html', data=data, history=history)
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
@@ -125,8 +126,9 @@ def cancelreserve(ID):
 
 @app.route('/customer_index')
 def customer_index():
-    data = Util.Booking.diplay_book(session["username"])
-    return render_template('home01.html', data=data)    # 根据data判断如何显示
+    data, history = Util.Booking.diplay_book(session["username"])
+    return render_template('home01.html', data=data, history=history)
+    # 根据data判断如何显示
 
 
 @app.route('/logout')
