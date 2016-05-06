@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="557c8740-4a31-4378-8bdb-f2c1522e9446" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ropeproject/globalnames" afterPath="$PROJECT_DIR$/.ropeproject/globalnames" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ropeproject/objectdb" afterPath="$PROJECT_DIR$/.ropeproject/objectdb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Parking.py" afterPath="$PROJECT_DIR$/Parking.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Util.py" afterPath="$PROJECT_DIR$/Util.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/reserve.js" afterPath="$PROJECT_DIR$/static/js/reserve.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home01.html" afterPath="$PROJECT_DIR$/templates/home01.html" />
     </list>
     <ignored path="ParkingLotQQ.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,82 +32,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Util.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Util.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Util.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+            <state relative-caret-position="201">
+              <caret line="75" column="22" selection-start-line="75" selection-start-column="22" selection-end-line="75" selection-end-column="22" />
               <folding>
                 <element signature="e#18#27#0" expanded="true" />
-                <element signature="e#78#331#0" expanded="false" />
-                <element signature="e#384#765#0" expanded="false" />
-                <element signature="e#804#910#0" expanded="false" />
-                <element signature="e#972#1496#0" expanded="false" />
-                <element signature="e#1522#1592#0" expanded="false" />
-                <element signature="e#1624#1667#0" expanded="false" />
-                <element signature="e#1704#1738#0" expanded="false" />
-                <element signature="e#1772#1947#0" expanded="false" />
-                <element signature="e#2161#2464#0" expanded="false" />
-                <element signature="e#2494#3140#0" expanded="false" />
-                <element signature="e#3176#3604#0" expanded="false" />
-                <element signature="e#3656#4501#0" expanded="false" />
-                <element signature="e#4572#5436#0" expanded="false" />
-                <element signature="e#5489#5805#0" expanded="false" />
-                <element signature="e#5861#6214#0" expanded="false" />
-                <element signature="e#6269#7122#0" expanded="false" />
-                <element signature="e#7210#8145#0" expanded="false" />
-                <element signature="e#8225#8293#0" expanded="false" />
-                <element signature="e#8340#8959#0" expanded="false" />
-                <element signature="e#8999#9189#0" expanded="false" />
-                <element signature="e#9229#9988#0" expanded="false" />
-                <marker date="1462502426615" expanded="true" signature="419:458" placeholder="SELECT * FRO... user" />
-                <marker date="1462502426615" expanded="true" signature="588:644" placeholder="SELECT * FRO... user" />
-                <marker date="1462502426615" expanded="true" signature="1087:1202" placeholder="INSERT INTO `user`... " />
-                <marker date="1462502426615" expanded="true" signature="2644:2698" placeholder="INSERT INTO `order`... " />
-                <marker date="1462502426615" expanded="true" signature="2644:2824" placeholder="INSERT INTO `order`... " />
-                <marker date="1462502426615" expanded="false" signature="3237:3337" placeholder="update `orde... " />
-                <marker date="1462502426615" expanded="true" signature="3717:3754" placeholder="select * fro... order" />
-                <marker date="1462502426615" expanded="true" signature="4633:4679" placeholder="select * fro... order" />
-                <marker date="1462502426615" expanded="true" signature="5550:5585" placeholder="delete from " />
-                <marker date="1462502426615" expanded="true" signature="5868:5925" placeholder="UPDATE `orde... " />
-                <marker date="1462502426615" expanded="true" signature="6337:6377" placeholder="SELECT * FRO... order" />
-                <marker date="1462502426615" expanded="true" signature="7271:7347" placeholder="SELECT * FRO... order" />
-                <marker date="1462502426615" expanded="true" signature="8347:8426" placeholder="SELECT * FRO... parkingspace" />
+                <marker date="1462507204764" expanded="true" signature="435:474" placeholder="SELECT * FRO... user" />
+                <marker date="1462507204764" expanded="true" signature="604:660" placeholder="SELECT * FRO... user" />
+                <marker date="1462507204764" expanded="true" signature="1103:1218" placeholder="INSERT INTO `user`... " />
+                <marker date="1462507204764" expanded="true" signature="3007:3187" placeholder="INSERT INTO `order`... " />
+                <marker date="1462507204764" expanded="true" signature="3600:3700" placeholder="update `orde... " />
+                <marker date="1462507204764" expanded="true" signature="4080:4117" placeholder="select * fro... order" />
+                <marker date="1462507204764" expanded="true" signature="4996:5042" placeholder="select * fro... order" />
+                <marker date="1462507204764" expanded="true" signature="5913:5948" placeholder="delete from " />
+                <marker date="1462507204764" expanded="true" signature="6231:6288" placeholder="UPDATE `orde... " />
+                <marker date="1462507204764" expanded="true" signature="6700:6740" placeholder="SELECT * FRO... order" />
+                <marker date="1462507204764" expanded="true" signature="7647:7723" placeholder="SELECT * FRO... order" />
+                <marker date="1462507204764" expanded="true" signature="8723:8802" placeholder="SELECT * FRO... parkingspace" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Parking.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Parking.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Parking.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-62">
-              <caret line="203" column="34" selection-start-line="203" selection-start-column="34" selection-end-line="203" selection-end-column="34" />
+            <state relative-caret-position="263">
+              <caret line="51" column="44" selection-start-line="51" selection-start-column="44" selection-end-line="51" selection-end-column="44" />
               <folding>
-                <element signature="e#450#486#0" expanded="false" />
-                <element signature="e#527#563#0" expanded="false" />
-                <element signature="e#628#1047#0" expanded="false" />
-                <element signature="e#1106#1621#0" expanded="false" />
-                <element signature="e#1664#1711#0" expanded="false" />
-                <element signature="e#1770#1893#0" expanded="false" />
-                <element signature="e#2018#2170#0" expanded="false" />
-                <element signature="e#2242#4021#0" expanded="false" />
-                <element signature="e#4110#4327#0" expanded="false" />
-                <element signature="e#4402#6266#0" expanded="false" />
-                <element signature="e#6355#6498#0" expanded="false" />
-                <element signature="e#7508#7601#0" expanded="false" />
-                <element signature="e#7658#7756#0" expanded="false" />
+                <element signature="e#6834#7464#0" expanded="false" />
+                <element signature="e#7624#7717#0" expanded="false" />
+                <element signature="e#7774#7872#0" expanded="false" />
+                <marker date="1462507064936" expanded="false" signature="445:486" placeholder="..." />
+                <marker date="1462507064936" expanded="false" signature="522:563" placeholder="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="home01.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/home01.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="921">
-              <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -147,6 +112,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="home01.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/home01.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-89">
+              <caret line="85" column="23" selection-start-line="85" selection-start-column="23" selection-end-line="85" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -174,10 +149,10 @@
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/static/js/reserve.js" />
         <option value="$PROJECT_DIR$/templates/reserve.html" />
-        <option value="$PROJECT_DIR$/Util.py" />
         <option value="$PROJECT_DIR$/templates/pad2.html" />
-        <option value="$PROJECT_DIR$/Parking.py" />
         <option value="$PROJECT_DIR$/templates/pad1.html" />
+        <option value="$PROJECT_DIR$/Parking.py" />
+        <option value="$PROJECT_DIR$/Util.py" />
       </list>
     </option>
   </component>
@@ -187,8 +162,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="119" />
-    <option name="y" value="31" />
+    <option name="x" value="82" />
+    <option name="y" value="17" />
     <option name="width" value="1272" />
     <option name="height" value="750" />
   </component>
@@ -548,17 +523,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="119" y="31" width="1272" height="750" extended-state="0" />
+    <frame x="82" y="17" width="1272" height="750" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21122113" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42713568" sideWeight="0.49694857" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4262561" sideWeight="0.49339935" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881355" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915622" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16207455" sideWeight="0.50305146" order="2" side_tool="true" content_ui="tabs" x="150" y="469" width="1215" height="185" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4262561" sideWeight="0.5066007" order="2" side_tool="true" content_ui="tabs" x="150" y="469" width="1215" height="185" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -608,7 +583,8 @@
     <MESSAGE value="now all is ok" />
     <MESSAGE value="add algorithm" />
     <MESSAGE value="Merge remote-tracking branch 'origin/zb1'&#10;&#10;# Conflicts:&#10;#&#9;Parking.py&#10;#&#9;Util.py&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/zb1'&#10;&#10;# Conflicts:&#10;#&#9;Parking.py&#10;#&#9;Util.py&#10;" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/zb1'&#10;&#10;# Conflicts:&#10;#&#9;Parking.py&#10;#&#9;Util.py&#10;#&#9;Util.pyc&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/zb1'&#10;&#10;# Conflicts:&#10;#&#9;Parking.py&#10;#&#9;Util.py&#10;#&#9;Util.pyc&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -623,40 +599,18 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#18#27#0" expanded="true" />
-            <element signature="e#78#331#0" expanded="false" />
-            <element signature="e#384#765#0" expanded="false" />
-            <element signature="e#804#910#0" expanded="false" />
-            <element signature="e#972#1496#0" expanded="false" />
-            <element signature="e#1522#1592#0" expanded="false" />
-            <element signature="e#1624#1667#0" expanded="false" />
-            <element signature="e#1704#1738#0" expanded="false" />
-            <element signature="e#1772#1947#0" expanded="false" />
-            <element signature="e#2161#2464#0" expanded="false" />
-            <element signature="e#2494#3140#0" expanded="false" />
-            <element signature="e#3176#3604#0" expanded="false" />
-            <element signature="e#3656#4501#0" expanded="false" />
-            <element signature="e#4572#5436#0" expanded="false" />
-            <element signature="e#5489#5805#0" expanded="false" />
-            <element signature="e#5861#6214#0" expanded="false" />
-            <element signature="e#6269#7122#0" expanded="false" />
-            <element signature="e#7210#8145#0" expanded="false" />
-            <element signature="e#8225#8293#0" expanded="false" />
-            <element signature="e#8340#8959#0" expanded="false" />
-            <element signature="e#8999#9189#0" expanded="false" />
-            <element signature="e#9229#9988#0" expanded="false" />
-            <marker date="1462502426615" expanded="true" signature="419:458" placeholder="SELECT * FRO... user" />
-            <marker date="1462502426615" expanded="true" signature="588:644" placeholder="SELECT * FRO... user" />
-            <marker date="1462502426615" expanded="true" signature="1087:1202" placeholder="INSERT INTO `user`... " />
-            <marker date="1462502426615" expanded="true" signature="2644:2698" placeholder="INSERT INTO `order`... " />
-            <marker date="1462502426615" expanded="true" signature="2644:2824" placeholder="INSERT INTO `order`... " />
-            <marker date="1462502426615" expanded="false" signature="3237:3337" placeholder="update `orde... " />
-            <marker date="1462502426615" expanded="true" signature="3717:3754" placeholder="select * fro... order" />
-            <marker date="1462502426615" expanded="true" signature="4633:4679" placeholder="select * fro... order" />
-            <marker date="1462502426615" expanded="true" signature="5550:5585" placeholder="delete from " />
-            <marker date="1462502426615" expanded="true" signature="5868:5925" placeholder="UPDATE `orde... " />
-            <marker date="1462502426615" expanded="true" signature="6337:6377" placeholder="SELECT * FRO... order" />
-            <marker date="1462502426615" expanded="true" signature="7271:7347" placeholder="SELECT * FRO... order" />
-            <marker date="1462502426615" expanded="true" signature="8347:8426" placeholder="SELECT * FRO... parkingspace" />
+            <marker date="1462507204764" expanded="true" signature="435:474" placeholder="SELECT * FRO... user" />
+            <marker date="1462507204764" expanded="true" signature="604:660" placeholder="SELECT * FRO... user" />
+            <marker date="1462507204764" expanded="true" signature="1103:1218" placeholder="INSERT INTO `user`... " />
+            <marker date="1462507204764" expanded="true" signature="3007:3187" placeholder="INSERT INTO `order`... " />
+            <marker date="1462507204764" expanded="true" signature="3600:3700" placeholder="update `orde... " />
+            <marker date="1462507204764" expanded="true" signature="4080:4117" placeholder="select * fro... order" />
+            <marker date="1462507204764" expanded="true" signature="4996:5042" placeholder="select * fro... order" />
+            <marker date="1462507204764" expanded="true" signature="5913:5948" placeholder="delete from " />
+            <marker date="1462507204764" expanded="true" signature="6231:6288" placeholder="UPDATE `orde... " />
+            <marker date="1462507204764" expanded="true" signature="6700:6740" placeholder="SELECT * FRO... order" />
+            <marker date="1462507204764" expanded="true" signature="7647:7723" placeholder="SELECT * FRO... order" />
+            <marker date="1462507204764" expanded="true" signature="8723:8802" placeholder="SELECT * FRO... parkingspace" />
           </folding>
         </state>
       </provider>
@@ -666,19 +620,11 @@
         <state relative-caret-position="1562">
           <caret line="100" column="36" selection-start-line="100" selection-start-column="26" selection-end-line="100" selection-end-column="36" />
           <folding>
-            <element signature="e#450#486#0" expanded="false" />
-            <element signature="e#527#563#0" expanded="false" />
-            <element signature="e#628#1047#0" expanded="false" />
-            <element signature="e#1106#1621#0" expanded="false" />
-            <element signature="e#1664#1711#0" expanded="false" />
-            <element signature="e#1770#1893#0" expanded="false" />
-            <element signature="e#2018#2170#0" expanded="false" />
-            <element signature="e#2242#4021#0" expanded="false" />
-            <element signature="e#4110#4327#0" expanded="false" />
-            <element signature="e#4402#6266#0" expanded="false" />
-            <element signature="e#6355#6498#0" expanded="false" />
-            <element signature="e#7508#7601#0" expanded="false" />
-            <element signature="e#7658#7756#0" expanded="false" />
+            <element signature="e#6834#7464#0" expanded="false" />
+            <element signature="e#7624#7717#0" expanded="false" />
+            <element signature="e#7774#7872#0" expanded="false" />
+            <marker date="1462507064936" expanded="false" signature="445:486" placeholder="..." />
+            <marker date="1462507064936" expanded="false" signature="522:563" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -753,14 +699,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/home01.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="921">
-          <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/reserve.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-826">
@@ -774,50 +712,6 @@
         <state relative-caret-position="193">
           <caret line="41" column="84" selection-start-line="41" selection-start-column="84" selection-end-line="41" selection-end-column="84" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding>
-            <element signature="e#18#27#0" expanded="true" />
-            <element signature="e#78#331#0" expanded="false" />
-            <element signature="e#384#765#0" expanded="false" />
-            <element signature="e#804#910#0" expanded="false" />
-            <element signature="e#972#1496#0" expanded="false" />
-            <element signature="e#1522#1592#0" expanded="false" />
-            <element signature="e#1624#1667#0" expanded="false" />
-            <element signature="e#1704#1738#0" expanded="false" />
-            <element signature="e#1772#1947#0" expanded="false" />
-            <element signature="e#2161#2464#0" expanded="false" />
-            <element signature="e#2494#3140#0" expanded="false" />
-            <element signature="e#3176#3604#0" expanded="false" />
-            <element signature="e#3656#4501#0" expanded="false" />
-            <element signature="e#4572#5436#0" expanded="false" />
-            <element signature="e#5489#5805#0" expanded="false" />
-            <element signature="e#5861#6214#0" expanded="false" />
-            <element signature="e#6269#7122#0" expanded="false" />
-            <element signature="e#7210#8145#0" expanded="false" />
-            <element signature="e#8225#8293#0" expanded="false" />
-            <element signature="e#8340#8959#0" expanded="false" />
-            <element signature="e#8999#9189#0" expanded="false" />
-            <element signature="e#9229#9988#0" expanded="false" />
-            <marker date="1462502426615" expanded="true" signature="419:458" placeholder="SELECT * FRO... user" />
-            <marker date="1462502426615" expanded="true" signature="588:644" placeholder="SELECT * FRO... user" />
-            <marker date="1462502426615" expanded="true" signature="1087:1202" placeholder="INSERT INTO `user`... " />
-            <marker date="1462502426615" expanded="true" signature="2644:2698" placeholder="INSERT INTO `order`... " />
-            <marker date="1462502426615" expanded="true" signature="2644:2824" placeholder="INSERT INTO `order`... " />
-            <marker date="1462502426615" expanded="false" signature="3237:3337" placeholder="update `orde... " />
-            <marker date="1462502426615" expanded="true" signature="3717:3754" placeholder="select * fro... order" />
-            <marker date="1462502426615" expanded="true" signature="4633:4679" placeholder="select * fro... order" />
-            <marker date="1462502426615" expanded="true" signature="5550:5585" placeholder="delete from " />
-            <marker date="1462502426615" expanded="true" signature="5868:5925" placeholder="UPDATE `orde... " />
-            <marker date="1462502426615" expanded="true" signature="6337:6377" placeholder="SELECT * FRO... order" />
-            <marker date="1462502426615" expanded="true" signature="7271:7347" placeholder="SELECT * FRO... order" />
-            <marker date="1462502426615" expanded="true" signature="8347:8426" placeholder="SELECT * FRO... parkingspace" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -839,22 +733,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Parking.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-62">
-          <caret line="203" column="34" selection-start-line="203" selection-start-column="34" selection-end-line="203" selection-end-column="34" />
+        <state relative-caret-position="263">
+          <caret line="51" column="44" selection-start-line="51" selection-start-column="44" selection-end-line="51" selection-end-column="44" />
           <folding>
-            <element signature="e#450#486#0" expanded="false" />
-            <element signature="e#527#563#0" expanded="false" />
-            <element signature="e#628#1047#0" expanded="false" />
-            <element signature="e#1106#1621#0" expanded="false" />
-            <element signature="e#1664#1711#0" expanded="false" />
-            <element signature="e#1770#1893#0" expanded="false" />
-            <element signature="e#2018#2170#0" expanded="false" />
-            <element signature="e#2242#4021#0" expanded="false" />
-            <element signature="e#4110#4327#0" expanded="false" />
-            <element signature="e#4402#6266#0" expanded="false" />
-            <element signature="e#6355#6498#0" expanded="false" />
-            <element signature="e#7508#7601#0" expanded="false" />
-            <element signature="e#7658#7756#0" expanded="false" />
+            <element signature="e#6834#7464#0" expanded="false" />
+            <element signature="e#7624#7717#0" expanded="false" />
+            <element signature="e#7774#7872#0" expanded="false" />
+            <marker date="1462507064936" expanded="false" signature="445:486" placeholder="..." />
+            <marker date="1462507064936" expanded="false" signature="522:563" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home01.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-89">
+          <caret line="85" column="23" selection-start-line="85" selection-start-column="23" selection-end-line="85" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="75" column="22" selection-start-line="75" selection-start-column="22" selection-end-line="75" selection-end-column="22" />
+          <folding>
+            <element signature="e#18#27#0" expanded="true" />
+            <marker date="1462507204764" expanded="true" signature="435:474" placeholder="SELECT * FRO... user" />
+            <marker date="1462507204764" expanded="true" signature="604:660" placeholder="SELECT * FRO... user" />
+            <marker date="1462507204764" expanded="true" signature="1103:1218" placeholder="INSERT INTO `user`... " />
+            <marker date="1462507204764" expanded="true" signature="3007:3187" placeholder="INSERT INTO `order`... " />
+            <marker date="1462507204764" expanded="true" signature="3600:3700" placeholder="update `orde... " />
+            <marker date="1462507204764" expanded="true" signature="4080:4117" placeholder="select * fro... order" />
+            <marker date="1462507204764" expanded="true" signature="4996:5042" placeholder="select * fro... order" />
+            <marker date="1462507204764" expanded="true" signature="5913:5948" placeholder="delete from " />
+            <marker date="1462507204764" expanded="true" signature="6231:6288" placeholder="UPDATE `orde... " />
+            <marker date="1462507204764" expanded="true" signature="6700:6740" placeholder="SELECT * FRO... order" />
+            <marker date="1462507204764" expanded="true" signature="7647:7723" placeholder="SELECT * FRO... order" />
+            <marker date="1462507204764" expanded="true" signature="8723:8802" placeholder="SELECT * FRO... parkingspace" />
           </folding>
         </state>
       </provider>

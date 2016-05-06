@@ -2,6 +2,7 @@
 import gl
 import MySQLdb
 import time
+import datetime
 
 
 
@@ -70,6 +71,20 @@ def change_bookto(result):
     result.StartTime = change_time(result.StartTime)
     result.EndTime = change_time(result.EndTime)
     return result
+
+
+def divide_data(data):
+    timenow = get_timenow()
+    time = datetime.datetime.strptime(timenow, "%Y-%m-%d %H:%M:%S")
+    futuredata = []
+    historydate = []
+    for result in data:
+        if result.EndTime < time:
+            historydate.append(result)
+        else:
+            futuredata.append(result)
+    return futuredata, historydate
+
 
 class Booking(object):
     """Docstring for Booking. """
@@ -228,7 +243,7 @@ class Booking(object):
                 temp.append(book)
             conn.commit()
             conn.close()
-            return temp
+            return divide_data(temp)
 
     @staticmethod
     def select_order(start_time):   # 根据时间查询当前订单及往后两天内的所有预定
