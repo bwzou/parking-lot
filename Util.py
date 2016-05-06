@@ -1,6 +1,7 @@
 # --coding:utf8--
 import MySQLdb
 import time
+import datetime
 
 
 def get_conn():
@@ -62,11 +63,26 @@ def change_time(result):
 def change_timetostr(result):
     return result.strftime("%m/%d/%Y")
 
+
 def change_bookto(result):
     result.ProduceTime = change_timetostr(result.StartTime)
     result.StartTime = change_time(result.StartTime)
     result.EndTime = change_time(result.EndTime)
     return result
+
+
+def divide_data(data):
+    timenow = get_timenow()
+    time = datetime.datetime.strptime(timenow, "%Y-%m-%d %H:%M:%S")
+    futuredata = []
+    historydate = []
+    for result in data:
+        if result.EndTime < time:
+            historydate.append(result)
+        else:
+            futuredata.append(result)
+    return futuredata, historydate
+
 
 class Booking(object):
 
@@ -165,6 +181,7 @@ class Booking(object):
         cur = conn.cursor()
         cur.execute(("SELECT * FROM `order` WHERE  `Name`='%s'" % (Name)))
         result = cur.fetchall()
+        conn.close()
         if len(result) == 0:
             return None
         else:
@@ -180,4 +197,4 @@ class Booking(object):
                                StartTime=row[6],
                                EndTime=row[7])
                 temp.append(book)
-            return temp
+            return divide_data(temp)
