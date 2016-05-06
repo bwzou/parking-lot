@@ -61,7 +61,7 @@ $(document).ready(function(){
         changeYear: true,
         minDate: date,
         showAnim: "slideDown",
-        defaultDate: date,
+        defaultDate: new Date(),
         preText: "pre Month",
         nextText: "Next Month"
     });
