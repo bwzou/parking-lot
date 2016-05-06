@@ -4,8 +4,8 @@ from flask import Flask, request, render_template, session,\
 import datetime
 import Util, gl
 import sys
-sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
-from ParkingAlgorithm import insert
+sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")   # 请把该路径改成你项目lib.win32-2.7的路径
+from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
@@ -69,8 +69,7 @@ def logout():
 @app.route('/reserve')
 def reserve():
     """ information about book"""
-
-    flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
+    # flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
     return render_template('reserve.html')
 
 
@@ -99,7 +98,8 @@ def reserver():
             print mov_dict
             dict_len = len(mov_dict)
             if dict_len == 0:             # 如果没有可以用返回[]
-                return False
+                flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
+                return render_template('reserve.html')
             for i in range(dict_len):
                 if i == 0:
                     Book = Util.Booking(PID=gl.dict1[mov_dict[0].get('to')],
@@ -115,7 +115,8 @@ def reserver():
         if result == "success":
             return redirect('/customer_index')
         else:
-            return "failed to summit the order"
+            flash(u'failed to summit the order,please try again', 'error')  # 消息错误提示
+            return render_template('reserve.html')
     else:
         return redirect('/customer_index')
 
@@ -153,13 +154,15 @@ def change(Id):
                                 Name=session["username"],
                                 StartTime=beginTime,
                                 EndTime=endTime,
-                                PlateNumber=request.form["plate"])
+                                PlateNumber=request.form["plate"],
+                                Price=sustain)              # 根据sustain来计费
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
             dict_len = len(mov_dict)
             if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
-                return False
+                flash(u'Sorry! There is no a Parkinglot available now,failed to alter order', 'error')  # 消息错误提示
+                return render_template('reserve.html')
             for i in range(dict_len):
                 if i == 0:
                     Book = Util.Booking(ID=Id,
@@ -167,15 +170,16 @@ def change(Id):
                                         Name=session["username"],
                                         StartTime=beginTime,
                                         EndTime=endTime,
-                                        PlateNumber=request.form["plate"])
+                                        PlateNumber=request.form["plate"],
+                                        Price=sustain)
                 else:
                     Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
-
         result = Book.alter_book()
         if result == "success":
             return redirect('/customer_index')
         else:
-            return result
+            flash(u'failed to summit the order,please try again', 'error')  # 消息错误提示
+            return render_template('reserve.html')
 
 
 @app.route('/cancelreserve/<ID>', methods=["POST", "GET"])
