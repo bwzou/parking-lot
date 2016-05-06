@@ -108,8 +108,8 @@ class Booking(object):
     def alter_book(self):
         conn = get_conn()
         cur = conn.cursor()
-        sql = "update `order` set `StartTime` = '%s' , `EndTime` = '%s'  \
-            where `ID`='%s'" % (self.StartTime, self.EndTime, self.ID)
+        sql = "update `order` set `PID`= '%s', `StartTime` = '%s' , `EndTime` = '%s'  \
+            where `ID`='%s'" % (self.PID, self.StartTime, self.EndTime, self.ID)
         try:
             cur.execute(sql)
             conn.commit()

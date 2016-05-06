@@ -61,7 +61,7 @@
         <div class="form-item form-group">
             <label for="picker" class="form-label">Reserve date</label>
 			{% if not result %}
-            <input type="text" name="picker"  id="picker" readonly="true" class="form-control" value="05/03/2016">
+            <input type="text" name="picker"  id="picker" readonly="true" class="form-control">
 			{% else %}
 			<input type="text" name="picker"  id="picker" readonly="true" class="form-control" value="{{ result.ProduceTime }}">
 			{% endif %}

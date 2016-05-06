@@ -71,21 +71,27 @@ def reserver():
 
         """ we should ascertain whether there is a lot available """
         orders, begin, sustain = Util.all_lot(beginTime, endTime)
-        mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-        print mov_dict
-        dict_len = len(mov_dict)
-        if dict_len == 0:             # 如果没有可以用返回[]
-            return False
-
-        for i in range(dict_len):
-            if i == 0:
-                Book = Util.Booking(PID=gl.dict1[mov_dict[0].get('to')],
-                                    Name=session["username"],
-                                    StartTime=beginTime,
-                                    EndTime=endTime,
-                                    PlateNumber=request.form["plate"])
-            else:
-                Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
+        if len(orders) == 0:
+            Book = Util.Booking(PID='A101',
+                                Name=session["username"],
+                                StartTime=beginTime,
+                                EndTime=endTime,
+                                PlateNumber=request.form["plate"])
+        else:
+            mov_dict = insert(orders, gl.Lots_len, begin, sustain)
+            print mov_dict
+            dict_len = len(mov_dict)
+            if dict_len == 0:             # 如果没有可以用返回[]
+                return False
+            for i in range(dict_len):
+                if i == 0:
+                    Book = Util.Booking(PID=gl.dict1[mov_dict[0].get('to')],
+                                        Name=session["username"],
+                                        StartTime=beginTime,
+                                        EndTime=endTime,
+                                        PlateNumber=request.form["plate"])
+                else:
+                    Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
 
         result = Book.book()
         if result == "success":
@@ -111,19 +117,42 @@ def change(Id):
     if request.method == "POST":
         Time = request.form['slider_value']
         beginTime, endTime = Time[6:11], Time[16:21]
-        print beginTime
-        print endTime
 
         temp = request.form["picker"] + "/" + beginTime
         beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
         temp = request.form["picker"] + "/" + endTime
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
-        Book = Util.Booking(ID=Id,
-                            Name=session["username"],
-                            StartTime=beginTime,
-                            EndTime=endTime,
-                            PlateNumber=request.form["plate"])
+        print "change"
+        print beginTime
+        print endTime
+
+        """ we should ascertain whether there is a lot available """
+        orders, begin, sustain = Util.all_lot(beginTime, endTime)
+        if len(orders) == 0:
+            Book = Util.Booking(ID=Id,
+                                PID='A101',
+                                Name=session["username"],
+                                StartTime=beginTime,
+                                EndTime=endTime,
+                                PlateNumber=request.form["plate"])
+        else:
+            mov_dict = insert(orders, gl.Lots_len, begin, sustain)
+            print mov_dict
+            dict_len = len(mov_dict)
+            if dict_len == 0:  # 如果没有可以用返回[]
+                return False
+            for i in range(dict_len):
+                if i == 0:
+                    Book = Util.Booking(ID=Id,
+                                        PID=gl.dict1[mov_dict[0].get('to')],
+                                        Name=session["username"],
+                                        StartTime=beginTime,
+                                        EndTime=endTime,
+                                        PlateNumber=request.form["plate"])
+                else:
+                    Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
+
         result = Book.alter_book()
         if result == "success":
             return redirect('/customer_index')
