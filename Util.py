@@ -13,6 +13,7 @@ def get_conn():
                            db="parkinglot", port=3306)
 
 
+# -------------------------用户注册登录-------------------------------------------------
 def user_exist(cur="", name="", password=""):
     if cur != "":
         cur.execute("SELECT * FROM `user` WHERE  `Name`='%s'" % name)
@@ -40,7 +41,7 @@ def user_register(name, email, phonenumber, password):
     if user_exist(cur, name) == 0:
         try:
             cur.execute("INSERT INTO `user`( `Name`, `Email`, `PhoneNumber`, \
-                    `PassWord` ) VALUES ('%s','%s','%s','%s')" %
+                        `PassWord` ) VALUES ('%s','%s','%s','%s')" %
                         (name, email, phonenumber, password))
             conn.commit()
             conn.close()
@@ -53,7 +54,7 @@ def user_register(name, email, phonenumber, password):
         conn.close()
         return "exist"
 
-
+# ---------------------------------订单相关------------------------------------------
 def get_timenow():
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
@@ -86,6 +87,7 @@ def divide_data(data):
     return futuredata, historydate
 
 
+# --------------------------------------工具类-----------------------------------------
 class Booking(object):
     """Docstring for Booking. """
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStatus="",
@@ -105,12 +107,12 @@ class Booking(object):
         conn = get_conn()
         cur = conn.cursor()
         try:
-            self.ProduceTime = get_timenow()             # 获取现在时间
+            self.ProduceTime = get_timenow()        # 获取现在时间
             cur.execute("INSERT INTO `order`( `PID`, `StartTime`, `EndTime`, \
-                        `PlateNumber`, `Name`, `ProduceTime`) VALUES \
-                        ('%s','%s','%s','%s','%s','%s')" %
+                        `PlateNumber`, `Name`, `ProduceTime`, `Price`) VALUES \
+                        ('%s','%s','%s','%s','%s','%s','%s')" %
                         (self.PID, self.StartTime, self.EndTime, self.PlateNumber,
-                         self.Name, self.ProduceTime))
+                         self.Name, self.ProduceTime, self.Price))
             conn.commit()
             conn.close()
             return "success"
@@ -303,7 +305,28 @@ class ParkingLot(object):
             conn.close()
             return temp
 
+    @staticmethod
+    def set_price():
+        pass
 
+    @staticmethod
+    def get_price(ID):        # return price from database
+        sql = "SELECT `Price` FROM `parkingspace` WHERE `ID`= '%s'" % ID
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(sql)
+        result = cur.fetchall()
+        conn.commit()
+        conn.close()
+        if len(result) == 0:
+            return None
+        else:
+            for row in result:
+                Lot = row[0]
+            return Lot
+
+
+# ------------------------转换成可以匹配的数据-----------------------------------------
 # match ParkingLot
 def match_Lot():
     Lots = ParkingLot.all_Lot()
@@ -327,11 +350,11 @@ def all_lot(beginTime, endTime):
             flag = orders[0].StartTime
         for row in orders:
             startime = int(((row.StartTime - flag) / 900).total_seconds()) + 1
-            sustaine = int(((row.EndTime - row.StartTime) / 900).total_seconds()) + 1
+            sustaine = int(((row.EndTime - row.StartTime) / 900).total_seconds())
             order_datas.append((row.ID, gl.dict2[row.PID], startime, sustaine))
         print order_datas
 
     startime = int(((beginTime - flag) / 900).total_seconds()) + 1
-    sustaine = int(((endTime - beginTime) / 900).total_seconds()) + 1
+    sustaine = int(((endTime - beginTime) / 900).total_seconds())
     return order_datas, startime, sustaine
 

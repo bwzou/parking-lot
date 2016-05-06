@@ -92,7 +92,8 @@ def reserver():
                                 Name=session["username"],
                                 StartTime=beginTime,
                                 EndTime=endTime,
-                                PlateNumber=request.form["plate"])
+                                PlateNumber=request.form["plate"],
+                                Price=sustain)
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
@@ -105,7 +106,8 @@ def reserver():
                                         Name=session["username"],
                                         StartTime=beginTime,
                                         EndTime=endTime,
-                                        PlateNumber=request.form["plate"])
+                                        PlateNumber=request.form["plate"],
+                                        Price=sustain)
                 else:
                     Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
 

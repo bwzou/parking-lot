@@ -1,4 +1,4 @@
-#from Parking import insert
+# from Parking import insert
 # param1:[(reservation_id,parkinglot_id,start,time_len)]
 # param2:num_parking_lot  where all of the 1<=parking_lot_id<=num_parking_lot
 # param3:start time of new reservation
@@ -9,9 +9,6 @@ import sys
 sys.path.append("./build/lib.win32-2.7")
 from Parking import insert
 print insert([(1,1,1,3),(2,1,6,3),(3,2,2,5),(4,3,1,4),(5,3,7,2)],3,4,3)
-
-
-
 
 
 # import Util
