@@ -216,8 +216,12 @@ def getlotname():
         else:
             if order_number != "":
                 result = Util.Booking.query_book(order_number)
+                if result:
+                    ans = Util.ParkingLot.set_lot_status(result.PID)
             else:
-                result = Util.Booking.query_book_by_plate(plate_number)
+                result = Util.Booking.query_book_by_plate(plate_number)      # plate_number不是唯一，这里要修正
+                if result:
+                    ans = Util.ParkingLot.set_lot_status(result.PID)
         return render_template('pad2.html', result=result)
     return render_template('pad2.html', result=None)
 
@@ -225,7 +229,9 @@ def getlotname():
 # ---------------------------经理相关--------------------------------------------
 @app.route('/manage_index')
 def manage_index():
-    return render_template('console.html')
+    lots_status = Util.all_lot_status()
+    print json.dumps(lots_status)
+    return render_template('console.html', lots_status=json.dumps(lots_status))
 
 
 @app.route('/show_reservation')
@@ -235,7 +241,6 @@ def show_reservation():
 
 @app.route('/show_reservation1/<date>')
 def show_reservation1(date):
-
     the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
     order_date = Util.oneday_lot(the_date)
     print json.dumps(order_date)

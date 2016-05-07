@@ -166,14 +166,14 @@ class Booking(object):
         return result
 
     @staticmethod
-    def query_book_by_plate(plate_number):
+    def query_book_by_plate(plate_number):   # 考虑plate_number不唯一的问题
         conn = get_conn()
         cur = conn.cursor()
-        sql = "select * from `order` where `PlateNumber`='%s'" % plate_number
+        sql = "select * from `order` where `PlateNumber`='%s'AND `EndTime`>= '%s' " \
+              "ORDER BY `order`.`EndTime` ASC" % (plate_number,get_timenow())
         try:
             cur.execute(sql)
             results = cur.fetchall()
-            result = None
             for row in results:
                 print row
                 result = Booking(ID=row[8],
@@ -185,7 +185,9 @@ class Booking(object):
                                  PID=row[5],
                                  StartTime=row[6],
                                  EndTime=row[7])
-            conn.commit()
+                conn.commit()
+                conn.close()
+                return result
         except:
             conn.rollback()
             result = None
@@ -313,8 +315,9 @@ class Booking(object):
 
 
 class ParkingLot(object):
-    def __init__(self, ID, Status, Price):
+    def __init__(self, ID, Status,NowStatus, Price):
         self.ID = ID
+        self.NowStatus = NowStatus
         self.Status = Status
         self.Price = Price
 
@@ -334,7 +337,8 @@ class ParkingLot(object):
             for row in result:
                 Lot = ParkingLot(ID=row[0],
                                  Status=row[1],
-                                 Price=row[2])
+                                 NowStatus=row[2],
+                                 Price=row[3],)
                 temp.append(Lot)
             conn.commit()
             conn.close()
@@ -359,6 +363,22 @@ class ParkingLot(object):
             for row in result:
                 Lot = row[0]
             return Lot
+
+    @staticmethod
+    def set_lot_status(ID):
+        sql = "Update `parkingspace` SET `NowStatus`='occupied' WHERE `ID`='%s'" % ID
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+            return "success"
+        except:
+            conn.rollback()
+            conn.commit()
+            conn.close()
+            return "fail"
 
 
 # ------------------------转换成可以匹配的数据-----------------------------------------
@@ -410,3 +430,18 @@ def oneday_lot(date):
             order_datas.append(one_order)
         print order_datas
     return order_datas
+
+
+def all_lot_status():
+    lots = ParkingLot.all_Lot()
+    lots_datas = []
+    if lots == None:
+        return lots_datas
+    else:
+        for row in lots:
+            one_order = {}   # 必须在循环内定义，否则更改无效
+            one_order['pid'] = row.ID
+            one_order['state'] = row.NowStatus
+            lots_datas.append(one_order)
+        print lots_datas
+    return lots_datas
