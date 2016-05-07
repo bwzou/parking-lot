@@ -1,6 +1,7 @@
 # --coding:utf8--
 import datetime
 import time
+import json
 
 import MySQLdb
 
@@ -277,6 +278,39 @@ class Booking(object):
             conn.close()
             return temp
 
+    @staticmethod
+    def select_order_by_date(date):  # 根据时间查询当天订单及往后两天内的所有预定
+        oneday = datetime.timedelta(days=1)   # 加一天
+        nextday = date + oneday
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "SELECT * FROM `order` WHERE  `StartTime`>='%s'AND `EndTime`<='%s'" \
+              "ORDER BY `order`.`StartTime` ASC" % (date, nextday)
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return None
+        else:
+            temp = []
+            for row in result:
+                print row
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStatus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7])
+                temp.append(book)
+            conn.commit()
+            conn.close()
+            print temp
+            return temp
+
 
 class ParkingLot(object):
     def __init__(self, ID, Status, Price):
@@ -359,3 +393,20 @@ def all_lot(beginTime, endTime):
     sustaine = int(((endTime - beginTime) / 900).total_seconds())
     return order_datas, startime, sustaine
 
+
+def oneday_lot(date):
+    orders = Booking.select_order_by_date(date)
+    order_datas = []
+    if orders == None:
+        return order_datas
+    else:
+        for row in orders:
+            one_order = {}            # 必须在循环内定义，否则更改无效
+            startime = int(((row.StartTime-date) / 900).total_seconds()) + 1
+            sustaine = int(((row.EndTime-date) / 900).total_seconds()) + 1
+            one_order['pid'] = row.PID
+            one_order['from'] = startime
+            one_order['to'] = sustaine
+            order_datas.append(one_order)
+        print order_datas
+    return order_datas

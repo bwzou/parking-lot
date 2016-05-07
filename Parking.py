@@ -1,9 +1,10 @@
 # --coding:utf8--
 import datetime
 import sys
+import json
 
 from flask import Flask, request, render_template, session,\
-    redirect, flash
+    redirect, flash, jsonify
 
 import Util
 from globle import gl
@@ -219,6 +220,26 @@ def getlotname():
                 result = Util.Booking.query_book_by_plate(plate_number)
         return render_template('pad2.html', result=result)
     return render_template('pad2.html', result=None)
+
+
+# ---------------------------经理相关--------------------------------------------
+@app.route('/manage_index')
+def manage_index():
+    return render_template('console.html')
+
+
+@app.route('/show_reservation')
+def show_reservation():
+    return render_template('show-reservation.html')
+
+
+@app.route('/show_reservation1/<date>')
+def show_reservation1(date):
+
+    the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+    order_date = Util.oneday_lot(the_date)
+    print json.dumps(order_date)
+    return render_template('show-reservation.html', reservation=json.dumps(order_date),date=date)
 
 
 # ---------------------------系统错误处理----------------------------------------
