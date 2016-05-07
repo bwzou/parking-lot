@@ -173,6 +173,79 @@
 
 </script>
 <h1>现状</h1>
+<div id="svg-state" style="float:left;border:1px black solid;background: #eee">
 
+</div>
+<script>
+    height=500;
+    width=1000;
+    var svg=d3.select("#svg-state")
+            .append("svg")
+            .attr("height",height)
+            .attr("width",width);
+    var str='[{"pid":301,"state":"occupied"},{"pid":301,"state":"occupied"},{"pid":301,"state":"occupied"},{"pid":302,"state":"idle"},{"pid":302,"state":"idle"},{"pid":302,"state":"idle"},{"pid":302,"state":"idle"},{"pid":303,"state":"empty"}]';
+    var dataSet=JSON.parse(str);
+    var num_col=4;
+    var num_row=Math.ceil(dataSet.length/4);
+    var padding = {left:20, right:20, top:20, bottom:20};
+    var linearx=d3.scale.linear()
+            .domain([0,num_col])
+            .range([0,width-padding.left-padding.right]);
+    var lineary=d3.scale.linear()
+            .domain([0,num_row])
+            .range([0,height - padding.top - padding.bottom]);
+    var rectHeight=lineary(2)-lineary(1);
+    var rectWidth=linearx(2)-linearx(1);
+    var rectPadding=10;
+    svg.selectAll("rect")
+            .data(dataSet)
+            .enter()
+            .append("rect")
+            .attr("stroke","black")
+            .attr("stroke-width","1")
+            .attr("stroke-linecap","round")
+            .attr("stroke-linejoin","round")
+            .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+            .attr("x",function(d,i){
+                return linearx(i%num_col);
+            })
+            .attr("y",function(d,i){
+                return lineary(Math.floor(i/num_col));
+            })
+            .attr("width",rectWidth-rectPadding)
+            .attr("height",rectHeight-rectPadding)
+            .attr("fill",function(d,i){
+                if(d.state=="occupied"){
+                    return "steelblue"
+                }
+                else if(d.state=="idle"){
+                    return "yellow";
+                }
+                else if(d.state=="empty"){
+                    return "white";
+                }
+            });
+    var texts = svg.selectAll(".MyText")
+            .data(dataSet)
+            .enter()
+            .append("text")
+            .attr("class","MyText")
+            .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+            .attr("x", function(d,i){
+                return linearx(i%num_col);
+            } )
+            .attr("y",function(d,i){
+                return lineary(Math.floor(i/num_col));
+            })
+            .attr("dx",function(){
+                return (rectWidth-rectPadding)/3;
+            })
+            .attr("dy",function(d){
+                return (rectHeight-rectPadding)/2;
+            })
+            .text(function(d,i){
+                return d.pid+":"+ d.state;
+            });
+</script>
 </body>
 </html>
