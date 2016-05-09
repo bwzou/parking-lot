@@ -233,7 +233,7 @@ class Booking(object):
         if len(result) == 0:
             conn.commit()
             conn.close()
-            return None
+            return None, None
         else:
             temp = []
             for row in result:
@@ -379,6 +379,15 @@ class ParkingLot(object):
             conn.commit()
             conn.close()
             return "fail"
+
+
+class Price(object):
+    def __init__(self, price, changeTime, ID):
+        self.price = price
+        self.changeTime = changeTime
+        self.ID = ID
+
+
 
 
 # ------------------------转换成可以匹配的数据-----------------------------------------

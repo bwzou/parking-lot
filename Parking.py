@@ -244,6 +244,18 @@ def show_reservation():
     return render_template('show-reservation.html', reservation=json.dumps(order_date), date=today)
 
 
+@app.route('/business_promotion')
+def business_promotion():               # 发布信息表
+
+    return render_template('business-promotion.html')
+
+
+@app.route('/business_price')
+def business_price():
+
+    return render_template('business_price.html')
+
+
 @app.route('/show_reservation1/<date>')
 def show_reservation1(date):
     the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
