@@ -23,6 +23,55 @@
 <link href="css/cover.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
+<script type="text/javascript">
+    function setReservingPrice()
+    {
+        var str=prompt("Set or change price here","e.g. $15 per hour");
+        if(str)
+        {
+
+            var element = document.getElementById("reservPrice");
+
+            element.value = str;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function setOverstayFine()
+    {
+        var str=prompt("Set or change price here","e.g. $15 per hour");
+        if(str)
+        {
+
+            var element = document.getElementById("overstayFine");
+
+            element.value = str;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function setDiscounts()
+    {
+        var str=prompt("Set or change discount here","e.g. 20% off (Senior Member only)");
+        if(str)
+        {
+
+            var element = document.getElementById("discounts");
+
+            element.value = str;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function revert()
+    {
+        alert("No History Information!")
+    }
+</script>
+
 <body>
 <nav class="navbar navbar-default">
     <div class="container">
@@ -84,21 +133,21 @@
                         <tr>
 
                             <td>Reserving Price</td>
-                            <td>$10 per hour</td>
-                            <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary">Revert</a>
+                            <td><input type="text" id="reservPrice"></td>
+                            <td><a href="#" class="btn btn-primary" onclick="setReservingPrice()">Edit</a>
                         </tr>
                         <tr>
 
                             <td>OverStay Fine</td>
-                            <td>$13 per hour</td>
-                            <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary">Revert</a>
+                            <td><input type="text" id="overstayFine"></td>
+                            <td><a href="#" class="btn btn-primary" onclick="setOverstayFine()">Edit</a>
                             </td>
                         </tr>
                         <tr>
 
                             <td>Discount</td>
-                            <td>20% off (Senior Member only)</td>
-                            <td><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary">Revert</a>
+                            <td><input type="text" id="discounts"></td>
+                            <td><a href="#" class="btn btn-primary" onclick="setDiscounts()">Edit</a>
                         </tr>
                         </tbody>
                     </table>
