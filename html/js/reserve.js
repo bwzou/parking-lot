@@ -10,7 +10,7 @@ function checkTime(i)
     return i
 }
 
-//×ª»»Ê±¼ä¼ä¸ô
+//×ªï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
 Num2Str = function(num){
     hour=Math.floor(num/4);
     minute=(num%4)*15;
@@ -40,21 +40,24 @@ GetDefaultFromTime = function(){
     else{
         from=new Date(Number($("#time-from").val()));
     }
-    return from.getHours()*4+Math.floor(from.getMinutes()/15);
+    return from.getHours()*4+Math.ceil(from.getMinutes()/15);
 }
 GetDefaultToTime = function(){
     var to=new Date();
-    to.setHours(to.getHours()+4>24?24:to.getHours()+4);
+    var today= new Date()
+    to.setHours(to.getHours()+4);
+    if(to.getDate()!=today.getDate())
+        to.setHours(23);
     if($("#time-to").val()=="") {
         $("#time-to").val(to.getTime());
     }
     else{
         to=new Date(Number($("#time-to").val()));
     }
-    return to.getHours()*4+Math.floor(to.getMinutes()/15);
+    return to.getHours()*4+Math.ceil(to.getMinutes()/15);
 }
 $(document).ready(function(){
-    //³õÊ¼»¯datepicker
+    //ï¿½ï¿½Ê¼ï¿½ï¿½datepicker
     var date = GetDefaultDate();
     $("#picker").datepicker({
         changeMonth: true,
@@ -66,13 +69,14 @@ $(document).ready(function(){
         nextText: "Next Month"
     });
     $("#picker").datepicker( "setDate", date );
-    //³õÊ¼»¯slider
+    //ï¿½ï¿½Ê¼ï¿½ï¿½slider
     note = new Array([97]);
     for(var i=0;i<=96;i++){
         note[i]=Num2Str(i);
     }
     var from=GetDefaultFromTime();
     var to = GetDefaultToTime();
+    console.log(from,to)
     $("#slider").slider({
         range: true,
         min: 0,
@@ -113,5 +117,4 @@ $(document).ready(function(){
         $("#time-to").val(to.getTime());
         $('form').submit();
     });
-
 });

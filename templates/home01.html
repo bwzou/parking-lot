@@ -7,20 +7,15 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <style type="text/css">
-        input {
-            background-color: transparent;
-        }
-    </style>
     <title>Home Page for customers with valid reservations</title>
 </head>
 <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-<link href="{{ url_for('static', filename='css/cover.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
+<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
+<link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
 
 <body>
 <!--导航条-->
@@ -84,14 +79,14 @@
                                 <td>{{ book.ID }}</td>
                                 <td>{{ book.StartTime }}</td>
                                 <td>{{ book.EndTime }}</td>
-								<td><a href="/changereserve/{{ book.ID }}" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="/cancelreserve/{{ book.ID }}" class="btn btn-primary">Cancel</a></td>
+								<td><div align="center"><a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="/cancelreserve/{{ book.ID }}" class="btn btn-warning"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a></div></td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-                    <p class="lead">
-                        <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+                    <p class="lead" align="center">
+                        <a href="{{ url_for('reserve') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a>
                     </p>
                 </form>
 

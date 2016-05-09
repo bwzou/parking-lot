@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
     {#  >>>>>>> master:templates/index.html #}
 </head>
 <body>
@@ -29,21 +30,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Parking Lot</a>
+            <a class="navbar-brand" href="#"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; Parking Lot</a>
         </div>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav head-nav">
                 <li class="active">
-                    <a href="#">Customer</a>
+                    <a href="#"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Customer</a>
                 </li>
                 <li>
-                    <a href="#">Manager</a>
+                    <a href="#"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;Manager</a>
                 </li>
                 <li>
-                    <a href="#">Simulation</a>
-                </li>
-                <li>
-                    <a href="#">Others</a>
+                    <a href="#"><i class="fa fa-circle-o-notch" aria-hidden="true"></i>&nbsp;Simulation</a>
                 </li>
             </ul>
         </div>
@@ -113,13 +111,18 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-
+                    <div class="input-group">
                     <label for="inputPhoneNumber" class="sr-only">phone number</label>
+                        <span class="input-group-addon"><i class="fa fa-phone fa-fw" aria-hidden="true"></i></span>
                     <input type="text" size="16" name="inputPhoneNumber" id="inputPhoneNumber" class="form-control"
                            placeholder="PhoneNumber" required autofocus>
+                    </div>
+                    <div class="input-group">
                     <label for="inputPassword" class="sr-only">Password</label>
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span>
                     <input type="password" name="inputPassword" id="inputPassword" class="form-control"
                            placeholder="Password" required>
+                    </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" value="remember-me"> Remember me
@@ -139,16 +142,24 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-
+                    <div class="input-group">
                     <label for="registUsername" class="sr-only">phone number</label>
+                        <span class="input-group-addon"><i class="fa fa-phone fa-fw" aria-hidden="true"></i></span>
                     <input type="number" size="16" name="registUsername" id="registUsername" class="form-control"
                            placeholder="phone number" required autofocus>
+                        </div>
+                    <div class="input-group">
                     <label for="registEmail" class="sr-only">Email address</label>
+                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></span>
                     <input type="email" name="registEmail" id="registEmail" class="form-control"
                            placeholder="email address" required autofocus>
+                        </div>
+                    <div class="input-group">
                     <label for="registPassword" class="sr-only">Password</label>
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span>
                     <input type="password" name="registPassword" id="registPassword" class="form-control"
                            placeholder="Password" required>
+                    </div>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Regist</button>
                 </form>
             </div>
