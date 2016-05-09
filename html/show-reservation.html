@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Console</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/console.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="font-awesome-4.6.1/css/font-awesome.min.css">
+    <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
+    <!--<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script src="d3/d3.min.js" type="text/javascript"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+    <div class="container">
+        <div class="navbar-header pull-left">
+            <a href="console.html" class="navbar-brand"><i class="fa fa-area-chart" aria-hidden="true"></i>&nbsp; Console</a>
+        </div>
+        <div class="navbar-header pull-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp; feedback<span class="badge">42</span> </a>
+                </li>
+                <li>
+                    <a href="#"> feedback<span class="badge">42</span> </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row" style="background-color:#f5f5f5;">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav" >
+                <li>
+                    <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
+                    <ul id="menu_condition" class="nav second-menu collapse in">
+                        <li><a href="#"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="show-reservation.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_business" data-toggle="collapse" class="collapsed"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp; Business</a>
+                    <ul id="menu_business" class="nav second-menu collapse">
+                        <li><a href="#"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp; price</a></li>
+                        <li><a href="#"><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp; promotion</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_user" data-toggle="collapse" class="collapsed"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Users</a>
+                    <ul id="menu_user" class="nav second-menu collapse">
+                        <li><a href="#"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;classify</a></li>
+                        <li><a href="#"><i class="fa fa-percent" aria-hidden="true"></i>&nbsp;distribution</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10" style="background-color: white" >
+            <!--<div id="picker" class="label label-default"><span class="label label-default">05/06/2016</span></div>-->
+            <input type="text" value="2016-05-06" id="picker" class="h2" readonly style="text-align: center;width:7em;border-radius: .25em;background-color: #777;color: #fff;font-weight: 700;padding: .2em .6em .3em;">
+            <script>
+                $("#picker").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showAnim: "slideDown",
+                    preText: "pre Month",
+                    nextText: "Next Month",
+                    dateFormat: "yy-mm-dd",
+                    onSelect: function(dateText, inst) {
+                        console.log(dateText);
+//                        window.location.href="index.php";
+                    }
+                });
+            </script>
+            <div id="figure-reservation" style="margin-top: 100px; margin-left: auto;border: 1px solid gray"></div>
+            <nav>
+                <ul class="pager">
+                    <li><a href="#">Previous</a></li>
+                    <li><a href="#">Next</a></li>
+                </ul>
+            </nav>
+            <script>
+                // add a zero in front of numbers<10
+                function checkTime(i)
+                {
+                    if (i<10)
+                    {i="0" + i}
+                    return i
+                }
+                //转换时间间隔
+                Num2Str = function(num){
+                    var hour=Math.floor(num/4);
+                    var minute=(num%4)*15;
+                    return checkTime(hour)+":"+checkTime(minute);
+                };
+            </script>
+            <style>
+                .axis path,
+                .axis line{
+                    fill: none;
+                    stroke: black;
+                    shape-rendering: crispEdges;
+                }
+
+                .axis text {
+                    font-family: sans-serif;
+                    font-size: 11px;
+                }
+            </style>
+
+            <script>
+                //    str='[{"pid":"pid1","from":1,"to":2},{"pid":"pid1","from":2,"to":3},{"pid":"pid2","from":1,"to":2}]';
+                //    var str= '[{"pid":"pid1","from":1,"to":2},{"pid":"pid1","from":33,"to":40},{"pid":"pid2","from":22,"to":43},{"pid":"pid2","from":44,"to":60},{"pid":"pid3","from":80,"to":96}]';
+                parseJson = function(str){
+                    var result=[];
+                    var dataSet=[];
+                    var lotMap=[];
+                    var obj_list=JSON.parse(str);
+                    var map = new Array();
+                    if(obj_list instanceof Array) {
+                        var max_id=0;
+                        for(var i in obj_list){
+                            var item=obj_list[i];
+                            if(map[item.pid]==undefined){
+                                max_id++;
+                                map[item.pid]=max_id;
+                                var set_item=[max_id,item.from,item.to];
+                                dataSet.push(set_item);
+                                lotMap.push(item.pid);
+                            }
+                            else{
+                                var set_item=[map[item.pid],item.from,item.to];
+                                dataSet.push(set_item);
+                            }
+                        }
+                        result.push(dataSet);
+                        result.push(lotMap)
+                        return result;
+                    }
+                    else return undefined;
+                };
+            </script>
+            <script>
+                var height=200;
+                var width =1000;
+                var svg=d3.select("#figure-reservation")
+                        .append("svg")
+                        .attr("height",height)
+                        .attr("width",width);
+                var str='[{"pid":"pid1","from":1,"to":2},{"pid":"pid1","from":33,"to":40},{"pid":"pid2","from":22,"to":43},{"pid":"pid2","from":44,"to":60},{"pid":"pid3","from":80,"to":96}]';
+                var [dataset,lotMap]=parseJson(str);
+                //画布周边的空白
+                var padding = {left:50, right:60, top:40, bottom:40};
+                var maxt=d3.max(dataset,function(d){
+                    return d[2];
+                });
+                var maxp=d3.max(dataset,function(d){
+                    return d[0];
+                });
+                console.log(maxt,maxp);
+                var linearx=d3.scale.linear()
+                        .domain([0,maxt])
+                        .range([0,width-padding.left-padding.right]);
+                var lineary=d3.scale.linear()
+                        .domain([0,maxp])
+                        .range([0,height - padding.top - padding.bottom]);
+                var rectHeight=lineary(2)-lineary(1);
+                svg.selectAll("rect")
+                        .data(dataset)
+                        .enter()
+                        .append("rect")
+                        .attr("x",function(d,i){
+                            return padding.left+10+linearx(d[1]-1);
+                        })
+                        .attr("y",function(d,i){
+                            return padding.top+lineary(d[0]-1)-0.5*rectHeight;
+                        })
+                        .attr("width",function(d){
+                            return linearx(d[2]-d[1]+1)-2;
+                        })
+                        .attr("height",rectHeight-2)
+                        .attr("fill","steelblue");
+                var axisx= d3.svg.axis()
+                        .scale(linearx)
+                        .tickFormat(function(d,i){
+                            return Num2Str(d);
+                        })
+                        .orient("bottom")
+                        .ticks(25);
+                var axisy=d3.svg.axis()
+                        .scale(lineary)
+                        .tickFormat(function(d,i){
+                            var id=lotMap[i];
+                            if(id!=undefined)
+                                return id;
+                            else return "";
+                        })
+                        .orient("left")
+                        .ticks(4);
+                svg.append("g")
+                        .attr("class","axis")
+                        .attr("transform","translate("+(padding.left+10)+","+(height-padding.bottom)+")")
+                        .call(axisx);
+                svg.append("g")
+                        .attr("class","axis")
+                        .attr("transform","translate("+padding.left+","+ padding.top + ")")
+                        .call(axisy);
+
+            </script>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

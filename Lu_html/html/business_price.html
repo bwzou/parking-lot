@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Console</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/console.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="font-awesome-4.6.1/css/font-awesome.min.css">
+    <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
+    <!--<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script src="d3/d3.min.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<link href="css/cover.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<script type="text/javascript">
+    function setReservingPrice()
+    {
+        var str=prompt("Set or change price here","e.g. $15 per hour");
+        if(str)
+        {
+
+            var element = document.getElementById("reservPrice");
+
+            element.value = str;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function setOverstayFine()
+    {
+        var str=prompt("Set or change price here","e.g. $15 per hour");
+        if(str)
+        {
+
+            var element = document.getElementById("overstayFine");
+
+            element.value = str;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function setDiscounts()
+    {
+        var str=prompt("Set or change discount here","e.g. 20% off (Senior Member only)");
+        if(str)
+        {
+
+            var element = document.getElementById("discounts");
+
+            element.value = str;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function revert()
+    {
+        alert("No History Information!")
+    }
+</script>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header pull-left">
+            <a href="console.html" class="navbar-brand"><i class="fa fa-area-chart" aria-hidden="true"></i>&nbsp; Console</a>
+        </div>
+        <div class="navbar-header pull-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp; feedback<span class="badge">42</span> </a>
+                </li>
+                <li>
+                    <a href="#"> feedback<span class="badge">42</span> </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav" >
+                <li>
+                    <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
+                    <ul id="menu_condition" class="nav second-menu collapse in">
+                        <li><a href="#"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="show-reservation.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_business" data-toggle="collapse" class="collapsed"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp; Business</a>
+                    <ul id="menu_business" class="nav second-menu collapse">
+                        <li><a href="business_price.html"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp; price</a></li>
+                        <li><a href="business-promotion.html"><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp; promotion</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_user" data-toggle="collapse" class="collapsed"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Users</a>
+                    <ul id="menu_user" class="nav second-menu collapse">
+                        <li><a href="#"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;classify</a></li>
+                        <li><a href="#"><i class="fa fa-percent" aria-hidden="true"></i>&nbsp;distribution</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-2">
+                <!--显示当前预定状态-->
+            <div class="manager_settings" style="margin-top: -180px; margin-left: auto">
+                <form role="tabpanel" class="tab-pane fade in active" id="settingsTbl">
+                    <table class="table table-bordered table-striped table-hover" >
+                        <thead>
+                        <tr>
+                            <th>Items</th>
+                            <th>Settings</th>
+                            <th>Edit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+
+                            <td>Reserving Price</td>
+                            <td><input type="text" id="reservPrice"></td>
+                            <td><a href="#" class="btn btn-primary" onclick="setReservingPrice()">Edit</a>
+                        </tr>
+                        <tr>
+
+                            <td>OverStay Fine</td>
+                            <td><input type="text" id="overstayFine"></td>
+                            <td><a href="#" class="btn btn-primary" onclick="setOverstayFine()">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>Discount</td>
+                            <td><input type="text" id="discounts"></td>
+                            <td><a href="#" class="btn btn-primary" onclick="setDiscounts()">Edit</a>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p class="lead">
+                        <a href="#" class="btn btn-primary">Confirm and Publish</a>
+                    </p>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
