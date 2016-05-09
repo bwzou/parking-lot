@@ -10,6 +10,7 @@ import Util
 from globle import gl
 
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")   # 请把该路径改成你项目lib.win32-2.7的路径
+
 from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 
 app = Flask(__name__)
@@ -252,8 +253,8 @@ def business_promotion():               # 发布信息表
 
 @app.route('/business_price')
 def business_price():
-
     return render_template('business_price.html')
+
 
 
 @app.route('/show_reservation1/<date>')
@@ -262,6 +263,7 @@ def show_reservation1(date):
     order_date = Util.oneday_lot(the_date)
     print json.dumps(order_date)
     return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
+
 
 
 # ---------------------------系统错误处理----------------------------------------
