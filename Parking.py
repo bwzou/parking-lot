@@ -265,7 +265,6 @@ def show_reservation1(date):
     return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
 
 
-
 # ---------------------------系统错误处理----------------------------------------
 @app.errorhandler(404)                # 扑捉错误并作出响应
 def page_not_found(error):
