@@ -63,7 +63,7 @@
         </div>
         <div class="col-sm-9 col-md-10" style="background-color: white" >
             <!--<div id="picker" class="label label-default"><span class="label label-default">05/06/2016</span></div>-->
-            <input type="text" value="05/06/2016" id="picker" class="h2" readonly style="text-align: center;width:7em;border-radius: .25em;background-color: #777;color: #fff;font-weight: 700;padding: .2em .6em .3em;">
+            <input type="text" value="2016-05-06" id="picker" class="h2" readonly style="text-align: center;width:7em;border-radius: .25em;background-color: #777;color: #fff;font-weight: 700;padding: .2em .6em .3em;">
             <script>
                 $("#picker").datepicker({
                     changeMonth: true,
@@ -71,6 +71,7 @@
                     showAnim: "slideDown",
                     preText: "pre Month",
                     nextText: "Next Month",
+                    dateFormat: "yy-mm-dd",
                     onSelect: function(dateText, inst) {
                         console.log(dateText);
 //                        window.location.href="index.php";
