@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <style type="text/css">
+        input {
+            background-color: transparent;
+        }
+    </style>
+    <title>Home Page for customers with valid reservations</title>
+</head>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<link href="{{ url_for('static', filename='css/cover.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+
+<body>
+<!--导航条-->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Parking Lot</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right" id="navbar">
+            <ul class="nav navbar-nav head-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('reserve') }}">Reserve</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('lot') }}">GetLot</a>
+                </li>
+                <li>
+                    <a href="#">Others</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}">Log_out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+
+    <!--显示当前预定状态-->
+    {% if data or history %}
+        <div class="tabcontent">
+            <ul class="nav nav-tabs">
+				<li role="presentation" class="active"><a href="#reservTbl" aria-controls="reservTbl" role="tab"
+                                                          data-toggle="tab" id="tri-login">Valid Reservation</a>
+                </li>
+				<li role="presentation"><a href="#historyTbl" aria-controls="historyTbl" role="tab" data-toggle="tab"
+                                           id="tri-register">History</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <form role="tabpanel" class="tab-pane fade in active" id="reservTbl">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Order_ID</th>
+                            <th>StartTime</th>
+                            <th>EndTime</th>
+                            <th>price</th>
+                            <th>payStatus</th>
+                            <th>Edit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for book in data %}
+                            <tr>
+                                <td>{{ book.ID }}</td>
+                                <td>{{ book.StartTime }}</td>
+                                <td>{{ book.EndTime }}</td>
+                                <td>{{ book.Price }} </td>
+                                <td>{{ book.PayStatus }} </td>
+								<td><a href="/changereserve/{{ book.ID }}" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="/changereserve/{{ book.ID }}" class="btn btn-primary">Pay</a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="/cancelreserve/{{ book.ID }}" class="btn btn-primary">Cancel</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <p class="lead">
+                        <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+                    </p>
+                </form>
+
+                <form role="tabpanel" class="tab-pane fade" id="historyTbl">
+                    <table class="table table-bordered table-striped table-hover" id="histry">
+                        <thead>
+                        <tr>
+                            <th>Order_ID</th>
+                            <th>StartTime</th>
+                            <th>EndTime</th>
+                            <th>Payment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+						{% for book in history %}
+                        <tr>
+							<td>{{ book.ID }}</td>
+							<td>{{ book.StartTime }}</td>
+							<td>{{ book.EndTime }}</td>
+							<td>￥{{ book.Price }}</td>
+                        </tr>
+						{% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+
+            </div>
+        </div>
+    {% else %}
+        <div class="inner cover">
+            <h1 class="cover-heading">Thank u for registration! :)</h1>
+            <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try
+                now!</p>
+            <p class="lead">
+                <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+            </p>
+        </div>
+    {% endif %}
+</div>
+{#<div class="mastfoot">#}          {# 这里有问题，日后再改 #}
+{#    <div class="inner">#}
+{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a#}
+{#                href="https://twitter.com/mdo">@mdo</a>.#}
+{#        </p>#}
+{#    </div>#}
+{#</div>#}
+</body>
+</html>
