@@ -87,6 +87,7 @@ def divide_data(data):
 class Booking(object):
 
     """Docstring for Booking. """
+
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStstus="",
                  ProduceTime="", StartTime="", EndTime="", PID=""):
         """TODO: to be defined1. """
@@ -183,7 +184,7 @@ class Booking(object):
         result = cur.fetchall()
         conn.close()
         if len(result) == 0:
-            return None
+            return (None, None)
         else:
             temp = []
             for row in result:
