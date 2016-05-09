@@ -236,7 +236,12 @@ def manage_index():
 
 @app.route('/show_reservation')
 def show_reservation():
-    return render_template('show-reservation.html')
+    today = datetime.date.today()
+    nowday = datetime.datetime.strptime(str(today), '%Y-%m-%d')
+    print nowday
+    order_date = Util.oneday_lot(nowday)
+    print json.dumps(order_date)
+    return render_template('show-reservation.html', reservation=json.dumps(order_date), date=today)
 
 
 @app.route('/show_reservation1/<date>')
@@ -244,7 +249,7 @@ def show_reservation1(date):
     the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
     order_date = Util.oneday_lot(the_date)
     print json.dumps(order_date)
-    return render_template('show-reservation.html', reservation=json.dumps(order_date),date=date)
+    return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
 
 
 # ---------------------------系统错误处理----------------------------------------
