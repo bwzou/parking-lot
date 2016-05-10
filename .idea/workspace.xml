@@ -79,8 +79,8 @@
       <file leaf-file-name="Parking.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Parking.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="165" column="26" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
+            <state relative-caret-position="146">
+              <caret line="160" column="31" selection-start-line="160" selection-start-column="31" selection-end-line="160" selection-end-column="31" />
               <folding>
                 <element signature="e#18#33#0" expanded="true" />
                 <element signature="e#9833#9926#0" expanded="false" />
@@ -624,7 +624,14 @@
       <option name="project" value="LOCAL" />
       <updated>1462843217686</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="add manage index&#10;&#10;">
+      <created>1462843336761</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1462843336761</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1188,8 +1195,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Parking.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="165" column="26" selection-start-line="165" selection-start-column="26" selection-end-line="165" selection-end-column="26" />
+        <state relative-caret-position="146">
+          <caret line="160" column="31" selection-start-line="160" selection-start-column="31" selection-end-line="160" selection-end-column="31" />
           <folding>
             <element signature="e#18#33#0" expanded="true" />
             <element signature="e#9833#9926#0" expanded="false" />
