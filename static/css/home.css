@@ -1,0 +1,42 @@
+/*
+ * Globals
+ */
+body{
+background-color: #eee;
+}
+.container .tabcontent{
+background-color: white;
+padding:10px;
+}
+
+
+/*Set default input without borders*/
+input[type="text"]{
+    border: none;
+}
+#reservTbl {
+    margin-top: 50px;
+}
+#historyTbl{
+    margin-top: 50px;
+}
+/*
+ * Header
+ */
+
+.head-nav{
+}
+.head-nav > li > a {
+    font-size: 18px;
+    color: #fff; /* IE8 proofing */
+    border-bottom: 2px solid transparent;
+}
+
+.head-nav > li > a:hover {
+    border-bottom-color: rgba(0,0,0,.25);
+}
+
+
+.head-nav > .active > a:hover{
+    border-bottom-color: rgba(0,0,0,.25);
+}

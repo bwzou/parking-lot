@@ -234,6 +234,7 @@ class Booking(object):
             conn.commit()
             conn.close()
             return None, None
+
         else:
             temp = []
             for row in result:
@@ -386,6 +387,7 @@ class Price(object):
         self.price = price
         self.changeTime = changeTime
         self.ID = ID
+
 
 
 
