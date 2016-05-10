@@ -10,7 +10,6 @@ import Util
 from globle import gl
 
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")   # 请把该路径改成你项目lib.win32-2.7的路径
-
 from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 
 app = Flask(__name__)
