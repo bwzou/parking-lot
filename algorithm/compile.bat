@@ -1,4 +1,4 @@
 python setup.py build
 pause
-python test.py
+python mytest.py
 pause

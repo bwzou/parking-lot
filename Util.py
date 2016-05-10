@@ -1,8 +1,11 @@
 # --coding:utf8--
-import gl
-import MySQLdb
+import datetime
 import time
+import json
 
+import MySQLdb
+
+from globle import gl
 
 
 def get_conn():
@@ -12,6 +15,7 @@ def get_conn():
                            db="parkinglot", port=3306)
 
 
+# -------------------------用户注册登录-------------------------------------------------
 def user_exist(cur="", name="", password=""):
     if cur != "":
         cur.execute("SELECT * FROM `user` WHERE  `Name`='%s'" % name)
@@ -39,7 +43,7 @@ def user_register(name, email, phonenumber, password):
     if user_exist(cur, name) == 0:
         try:
             cur.execute("INSERT INTO `user`( `Name`, `Email`, `PhoneNumber`, \
-                    `PassWord` ) VALUES ('%s','%s','%s','%s')" %
+                        `PassWord` ) VALUES ('%s','%s','%s','%s')" %
                         (name, email, phonenumber, password))
             conn.commit()
             conn.close()
@@ -52,7 +56,7 @@ def user_register(name, email, phonenumber, password):
         conn.close()
         return "exist"
 
-
+# ---------------------------------订单相关------------------------------------------
 def get_timenow():
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
@@ -71,8 +75,22 @@ def change_bookto(result):
     result.EndTime = change_time(result.EndTime)
     return result
 
-class Booking(object):
 
+def divide_data(data):
+    timenow = get_timenow()
+    time = datetime.datetime.strptime(timenow, "%Y-%m-%d %H:%M:%S")
+    futuredata = []
+    historydate = []
+    for result in data:
+        if result.EndTime < time:
+            historydate.append(result)
+        else:
+            futuredata.append(result)
+    return futuredata, historydate
+
+
+# --------------------------------------工具类-----------------------------------------
+class Booking(object):
     """Docstring for Booking. """
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStatus="",
                  ProduceTime="", StartTime="", EndTime="", PID=""):
@@ -91,12 +109,12 @@ class Booking(object):
         conn = get_conn()
         cur = conn.cursor()
         try:
-            self.ProduceTime = get_timenow()             # 获取现在时间
+            self.ProduceTime = get_timenow()        # 获取现在时间
             cur.execute("INSERT INTO `order`( `PID`, `StartTime`, `EndTime`, \
-                        `PlateNumber`, `Name`, `ProduceTime`) VALUES \
-                        ('%s','%s','%s','%s','%s','%s')" %
+                        `PlateNumber`, `Name`, `ProduceTime`, `Price`) VALUES \
+                        ('%s','%s','%s','%s','%s','%s','%s')" %
                         (self.PID, self.StartTime, self.EndTime, self.PlateNumber,
-                         self.Name, self.ProduceTime))
+                         self.Name, self.ProduceTime, self.Price))
             conn.commit()
             conn.close()
             return "success"
@@ -108,8 +126,8 @@ class Booking(object):
     def alter_book(self):
         conn = get_conn()
         cur = conn.cursor()
-        sql = "update `order` set `PID`= '%s', `StartTime` = '%s' , `EndTime` = '%s'  \
-            where `ID`='%s'" % (self.PID, self.StartTime, self.EndTime, self.ID)
+        sql = "update `order` set `PID`= '%s', `StartTime` = '%s' , `EndTime` = '%s' , `Price` = '%s' \
+            where `ID`='%s'" % (self.PID, self.StartTime, self.EndTime, self.Price, self.ID )
         try:
             cur.execute(sql)
             conn.commit()
@@ -141,6 +159,35 @@ class Booking(object):
                                  StartTime=row[6],
                                  EndTime=row[7])
             conn.commit()
+        except:
+            conn.rollback()
+            result = None
+        conn.close()
+        return result
+
+    @staticmethod
+    def query_book_by_plate(plate_number):   # 考虑plate_number不唯一的问题
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "select * from `order` where `PlateNumber`='%s'AND `EndTime`>= '%s' " \
+              "ORDER BY `order`.`EndTime` ASC" % (plate_number,get_timenow())
+        try:
+            cur.execute(sql)
+            results = cur.fetchall()
+            for row in results:
+                print row
+                result = Booking(ID=row[8],
+                                 Name=row[0],
+                                 PlateNumber=row[1],
+                                 Price=row[2],
+                                 PayStatus=row[3],
+                                 ProduceTime=row[4],
+                                 PID=row[5],
+                                 StartTime=row[6],
+                                 EndTime=row[7])
+                conn.commit()
+                conn.close()
+                return result
         except:
             conn.rollback()
             result = None
@@ -186,7 +233,8 @@ class Booking(object):
         if len(result) == 0:
             conn.commit()
             conn.close()
-            return None
+            return None, None
+
         else:
             temp = []
             for row in result:
@@ -202,7 +250,7 @@ class Booking(object):
                 temp.append(book)
             conn.commit()
             conn.close()
-            return temp
+            return divide_data(temp)
 
     @staticmethod
     def select_order(start_time):   # 根据时间查询当前订单及往后两天内的所有预定
@@ -233,10 +281,44 @@ class Booking(object):
             conn.close()
             return temp
 
+    @staticmethod
+    def select_order_by_date(date):  # 根据时间查询当天订单及往后两天内的所有预定
+        oneday = datetime.timedelta(days=1)   # 加一天
+        nextday = date + oneday
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "SELECT * FROM `order` WHERE  `StartTime`>='%s'AND `EndTime`<='%s'" \
+              "ORDER BY `order`.`StartTime` ASC" % (date, nextday)
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return None
+        else:
+            temp = []
+            for row in result:
+                print row
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStatus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7])
+                temp.append(book)
+            conn.commit()
+            conn.close()
+            print temp
+            return temp
+
 
 class ParkingLot(object):
-    def __init__(self, ID, Status, Price):
+    def __init__(self, ID, Status,NowStatus, Price):
         self.ID = ID
+        self.NowStatus = NowStatus
         self.Status = Status
         self.Price = Price
 
@@ -256,19 +338,67 @@ class ParkingLot(object):
             for row in result:
                 Lot = ParkingLot(ID=row[0],
                                  Status=row[1],
-                                 Price=row[2])
+                                 NowStatus=row[2],
+                                 Price=row[3],)
                 temp.append(Lot)
             conn.commit()
             conn.close()
             return temp
 
+    @staticmethod
+    def set_price():
+        pass
 
+    @staticmethod
+    def get_price(ID):        # return price from database
+        sql = "SELECT `Price` FROM `parkingspace` WHERE `ID`= '%s'" % ID
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(sql)
+        result = cur.fetchall()
+        conn.commit()
+        conn.close()
+        if len(result) == 0:
+            return None
+        else:
+            for row in result:
+                Lot = row[0]
+            return Lot
+
+    @staticmethod
+    def set_lot_status(ID):
+        sql = "Update `parkingspace` SET `NowStatus`='occupied' WHERE `ID`='%s'" % ID
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+            return "success"
+        except:
+            conn.rollback()
+            conn.commit()
+            conn.close()
+            return "fail"
+
+
+class Price(object):
+    def __init__(self, price, changeTime, ID):
+        self.price = price
+        self.changeTime = changeTime
+        self.ID = ID
+
+
+
+
+
+# ------------------------转换成可以匹配的数据-----------------------------------------
 # match ParkingLot
 def match_Lot():
     Lots = ParkingLot.all_Lot()
     gl.Lots_len = len(Lots)
     for i in range(gl.Lots_len):
-        gl.dict1[i+1] = Lots[i].ID
+        gl.dict1[i + 1] = Lots[i].ID
     gl.dict2 = {v: k for k, v in gl.dict1.items()}
     return True
 
@@ -286,11 +416,43 @@ def all_lot(beginTime, endTime):
             flag = orders[0].StartTime
         for row in orders:
             startime = int(((row.StartTime - flag) / 900).total_seconds()) + 1
-            sustaine = int(((row.EndTime - row.StartTime) / 900).total_seconds()) + 1
+            sustaine = int(((row.EndTime - row.StartTime) / 900).total_seconds())
             order_datas.append((row.ID, gl.dict2[row.PID], startime, sustaine))
         print order_datas
 
     startime = int(((beginTime - flag) / 900).total_seconds()) + 1
-    sustaine = int(((endTime - beginTime) / 900).total_seconds()) + 1
+    sustaine = int(((endTime - beginTime) / 900).total_seconds())
     return order_datas, startime, sustaine
 
+
+def oneday_lot(date):
+    orders = Booking.select_order_by_date(date)
+    order_datas = []
+    if orders == None:
+        return order_datas
+    else:
+        for row in orders:
+            one_order = {}            # 必须在循环内定义，否则更改无效
+            startime = int(((row.StartTime-date) / 900).total_seconds()) + 1
+            sustaine = int(((row.EndTime-date) / 900).total_seconds()) + 1
+            one_order['pid'] = row.PID
+            one_order['from'] = startime
+            one_order['to'] = sustaine
+            order_datas.append(one_order)
+        print order_datas
+    return order_datas
+
+
+def all_lot_status():
+    lots = ParkingLot.all_Lot()
+    lots_datas = []
+    if lots == None:
+        return lots_datas
+    else:
+        for row in lots:
+            one_order = {}   # 必须在循环内定义，否则更改无效
+            one_order['pid'] = row.ID
+            one_order['state'] = row.NowStatus
+            lots_datas.append(one_order)
+        print lots_datas
+    return lots_datas

@@ -40,18 +40,21 @@ GetDefaultFromTime = function(){
     else{
         from=new Date(Number($("#time-from").val()));
     }
-    return from.getHours()*4+Math.floor(from.getMinutes()/15);
+    return from.getHours()*4+Math.ceil(from.getMinutes()/15);
 }
 GetDefaultToTime = function(){
     var to=new Date();
+    var today= new Date()
     to.setHours(to.getHours()+4);
+    if(to.getDate()!=today.getDate())
+        to.setHours(23);
     if($("#time-to").val()=="") {
         $("#time-to").val(to.getTime());
     }
     else{
         to=new Date(Number($("#time-to").val()));
     }
-    return to.getHours()*4+Math.floor(to.getMinutes()/15);
+    return to.getHours()*4+Math.ceil(to.getMinutes()/15);
 }
 $(document).ready(function(){
     //��ʼ��datepicker
@@ -73,6 +76,7 @@ $(document).ready(function(){
     }
     var from=GetDefaultFromTime();
     var to = GetDefaultToTime();
+    console.log(from,to)
     $("#slider").slider({
         range: true,
         min: 0,
@@ -113,5 +117,4 @@ $(document).ready(function(){
         $("#time-to").val(to.getTime());
         $('form').submit();
     });
-
 });

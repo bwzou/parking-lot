@@ -1,18 +1,31 @@
 # --coding:utf8--
-from flask import Flask, request, render_template, session,\
-    redirect, flash
 import datetime
+<<<<<<< HEAD
 import Util
 import gl
 import sys
 sys.path.append(
     "/home/Glen-Zhang/python2.7env/app2/ParkingLot/Parking/build/lib.win32-2.7")
 from ParkingAlgorithm import insert
+=======
+import sys
+import json
+
+from flask import Flask, request, render_template, session,\
+    redirect, flash, jsonify
+
+import Util
+from globle import gl
+
+sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")   # 请把该路径改成你项目lib.win32-2.7的路径
+from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
+>>>>>>> 6ffc73f299a4876a9096135741acb8397990cdcd
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
 
 
+# ------------------------用户登录注册--------------------------------------------
 @app.route('/')
 def hello_world():
     return render_template('index.html')
@@ -31,7 +44,7 @@ def register():
         request.form["registUsername"],
         request.form["registPassword"])
     if result == "success":
-        return render_template('home01.html', data=None)
+        return render_template('home01.html', data=None, history=None)
     elif result == "exist":
         flash(u'Username is used, please try another', 'error')  # 用户名已经被使用
         return render_template('index.html')
@@ -45,18 +58,32 @@ def login():
     result = Util.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        data = Util.Booking.diplay_book(session["username"])
-        return render_template('home01.html', data=data)
+        data, history = Util.Booking.diplay_book(session["username"])
+        # data, history = Util.divide_data(data)
+        return render_template('home01.html', data=data, history=history)
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
 
 
+@app.route('/customer_index')
+def customer_index():
+    data, history = Util.Booking.diplay_book(session["username"])
+    return render_template('home01.html', data=data, history=history)
+    # 根据data判断如何显示
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    redirect('/')
+
+
+# ------------------------用户预定和修改订单--------------------------------------------
 @app.route('/reserve')
 def reserve():
     """ information about book"""
-
-    flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
+    # flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
     return render_template('reserve.html')
 
 
@@ -78,20 +105,23 @@ def reserver():
                                 Name=session["username"],
                                 StartTime=beginTime,
                                 EndTime=endTime,
-                                PlateNumber=request.form["plate"])
+                                PlateNumber=request.form["plate"],
+                                Price=sustain)
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
             dict_len = len(mov_dict)
             if dict_len == 0:             # 如果没有可以用返回[]
-                return False
+                flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
+                return render_template('reserve.html')
             for i in range(dict_len):
                 if i == 0:
                     Book = Util.Booking(PID=gl.dict1[mov_dict[0].get('to')],
                                         Name=session["username"],
                                         StartTime=beginTime,
                                         EndTime=endTime,
-                                        PlateNumber=request.form["plate"])
+                                        PlateNumber=request.form["plate"],
+                                        Price=sustain)
                 else:
                     Util.Booking.update_Lot(mov_dict[i].get('to'),
                                             mov_dict[i].get('id'))
@@ -100,7 +130,8 @@ def reserver():
         if result == "success":
             return redirect('/customer_index')
         else:
-            return "failed to summit the order"
+            flash(u'failed to summit the order,please try again', 'error')  # 消息错误提示
+            return render_template('reserve.html')
     else:
         return redirect('/customer_index')
 
@@ -138,13 +169,15 @@ def change(Id):
                                 Name=session["username"],
                                 StartTime=beginTime,
                                 EndTime=endTime,
-                                PlateNumber=request.form["plate"])
+                                PlateNumber=request.form["plate"],
+                                Price=sustain)              # 根据sustain来计费
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
             dict_len = len(mov_dict)
-            if dict_len == 0:  # 如果没有可以用返回[]
-                return False
+            if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
+                flash(u'Sorry! There is no a Parkinglot available now,failed to alter order', 'error')  # 消息错误提示
+                return render_template('reserve.html')
             for i in range(dict_len):
                 if i == 0:
                     Book = Util.Booking(ID=Id,
@@ -152,16 +185,22 @@ def change(Id):
                                         Name=session["username"],
                                         StartTime=beginTime,
                                         EndTime=endTime,
-                                        PlateNumber=request.form["plate"])
+                                        PlateNumber=request.form["plate"],
+                                        Price=sustain)
                 else:
+<<<<<<< HEAD
                     Util.Booking.update_Lot(mov_dict[i].get('to'),
                                             mov_dict[i].get('id'))
 
+=======
+                    Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
+>>>>>>> 6ffc73f299a4876a9096135741acb8397990cdcd
         result = Book.alter_book()
         if result == "success":
             return redirect('/customer_index')
         else:
-            return result
+            flash(u'failed to summit the order,please try again', 'error')  # 消息错误提示
+            return render_template('reserve.html')
 
 
 @app.route('/cancelreserve/<ID>', methods=["POST", "GET"])
@@ -173,18 +212,74 @@ def cancelreserve(ID):
         return result
 
 
-@app.route('/customer_index')
-def customer_index():
-    data = Util.Booking.diplay_book(session["username"])
-    return render_template('home01.html', data=data)    # 根据data判断如何显示
+# ---------------------------获取停车位信息--------------------------------------
+@app.route('/lot')
+def lot():
+    return render_template('pad1.html')
 
 
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    redirect('/')
+@app.route('/getlotname', methods=["POST", "GET"])
+def getlotname():
+    print "nihao"
+    if request.method == "POST":
+        print "nibuhao"
+        order_number = request.form['inputNumber']
+        plate_number = request.form['inputLicenseNumber']
+        print order_number
+        print plate_number
+        if order_number == "" and plate_number == "":
+            redirect('/lot')
+        else:
+            if order_number != "":
+                result = Util.Booking.query_book(order_number)
+                if result:
+                    ans = Util.ParkingLot.set_lot_status(result.PID)
+            else:
+                result = Util.Booking.query_book_by_plate(plate_number)      # plate_number不是唯一，这里要修正
+                if result:
+                    ans = Util.ParkingLot.set_lot_status(result.PID)
+        return render_template('pad2.html', result=result)
+    return render_template('pad2.html', result=None)
 
 
+# ---------------------------经理相关--------------------------------------------
+@app.route('/manage_index')
+def manage_index():
+    lots_status = Util.all_lot_status()
+    print json.dumps(lots_status)
+    return render_template('console.html', lots_status=json.dumps(lots_status))
+
+
+@app.route('/show_reservation')
+def show_reservation():
+    today = datetime.date.today()
+    nowday = datetime.datetime.strptime(str(today), '%Y-%m-%d')
+    print nowday
+    order_date = Util.oneday_lot(nowday)
+    print json.dumps(order_date)
+    return render_template('show-reservation.html', reservation=json.dumps(order_date), date=today)
+
+
+@app.route('/business_promotion')
+def business_promotion():               # 发布信息表
+
+    return render_template('business-promotion.html')
+
+
+@app.route('/business_price')
+def business_price():
+    return render_template('business_price.html')
+
+
+@app.route('/show_reservation1/<date>')
+def show_reservation1(date):
+    the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+    order_date = Util.oneday_lot(the_date)
+    print json.dumps(order_date)
+    return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
+
+
+# ---------------------------系统错误处理----------------------------------------
 @app.errorhandler(404)                # 扑捉错误并作出响应
 def page_not_found(error):
     # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
