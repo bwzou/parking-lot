@@ -245,7 +245,6 @@ def show_reservation():
     return render_template('show-reservation.html', reservation=json.dumps(order_date), date=today)
 
 
-<<<<<<< HEAD
 @app.route('/business_promotion')
 def business_promotion():               # 发布信息表
 
@@ -258,8 +257,6 @@ def business_price():
 
 
 
-=======
->>>>>>> origin/zuo
 @app.route('/show_reservation1/<date>')
 def show_reservation1(date):
     the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
