@@ -2,9 +2,11 @@
 from flask import Flask, request, render_template, session,\
     redirect, flash
 import datetime
-import Util, gl
+import Util
+import gl
 import sys
-sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
+sys.path.append(
+    "/home/Glen-Zhang/python2.7env/app2/ParkingLot/Parking/build/lib.win32-2.7")
 from ParkingAlgorithm import insert
 
 app = Flask(__name__)
@@ -91,7 +93,8 @@ def reserver():
                                         EndTime=endTime,
                                         PlateNumber=request.form["plate"])
                 else:
-                    Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
+                    Util.Booking.update_Lot(mov_dict[i].get('to'),
+                                            mov_dict[i].get('id'))
 
         result = Book.book()
         if result == "success":
@@ -151,7 +154,8 @@ def change(Id):
                                         EndTime=endTime,
                                         PlateNumber=request.form["plate"])
                 else:
-                    Util.Booking.update_Lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
+                    Util.Booking.update_Lot(mov_dict[i].get('to'),
+                                            mov_dict[i].get('id'))
 
         result = Book.alter_book()
         if result == "success":
