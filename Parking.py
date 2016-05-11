@@ -1,21 +1,19 @@
 # --coding:utf8--
 import datetime
-# import sys
 import json
+import sys
 
 from flask import Flask, request, render_template, session,\
     redirect, flash
 
 import Util
-from globle import gl
-from ParkingAlgorithm import insert
-import Temp
+from globle import gl, Temp
+
 # import ParkingAlgorithm
 # import build.lib.win32-2.7.ParkingAlogorithm
-# sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
-# 请把该路径改成你项目lib.win32-2.7的路径
-# from ParkingAlgorithm import insert
-# pycharm报错，但不影响
+sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
+from ParkingAlgorithm import insert
+
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
@@ -315,13 +313,13 @@ def change2():
     diff = int(Temp.TempData.Price) - int(Temp.TempData2.Price)
     return render_template('change2.html', Data=Temp.TempData,
                            Data2=Temp.TempData2, diff=diff)
-    pass
+
 
 # ---------------------------经理相关--------------------------------------------
-
 @app.route('/manager_page')
 def manager_page():
     return render_template("manager_login.html");
+
 
 @app.route('/manage_index')
 def manage_index():
