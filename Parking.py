@@ -9,8 +9,6 @@ from flask import Flask, request, render_template, session,\
 import Util
 from globle import gl, Temp
 
-# import ParkingAlgorithm
-# import build.lib.win32-2.7.ParkingAlogorithm
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
 from ParkingAlgorithm import insert
 
@@ -154,8 +152,6 @@ def paychange():
 @app.route('/changereserve/<ID>', methods=["POST", "GET"])
 def changereserve(ID):
     result = Util.Booking.query_book(ID)
-    print result.StartTime
-    print result.EndTime
     if result is not None:
         result = Util.change_bookto(result)
     return render_template('reserve.html', result=result)
@@ -261,12 +257,13 @@ def getlotname():
 # <<<<<<< HEAD
                     # Util.ParkingLot.set_lot_status(result.PID)
                     # # ans = Util.ParkingLot.set_lot_status(result.PID)
-        # result.insert_parktime()
+        #
 # =======
                     ans = Util.ParkingLot.set_lot_status(result.PID)
                 else:
                     flash(u'The plate number is not existing,please try again ', 'error')  # 消息错误提示)
                     return render_template('pad1.html')
+        result.insert_parktime()
         return render_template('pad2.html', result=result)
     return render_template('pad2.html', result=None)
 
