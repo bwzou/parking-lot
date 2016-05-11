@@ -1,0 +1,45 @@
+张彪
+
+开发任务：
+	1 配置服务器mysql以及服务器phpmyadmin
+	2 整理登陆及连接服务器
+	3 初始版本的 订单及历史订单显示，预约，修改预约，删除预约，以及部分页面展示逻辑
+	4 参与开发的函数 cal_money() change_bookto() change_time() change_timetostr()
+					 divide_date() get_conn() get_singleprice() get_timenow()
+			Booking 类下的 alter_book() book() cancel_book() display_book()
+					query_ID() insert_leaveTime() insert_parkTime()		 
+
+
+使用技术：
+	1 数据库查询访问
+	2 python flask框架
+	3 python 语言
+
+主要难点
+	1 页面跳转关系
+	2 携参传递
+
+函数说明：
+	cal_money(arg1,arg2,arg3): 计算两个时间之内的钱 arg1,arg2 为datetime形式 arg3 为参数，及时间类型
+								超期时间，正常时间等,调用get_singleprice()，返回价钱
+	get_singleprice(arg): arg为时间类型，根据时间类型从数据库取得相应的价格，返回时间类型价钱
+	get_conn(): 打开数据库连接，返回一个数据库对象
+	get_timenow(): 返回当前时间
+	divide_date(arg): arg为Booking类型的list 以当前时间为判断基准，将其分为两个list，已经完成的订单
+						及未完成的订单
+	change_bookto(arg): arg为Booking对象 目的是为了将datetime转成时间戳的形式，调用了change_time()
+						change_timetostr()两个函数
+	change_time(arg): arg为datetime类型。此为将其转化成以毫秒为单位的时间戳。
+	change_timetostr(arg): arg为datetime类型。此为提取时间的年月日
+
+	Booking类下的函数说明：
+		book():预约
+		alter_book():改变预约
+		cancel_book():取消预约
+		display_book():展示预约，分出历史数据和预约数据
+		insert_leaveTime():插入离开时间
+		insert_parkTime():插入开始停车时间
+		query_ID():得到预约号		
+
+	
+	
