@@ -236,28 +236,39 @@ def lot():
 
 @app.route('/getlotname', methods=["POST", "GET"])
 def getlotname():
-    print "nihao"
     if request.method == "POST":
-        print "nibuhao"
         order_number = request.form['inputNumber']
         plate_number = request.form['inputLicenseNumber']
         print order_number
         print plate_number
         if order_number == "" and plate_number == "":
-            redirect('/lot')
+            flash(u'you must input either of blanks', 'error')  # 消息错误提示)
+            return render_template('pad1.html')
         else:
             if order_number != "":
                 result = Util.Booking.query_book(order_number)
                 if result:
-                    Util.ParkingLot.set_lot_status(result.PID)
-                    # ans = Util.ParkingLot.set_lot_status(result.PID)
+# <<<<<<< HEAD
+                    # Util.ParkingLot.set_lot_status(result.PID)
+                    # # ans = Util.ParkingLot.set_lot_status(result.PID)
+# =======
+                    ans = Util.ParkingLot.set_lot_status(result.PID)
+                else:
+                    flash(u'The order number is not existing,please try again ', 'error')  # 消息错误提示)
+                    return render_template('pad1.html')
             else:
                 result = Util.Booking.query_book_by_plate(plate_number)
                 # plate_number不是唯一，这里要修正
                 if result:
-                    Util.ParkingLot.set_lot_status(result.PID)
-                    # ans = Util.ParkingLot.set_lot_status(result.PID)
-        result.insert_parktime()
+# <<<<<<< HEAD
+                    # Util.ParkingLot.set_lot_status(result.PID)
+                    # # ans = Util.ParkingLot.set_lot_status(result.PID)
+        # result.insert_parktime()
+# =======
+                    ans = Util.ParkingLot.set_lot_status(result.PID)
+                else:
+                    flash(u'The plate number is not existing,please try again ', 'error')  # 消息错误提示)
+                    return render_template('pad1.html')
         return render_template('pad2.html', result=result)
     return render_template('pad2.html', result=None)
 
@@ -307,6 +318,11 @@ def change2():
     pass
 
 # ---------------------------经理相关--------------------------------------------
+
+@app.route('/manager_page')
+def manager_page():
+    return render_template("manager_login.html");
+
 @app.route('/manage_index')
 def manage_index():
     lots_status = Util.all_lot_status()

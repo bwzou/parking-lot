@@ -239,6 +239,7 @@ class Booking(object):
         try:
             cur.execute(sql)
             results = cur.fetchall()
+            result = None
             for row in results:
                 print row
                 result = Booking(ID=row[8],

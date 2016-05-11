@@ -13,13 +13,21 @@
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
 <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
-
-
+ <script>
+function deleteReservation(bookid){
+ if(!window.confirm("Delete it?")){
+    alert("press false");
+ }
+ else{
+    window.location="/cancelreserve/"+bookid;
+ }
+};
+ </script>
 <body>
+
 <!--导航条-->
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
@@ -81,14 +89,14 @@
                                 <td>{{ book.ID }}</td>
                                 <td>{{ book.StartTime }}</td>
                                 <td>{{ book.EndTime }}</td>
-
-								<td><div align="center"><a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="/cancelreserve/{{ book.ID }}" class="btn btn-warning"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a></div></td>
+								<td><div align="center">
+                                    <a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a>
+                                </div></td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-
                     <p class="lead" align="center">
                         <a href="{{ url_for('reserve') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a>
                     </p>

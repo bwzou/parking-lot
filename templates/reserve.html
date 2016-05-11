@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui-slider-pips.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/reserve.css') }}">
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
@@ -36,17 +35,17 @@
         </div>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav head-nav">
+                <li>
+                    <a href="{{url_for('customer_index')}}">Home</a>
+                </li>
                 <li class="active">
-                    <a href="#">Home</a>
+                    <a href="{{ url_for('reserve') }}">Reserve</a>
                 </li>
                 <li>
-                    <a href="#">Reserve</a>
+                    <a href="{{ url_for('lot') }}">GetLot</a>
                 </li>
                 <li>
-                    <a href="#">Settings</a>
-                </li>
-                <li>
-                    <a href="#">Help</a>
+                    <a href="#">Others</a>
                 </li>
             </ul>
         </div>

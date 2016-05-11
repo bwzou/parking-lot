@@ -32,7 +32,6 @@ body {
 body {
     color: #fff;
     text-align: center;
-    text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -160,4 +159,27 @@ body {
     .cover-container {
         width: 700px;
     }
+}
+
+/*
+ * Header
+ */
+.head-nav{
+}
+.head-nav > li > a {
+  font-size: 18px;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+}
+
+.head-nav > li > a:hover {
+   background-color: transparent;
+   border-bottom-color: rgba(0,0,0,.25);
+}
+
+
+.head-nav > .active > a,
+.head-nav > .active > a:hover{
+  border-bottom-color: rgba(0,0,0,.25);
 }
