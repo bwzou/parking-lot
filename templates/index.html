@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
     {#  >>>>>>> master:templates/index.html #}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 </head>
 <body>
 
@@ -35,13 +36,13 @@
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav head-nav">
                 <li class="active">
-                    <a href="#"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Customer</a>
+                    <a href="{{url_for('index')}}"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Customer</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;Manager</a>
+                    <a href="{{url_for('manager_page')}}"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;Manager</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-circle-o-notch" aria-hidden="true"></i>&nbsp;Simulation</a>
+                    <a href="{{url_for('lot')}}"><i class="fa fa-circle-o-notch" aria-hidden="true"></i>&nbsp;Simulation</a>
                 </li>
             </ul>
         </div>
@@ -103,7 +104,6 @@
                 <form role="tabpanel" class="form-signin tab-pane fade in active" id="login" action="/login"
                       method="post">
                     <h2 class="form-signin-heading">Sign in</h2>
-
                     {% with messages = get_flashed_messages(with_categories=true) %} {# 添加消息闪现 #}
                         {% if messages %}
                             {% for category,message in messages %}
@@ -145,7 +145,7 @@
                     <div class="input-group">
                     <label for="registUsername" class="sr-only">phone number</label>
                         <span class="input-group-addon"><i class="fa fa-phone fa-fw" aria-hidden="true"></i></span>
-                    <input type="number" size="16" name="registUsername" id="registUsername" class="form-control"
+                    <input type="text" size="16" name="registUsername" id="registUsername" class="form-control"
                            placeholder="phone number" required autofocus>
                         </div>
                     <div class="input-group">
@@ -160,7 +160,25 @@
                     <input type="password" name="registPassword" id="registPassword" class="form-control"
                            placeholder="Password" required>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Regist</button>
+                    <button id="btn_submit" class="btn btn-lg btn-primary btn-block" type="submit">Regist</button>
+                    <script>
+                        $("#btn_submit").click(function(){
+                            var val=$("#registUsername").val();
+                            var code;
+                            if(val.length==0){
+                                     alert("电话号码不为空");
+                                     return false;
+                            }
+                            for (var i = 0; i < val.length; i++) {
+                                 var code = val.charAt(i).charCodeAt(0);
+                                 console.log(code);
+                                 if (code < 48 || code > 57) {
+                                     alert("电话号码含有非法字符");
+                                     return false;
+                                 }
+                            }
+                        });
+                    </script>
                 </form>
             </div>
         </div>

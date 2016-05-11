@@ -35,17 +35,17 @@
         </div>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav head-nav">
+                <li>
+                    <a href="{{url_for('customer_index')}}">Home</a>
+                </li>
                 <li class="active">
-                    <a href="#">Home</a>
+                    <a href="{{ url_for('reserve') }}">Reserve</a>
                 </li>
                 <li>
-                    <a href="#">Reserve</a>
+                    <a href="{{ url_for('lot') }}">GetLot</a>
                 </li>
                 <li>
-                    <a href="#">Settings</a>
-                </li>
-                <li>
-                    <a href="#">Help</a>
+                    <a href="#">Others</a>
                 </li>
             </ul>
         </div>

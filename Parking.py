@@ -232,6 +232,11 @@ def getlotname():
 
 
 # ---------------------------经理相关--------------------------------------------
+
+@app.route('/manager_page')
+def manager_page():
+    return render_template("manager_login.html");
+
 @app.route('/manage_index')
 def manage_index():
     lots_status = Util.all_lot_status()
