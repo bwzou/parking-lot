@@ -294,8 +294,9 @@ class Booking(object):
     def query_ID(self):
         conn = get_conn()
         cur = conn.cursor()
-        sql = "select ID from `order` where `Name`='%s' and `StartTime`='%s'" \
-            % (self.Name, self.StartTime)
+        sql = "select ID from `order` where `Name`='%s' and `StartTime`='%s' \
+            and `ProduceTime`='%s'" % (self.Name, self.StartTime,
+                                       self.ProduceTime)
         try:
             cur.execute(sql)
             temp = cur.fetchall()
