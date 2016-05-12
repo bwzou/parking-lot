@@ -88,8 +88,12 @@ def reserver():
 
         temp = request.form["picker"] + "/" + beginTime
         beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
+
+        print endTime
+        if endTime == "24:00":
+            endTime = "23:59"  # 这也是有问题的，会导致后面的不是整数
         temp = request.form["picker"] + "/" + endTime
-        endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
+        endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')   # 如果是24：00 会出现问题
 
         """ we should ascertain whether there is a lot available """
         orders, begin, sustain = Util.all_lot(beginTime, endTime)
@@ -242,10 +246,6 @@ def getlotname():
             if order_number != "":
                 result = Util.Booking.query_book(order_number)
                 if result:
-# <<<<<<< HEAD
-                    # Util.ParkingLot.set_lot_status(result.PID)
-                    # # ans = Util.ParkingLot.set_lot_status(result.PID)
-# =======
                     ans = Util.ParkingLot.set_lot_status(result.PID)
                 else:
                     flash(u'The order number is not existing,please try again ', 'error')  # 消息错误提示)
@@ -254,11 +254,6 @@ def getlotname():
                 result = Util.Booking.query_book_by_plate(plate_number)
                 # plate_number不是唯一，这里要修正
                 if result:
-# <<<<<<< HEAD
-                    # Util.ParkingLot.set_lot_status(result.PID)
-                    # # ans = Util.ParkingLot.set_lot_status(result.PID)
-        #
-# =======
                     ans = Util.ParkingLot.set_lot_status(result.PID)
                 else:
                     flash(u'The plate number is not existing,please try again ', 'error')  # 消息错误提示)
