@@ -228,7 +228,6 @@ class Booking(object):
                         % (self.overpay, "1", self.leaveTime, self.ID))
             conn.commit()
             result = "success"
-            self.leaveTime = datetime.dateime.strptime(time, '%Y-%m-%d %H:%M:%S')
         except:
             conn.rollback()
             result = "failture"
