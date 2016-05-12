@@ -1,6 +1,7 @@
 # --coding:utf8--
 import datetime
 import time
+import Temp
 
 import MySQLdb
 
@@ -78,12 +79,13 @@ def change_bookto(result):
 
 
 def divide_data(data):
-    timenow = get_timenow()
-    time = datetime.datetime.strptime(timenow, "%Y-%m-%d %H:%M:%S")
+    # timenow = get_timenow()
+    # time = datetime.datetime.strptime(timenow, "%Y-%m-%d %H:%M:%S")
     futuredata = []
     historydate = []
     for result in data:
-        if result.EndTime < time:
+        # if result.EndTime < time:
+        if result.comeTime is not None:
             historydate.append(result)
         else:
             futuredata.append(result)
@@ -170,26 +172,60 @@ class Booking(object):
 
     def insert_parktime(self):
         time = get_timenow()
-        conn = get_conn()
-        cur = conn.cursor()
-        try:
-            cur.execute("update `order` set `comeTime`='%s' where \
-                        `ID`='%s'" % (time, self.ID))
-            conn.commit()
-            result = "success"
-        except:
-            conn.rollback()
-            result = "failture"
-        conn.close()
-        return result
+        timetime = datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+        if self.comeTime is not None:
+            return 3
+        elif (self.StartTime - timetime).seconds > Temp.bfsec and \
+                timetime < self.StartTime:
+            return 0
+        elif (timetime - self.StartTime).seconds > Temp.afsec and \
+                timetime > self.StartTime:
+            return 1
+        else:
+            conn = get_conn()
+            cur = conn.cursor()
+            try:
+                cur.execute("update `order` set `comeTime`='%s' where \
+                            `ID`='%s'" % (time, self.ID))
+                conn.commit()
+                result = "success"
+            except:
+                conn.rollback()
+                result = "failture"
+            conn.close()
+            return result
 
     def insert_leavetime(self):
         time = get_timenow()
+        timetime = datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+
+        if self.comeTime is None:
+            return 0
+        elif self.leaveTime is not None:
+            return 1
+        else:
+            self.leaveTime = timetime
+            return 2
+            conn = get_conn()
+            cur = conn.cursor()
+            try:
+                cur.execute("update `order` set `leaveTime`='%s' where \
+                            `ID`='%s'" % (time, self.ID))
+                conn.commit()
+                result = "success"
+            except:
+                conn.rollback()
+                result = "failture"
+            conn.close()
+            return result
+
+    def pay_charge(self):
         conn = get_conn()
         cur = conn.cursor()
         try:
-            cur.execute("update `order` set `leaveTime`='%s' where \
-                        `ID`='%s'" % (time, self.ID))
+            cur.execute("update `order` set `overpay`='%s', \
+                        `overpay_state`='%s', `leaveTime`='%s' where `ID`='%s'"
+                        % (self.overpay, "1", self.leaveTime, self.ID))
             conn.commit()
             result = "success"
         except:
@@ -310,15 +346,13 @@ class Booking(object):
         return ID
 
     def query_money(self):
-        print "query_money"
-        print self.comeTime
-        print self.leaveTime
-        real_money = cal_money(self.comeTime, self.leaveTime, 2)
-        print real_money
-        print self.Price
-        if int(real_money) < int(self.Price):
+        if self.leaveTime > self.EndTime and \
+                (self.leaveTime - self.EndTime).seconds < 15*60:
+            self.overpay = 0
+        elif self.leaveTime < self.EndTime:
             self.overpay = 0
         else:
+            real_money = cal_money(self.comeTime, self.leaveTime, 2)
             self.overpay = int(real_money) - int(self.Price)
 
     @staticmethod
@@ -343,7 +377,11 @@ class Booking(object):
                                ProduceTime=row[4],
                                PID=row[5],
                                StartTime=row[6],
-                               EndTime=row[7])
+                               EndTime=row[7],
+                               comeTime=row[9],
+                               leaveTime=row[10],
+                               overpay=row[11],
+                               overpay_state=row[12])
                 temp.append(book)
             conn.commit()
             conn.close()

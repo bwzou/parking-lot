@@ -150,7 +150,16 @@ def pay2():
 @app.route('/paychange')
 def paychange():
     Temp.TempData.alter_book()
-    return redirect('reserver')
+    return redirect('customer_index')
+
+
+@app.route('/paycharge')
+def paycharge():
+    result = Temp.TempCharge.pay_charge()
+    if result == "success":
+        return render_template('pad1.html')
+    else:
+        return "fail"
 
 
 @app.route('/changereserve/<ID>', methods=["POST", "GET"])
@@ -248,11 +257,7 @@ def getlotname():
             if order_number != "":
                 result = Util.Booking.query_book(order_number)
                 if result:
-# <<<<<<< HEAD
-                    # Util.ParkingLot.set_lot_status(result.PID)
-                    # # ans = Util.ParkingLot.set_lot_status(result.PID)
-# =======
-                    ans = Util.ParkingLot.set_lot_status(result.PID)
+                    Util.ParkingLot.set_lot_status(result.PID)
                 else:
                     flash(u'The order number is not existing,please try again ', 'error')  # 消息错误提示)
                     return render_template('pad1.html')
@@ -263,13 +268,24 @@ def getlotname():
 # <<<<<<< HEAD
                     # Util.ParkingLot.set_lot_status(result.PID)
                     # # ans = Util.ParkingLot.set_lot_status(result.PID)
-        # result.insert_parktime()
 # =======
-                    ans = Util.ParkingLot.set_lot_status(result.PID)
+                    Util.ParkingLot.set_lot_status(result.PID)
                 else:
                     flash(u'The plate number is not existing,please try again ', 'error')  # 消息错误提示)
                     return render_template('pad1.html')
-        return render_template('pad2.html', result=result)
+        number = result.insert_parktime()
+
+        if number == 0:
+            return "15 minues ago"
+            return render_template('pad1.html')
+        elif number == 1:
+            return "30 minutes behind"
+            return render_template('pad1.html')
+        elif number == 3:
+            return "car is already there"
+        else:
+            return render_template('pad2.html', result=result)
+
     return render_template('pad2.html', result=None)
 
 
@@ -292,10 +308,16 @@ def leave():
                 if result:
                     Util.ParkingLot.set_lot_status(result.PID)
                     # ans = Util.ParkingLot.set_lot_status(result.PID)
-            result.insert_leavetime()
-            result.query_money()
-            TotalMoney = int(result.Price) + int(result.overpay)
-            return render_template('leave.html', result=result, Total=TotalMoney)
+            min = result.insert_leavetime()
+            if min == 0:
+                return "car is not here"
+            elif min == 1:
+                return "car has left"
+            else:
+                result.query_money()
+                TotalMoney = int(result.Price) + int(result.overpay)
+                Temp.TempCharge = result
+                return render_template('leave.html', result=result, Total=TotalMoney)
     else:
         return render_template('leave.html')
 
@@ -308,6 +330,11 @@ def finish():
 @app.route('/finish2')
 def finish2():
     return render_template('finish2.html')
+
+
+@app.route('/finish3')
+def finish3():
+    return render_template('finish3.html')
 
 
 @app.route('/change2')

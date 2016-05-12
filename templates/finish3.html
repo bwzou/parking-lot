@@ -38,13 +38,11 @@
 
             <div class="inner cover">
 
-				<p class="lead">Real Time: {{ result.comeTime }} -- {{ result.leaveTime }}</p>
-				<p class="lead">Order Time:{{ result.StartTime }} -- {{ result.EndTime }}</p>
-				<h1 class="cover-heading">You need to pay {{ Total }}.</h1>
-				<p class="lead">You have paid {{ result.Price }}.</p>
-				<h1 class="cover-heading">Please pay the difference {{ result.overpay }}.</h1>
                 <p class="lead">
-                    <a href="/finish3" class="btn btn-lg btn-default">Confirm</a>
+				<a href="{{ url_for('paycharge') }}" class="btn btn-lg btn-default">Finish</a>
+                </p>
+                <p class="lead">
+                    <a href="#" class="btn btn-lg btn-default">Unfinish</a>
                 </p>
             </div>
 
