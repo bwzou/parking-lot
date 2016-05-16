@@ -174,6 +174,7 @@ class Booking(object):
         try:
             cur.execute(sql)
             results = cur.fetchall()
+            result = None
             for row in results:
                 print row
                 result = Booking(ID=row[8],
@@ -233,7 +234,8 @@ class Booking(object):
         if len(result) == 0:
             conn.commit()
             conn.close()
-            return None
+            return None, None
+
         else:
             temp = []
             for row in result:
@@ -344,55 +346,25 @@ class ParkingLot(object):
             conn.close()
             return temp
 
-class Pricedata(object):
-    def __init__(self, price, changeTime, type, ID):
-        self.price = price
-        self.changeTime = changeTime
-        self.type = type
-        self.ID = ID
+    @staticmethod
+    def set_price():
+        pass
 
     @staticmethod
-    def get_price(type):        # return price from database
-        sql = "SELECT * FROM `price` WHERE `type`='%s'" % type
+    def get_price(ID):        # return price from database
+        sql = "SELECT `Price` FROM `parkingspace` WHERE `ID`= '%s'" % ID
         conn = get_conn()
         cur = conn.cursor()
         cur.execute(sql)
         result = cur.fetchall()
-        if len(result) == 0:
-            conn.commit()
-            conn.close()
-            return "haha there is nothing"
-        else:
-            price_all = []
-            for r in result:
-                p_rice = Pricedata(price=r[0],changeTime=r[1],type=r[2],ID=r[3])
-                price_all.append(p_rice)
-                conn.commit()
-                conn.close()
-            return price_all
-
-    @staticmethod
-    def set_price(price1,price2,price3):
-        sql1 = "update `price` set `price`= '%s' where `type`='0'"  % price1
-        sql2 = "update `price` set `price`= '%s' where `type`='1'" % price2
-        sql3 ="update `price` set `price`= '%s' where `type`='2'" % price3
-        conn = get_conn()
-        cur = conn.cursor()
-        try:
-            if price1 is not None:
-                cur.execute(sql1)
-            if price2 is not None:
-                cur.execute(sql2)
-            if price3 is not None:
-                cur.execute(sql3)
-            conn.commit()
-            result = "success"
-        except:
-            conn.rollback()
-            result = "fail"
+        conn.commit()
         conn.close()
-        return result
-
+        if len(result) == 0:
+            return None
+        else:
+            for row in result:
+                Lot = row[0]
+            return Lot
 
     @staticmethod
     def set_lot_status(ID):
@@ -409,6 +381,16 @@ class Pricedata(object):
             conn.commit()
             conn.close()
             return "fail"
+
+
+class Price(object):
+    def __init__(self, price, changeTime, ID):
+        self.price = price
+        self.changeTime = changeTime
+        self.ID = ID
+
+
+
 
 
 # ------------------------转换成可以匹配的数据-----------------------------------------
