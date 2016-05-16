@@ -4,7 +4,7 @@ import json
 import sys
 
 from flask import Flask, request, render_template, session,\
-    redirect, flash
+    redirect, flash,url_for
 
 import Util
 from globle import gl, Temp
@@ -68,7 +68,8 @@ def customer_index():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    redirect('/')
+    return render_template('index.html')
+
 
 
 # ------------------------用户预定和修改订单--------------------------------------------
@@ -160,6 +161,7 @@ def paycharge():
         return render_template('pad1.html')
     else:
         return "fail"
+
 
 
 @app.route('/changereserve/<ID>', methods=["POST", "GET"])
@@ -366,9 +368,36 @@ def business_promotion():               # 发布信息表
     return render_template('business-promotion.html')
 
 
-@app.route('/business_price')
+@app.route('/business_price',methods=['GET', 'POST'])
 def business_price():
+    price_reservation = Util.Pricedata.get_price('0')  # 三种价格：正常价罚款折扣
+    price_overstay = Util.Pricedata.get_price('1')
+    price_discount = Util.Pricedata.get_price('2')
+    return render_template('business_price.html', price_reservation=price_reservation, price_overstay=price_overstay,
+                           price_discount=price_discount)
     return render_template('business_price.html')
+
+
+@app.route('/confirm_publish', methods=['GET', 'POST'])
+def confirm_publish():
+    if request.method == "POST":
+        reservprice = request.form['reservPrice']
+        overstayfine = request.form['overstayFine']
+        discounts = request.form['discounts']
+        result = Util.Pricedata.set_price(reservprice, overstayfine, discounts)
+        if result == "success":
+            print result
+            return redirect(url_for('business_price'))
+        else:
+            flash(u'failed to summit the price,please try again', 'error')
+            print "nifnianfia"
+            return render_template('business_price.html')
+    return render_template('business_price.html')
+
+
+@app.route('/business_promotion')
+def business_promotion():
+    return render_template('business_promotion.html')
 
 
 @app.route('/show_reservation1/<date>')
@@ -381,7 +410,7 @@ def show_reservation1(date):
 
 
 # ---------------------------系统错误处理----------------------------------------
-@app.errorhandler(404)                # 扑捉错误并作出响应
+@app.errorhandler(404)  # 扑捉错误并作出响应
 def page_not_found(error):
     # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
     return render_template('page_not_found.html'), 404

@@ -3,6 +3,7 @@ import datetime
 import time
 import Temp
 
+
 import MySQLdb
 
 from globle import gl
@@ -57,8 +58,6 @@ def user_register(name, email, phonenumber, password):
         return "exist"
 
 # ---------------------------------订单相关------------------------------------------
-
-
 def get_timenow():
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
@@ -365,7 +364,6 @@ class Booking(object):
             conn.commit()
             conn.close()
             return None, None
-
         else:
             temp = []
             for row in result:
@@ -530,8 +528,6 @@ class Price(object):
 
 # ------------------------转换成可以匹配的数据-----------------------------------------
 # match ParkingLot
-
-
 def match_Lot():
     Lots = ParkingLot.all_Lot()
     gl.Lots_len = len(Lots)
