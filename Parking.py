@@ -90,7 +90,6 @@ def reserver():
         temp = request.form["picker"] + "/" + beginTime
         beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
-        print endTime
         if endTime == "24:00":
             endTime = "23:59"  # 这也是有问题的，会导致后面的不是整数
         temp = request.form["picker"] + "/" + endTime
@@ -178,6 +177,9 @@ def change(Id):
         Time = request.form['slider_value']
         beginTime, endTime = Time[6:11], Time[16:21]
         timeintervel = beginTime + "   to   " + endTime
+
+        if endTime == "24:00":
+            endTime = "23:59"  # 这也是有问题的，会导致后面的不是整数
 
         temp = request.form["picker"] + "/" + beginTime
         beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
@@ -393,11 +395,6 @@ def confirm_publish():
             print "nifnianfia"
             return render_template('business_price.html')
     return render_template('business_price.html')
-
-
-@app.route('/business_promotion')
-def business_promotion():
-    return render_template('business_promotion.html')
 
 
 @app.route('/show_reservation1/<date>')

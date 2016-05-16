@@ -526,6 +526,72 @@ class Price(object):
         self.ID = ID
 
 
+class Pricedata(object):
+    def __init__(self, price, changeTime, type, ID):
+        self.price = price
+        self.changeTime = changeTime
+        self.type = type
+        self.ID = ID
+
+    @staticmethod
+    def get_price(type):        # return price from database
+        sql = "SELECT * FROM `price` WHERE `type`='%s'" % type
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return "haha there is nothing"
+        else:
+            price_all = []
+            for r in result:
+                p_rice = Pricedata(price=r[0],changeTime=r[1],type=r[2],ID=r[3])
+                price_all.append(p_rice)
+                conn.commit()
+                conn.close()
+            return price_all
+
+    @staticmethod
+    def set_price(price1,price2,price3):
+        sql1 = "update `price` set `price`= '%s' where `type`='0'"  % price1
+        sql2 = "update `price` set `price`= '%s' where `type`='1'" % price2
+        sql3 ="update `price` set `price`= '%s' where `type`='2'" % price3
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            if price1 is not None:
+                cur.execute(sql1)
+            if price2 is not None:
+                cur.execute(sql2)
+            if price3 is not None:
+                cur.execute(sql3)
+            conn.commit()
+            result = "success"
+        except:
+            conn.rollback()
+            result = "fail"
+        conn.close()
+        return result
+
+
+    @staticmethod
+    def set_lot_status(ID):
+        sql = "Update `parkingspace` SET `NowStatus`='occupied' WHERE `ID`='%s'" % ID
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+            return "success"
+        except:
+            conn.rollback()
+            conn.commit()
+            conn.close()
+            return "fail"
+
 # ------------------------转换成可以匹配的数据-----------------------------------------
 # match ParkingLot
 def match_Lot():
