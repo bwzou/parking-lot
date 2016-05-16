@@ -86,7 +86,6 @@
                 <input type="text" id="inputLicenseNumber" name="inputLicenseNumber" class="form-control" placeholder="License number" >
             </div>
         </div>
-
         <div class="hint">
                 {% with messages = get_flashed_messages(with_categories=true) %} {# 添加消息闪现 #}
                         {% if messages %}
@@ -120,11 +119,11 @@
             <div class="input-content">
                 <label for="inputNumber2" class="sr-only"> Order number</label>
                 <input type="text" id="inputNumber2" name="inputNumber2" class="form-control" placeholder="Number" autofocus>
-            </div>
+        </div>
             <div class="hint">
                 <span class="glyphicon glyphicon-menu-right"></span>
                 <span style="cursor:pointer">or license plate number</span>
-            </div>
+    </div>
             <div class="input-content">
                 <label for="inputLicenseNumber2" class="sr-only">License plate number</label>
                 <input type="text" id="inputLicenseNumber2" name="inputLicenseNumber2" class="form-control" placeholder="License number" >

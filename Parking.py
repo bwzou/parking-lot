@@ -3,14 +3,14 @@ import datetime
 import sys
 import json
 
-from flask import Flask, request, render_template, session, \
+from flask import Flask, request, render_template, session,\
     redirect, flash, jsonify,url_for
 
 import Util
 from globle import gl
 
 sys.path.append("E:\\Pycharm\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
-from ParkingAlgorithm import insert  # pycharm报错，但不影响
+from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
@@ -48,12 +48,12 @@ def login():
     password = request.form.get('inputPassword')
     result = Util.user_login(phone, password)
     if result == "success":
-        session['username'] = phone  # 添加到session
+        session['username'] = phone                     # 添加到session
         data, history = Util.Booking.diplay_book(session["username"])
         # data, history = Util.divide_data(data)
         return render_template('home01.html', data=data, history=history)
     else:
-        flash(u'Invalid password or username provided', 'error')  # 消息错误提示
+        flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
 
 
@@ -102,7 +102,7 @@ def reserver():
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
             dict_len = len(mov_dict)
-            if dict_len == 0:  # 如果没有可以用返回[]
+            if dict_len == 0:             # 如果没有可以用返回[]
                 flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
                 return render_template('reserve.html')
             for i in range(dict_len):
@@ -160,7 +160,7 @@ def change(Id):
                                 StartTime=beginTime,
                                 EndTime=endTime,
                                 PlateNumber=request.form["plate"],
-                                Price=sustain)  # 根据sustain来计费
+                                Price=sustain)              # 根据sustain来计费
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
             print mov_dict
@@ -218,8 +218,8 @@ def getlotname():
                 result = Util.Booking.query_book(order_number)
                 if result:
                     ans = Util.ParkingLot.set_lot_status(result.PID)
-            else:
-                result = Util.Booking.query_book_by_plate(plate_number)  # plate_number不是唯一，这里要修正
+                else:
+                    result = Util.Booking.query_book_by_plate(plate_number)      # plate_number不是唯一，这里要修正
                 if result:
                     ans = Util.ParkingLot.set_lot_status(result.PID)
         return render_template('pad2.html', result=result)
@@ -227,6 +227,11 @@ def getlotname():
 
 
 # ---------------------------经理相关--------------------------------------------
+
+@app.route('/manager_page')
+def manager_page():
+    return render_template("manager_login.html");
+
 @app.route('/manage_index')
 def manage_index():
     lots_status = Util.all_lot_status()
@@ -278,7 +283,7 @@ def show_reservation1(date):
 
 
 # ---------------------------系统错误处理----------------------------------------
-@app.errorhandler(404)  # 扑捉错误并作出响应
+@app.errorhandler(404)                # 扑捉错误并作出响应
 def page_not_found(error):
     # 告诉 Flask，该页的错误代码是 404 ，即没有找到。默认为 200
     return render_template('page_not_found.html'), 404
