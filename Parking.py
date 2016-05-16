@@ -4,12 +4,12 @@ import sys
 import json
 
 from flask import Flask, request, render_template, session,\
-    redirect, flash, jsonify
+    redirect, flash, jsonify,url_for
 
 import Util
 from globle import gl
 
-sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")   # 请把该路径改成你项目lib.win32-2.7的路径
+sys.path.append("E:\\Pycharm\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
 from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 
 app = Flask(__name__)
@@ -67,7 +67,7 @@ def customer_index():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    redirect('/')
+    return render_template('index.html')
 
 
 # ------------------------用户预定和修改订单--------------------------------------------
@@ -204,29 +204,24 @@ def lot():
 
 @app.route('/getlotname', methods=["POST", "GET"])
 def getlotname():
+    print "nihao"
     if request.method == "POST":
+        print "nibuhao"
         order_number = request.form['inputNumber']
         plate_number = request.form['inputLicenseNumber']
         print order_number
         print plate_number
         if order_number == "" and plate_number == "":
-            flash(u'you must input either of blanks', 'error')  # 消息错误提示)
-            return render_template('pad1.html')
+            redirect('/lot')
         else:
             if order_number != "":
                 result = Util.Booking.query_book(order_number)
                 if result:
                     ans = Util.ParkingLot.set_lot_status(result.PID)
                 else:
-                    flash(u'The order number is not existing,please try again ', 'error')  # 消息错误提示)
-                    return render_template('pad1.html')
-            else:
-                result = Util.Booking.query_book_by_plate(plate_number)      # plate_number不是唯一，这里要修正
+                    result = Util.Booking.query_book_by_plate(plate_number)      # plate_number不是唯一，这里要修正
                 if result:
                     ans = Util.ParkingLot.set_lot_status(result.PID)
-                else:
-                    flash(u'The plate number is not existing,please try again ', 'error')  # 消息错误提示)
-                    return render_template('pad1.html')
         return render_template('pad2.html', result=result)
     return render_template('pad2.html', result=None)
 
@@ -246,23 +241,37 @@ def manage_index():
 
 @app.route('/show_reservation')
 def show_reservation():
-    today = datetime.date.today()
-    nowday = datetime.datetime.strptime(str(today), '%Y-%m-%d')
-    print nowday
-    order_date = Util.oneday_lot(nowday)
-    print json.dumps(order_date)
-    return render_template('show-reservation.html', reservation=json.dumps(order_date), date=today)
+    return render_template('show-reservation.html')
 
+
+@app.route('/business_price', methods=['GET', 'POST'])
+def business_price():  # 显示
+    price_reservation = Util.Pricedata.get_price('0')  # 三种价格：正常价罚款折扣
+    price_overstay = Util.Pricedata.get_price('1')
+    price_discount = Util.Pricedata.get_price('2')
+    return render_template('business_price.html', price_reservation=price_reservation, price_overstay=price_overstay,
+                           price_discount=price_discount)
+
+
+@app.route('/confirm_publish', methods=['GET', 'POST'])
+def confirm_publish():
+    if request.method == "POST":
+        reservprice = request.form['reservPrice']
+        overstayfine = request.form['overstayFine']
+        discounts = request.form['discounts']
+        result = Util.Pricedata.set_price(reservprice, overstayfine, discounts)
+        if result == "success":
+            print result
+            return redirect(url_for('business_price'))
+        else:
+            flash(u'failed to summit the price,please try again', 'error')
+            print "nifnianfia"
+            return render_template('business_price.html')
+    return render_template('business_price.html')
 
 @app.route('/business_promotion')
-def business_promotion():               # 发布信息表
-
-    return render_template('business-promotion.html')
-
-
-@app.route('/business_price')
-def business_price():
-    return render_template('business_price.html')
+def business_promotion():
+    return render_template('business_promotion.html')
 
 
 @app.route('/show_reservation1/<date>')
