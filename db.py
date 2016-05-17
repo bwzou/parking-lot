@@ -525,6 +525,50 @@ class Price(object):
         return result
 
 
+class Promotion(object):
+    def __init__(self, ID, title, context, time):
+        self.ID = ID
+        self.title = title
+        self.context = context
+        self.time = time
+
+    @staticmethod
+    def get_promotion():
+        sql = "SELECT * FROM `promotion` ORDER BY `time`DESC"          # 根据时间最新来显示
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return "haha there is nothing"
+        else:
+            p_rice = None
+            for r in result:
+                p_rice = Promotion(ID=r[0], title=r[1], context=r[2], time=r[3])
+                conn.commit()
+                conn.close()
+                return p_rice
+            return p_rice      # 只需要获取一条
+
+    @staticmethod
+    def set_promotion(title, context):
+        sql = "INSERT INTO`promotion`(`title`,`content`,`time`) VALUES ('%s', '%s', '%s')"  \
+              % (title, context, get_timenow())
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+            return "success"
+        except:
+            conn.rollback()
+            conn.close()
+            return "fail"
+
+
 class Manager(object):
     def __init__(self, manager_name, password, authority, time):
         self.manager_name = manager_name

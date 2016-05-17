@@ -93,7 +93,7 @@ def manager_login(name, password):
         return "success"
 
 
-# ---------------------价格相关-----------------------------------------------------
+# ---------------------价格与信息-----------------------------------------------------
 def get_price(type):
     result = Price.get_price(type)
     return result
@@ -108,6 +108,16 @@ def cal_money(startTime, endTime, number):
     m = (endTime - startTime).seconds/(60 * 15)
     price = Price.get_singleprice(number)
     return m*price
+
+
+def get_promotion():
+    result = Promotion.get_promotion()
+    return result
+
+
+def set_promotion(title, context):
+    result = Promotion.set_promotion(title, context)
+    return result
 
 
 # -------------------订单相关-------------------------------------------------------

@@ -393,14 +393,30 @@ def confirm_publish():
             return redirect(url_for('business_price'))
         else:
             flash(u'failed to summit the price,please try again', 'error')
-            print "nifnianfia"
             return render_template('business_price.html')
     return render_template('business_price.html')
 
 
 @app.route('/business_promotion')
 def business_promotion():
-    return render_template('business-promotion.html')
+    data = Manage.get_promotion()
+    return render_template('business-promotion.html', data=data)
+
+
+@app.route('/add_promotion', methods=["POST", "GET"])
+def add_promotion():
+    if request.method == "POST":
+        title = request.form['addtitle']
+        context = request.form['addcontext']
+        print context
+        result = Manage.set_promotion(title, context)
+        print result
+        if result == "success":
+            return redirect(url_for('business_promotion'))
+        else:
+            flash(u'failed to summit the promotion,please try again', 'error')
+            return redirect('/business_promotion')
+    return redirect('/business_promotion')
 
 
 @app.route('/show_reservation1/<date>')
