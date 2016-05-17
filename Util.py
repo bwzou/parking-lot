@@ -1,12 +1,10 @@
 # --coding:utf8--
 import datetime
 import time
-import Temp
-
 
 import MySQLdb
 
-from globle import gl
+from globle import gl, Temp
 
 
 def get_conn():
