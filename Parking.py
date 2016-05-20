@@ -165,8 +165,6 @@ def paycharge():
 @app.route('/changereserve/<ID>', methods=["POST", "GET"])
 def changereserve(ID):
     result = Util.Booking.query_book(ID)
-    print result.StartTime
-    print result.EndTime
     if result is not None:
         result = Util.change_bookto(result)
     return render_template('reserve.html', result=result)
