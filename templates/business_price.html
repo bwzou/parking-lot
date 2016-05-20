@@ -16,7 +16,6 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui.min.js') }}"></script>
     <script src="{{ url_for('static',filename='d3/d3.min.js') }}" type="text/javascript"></script>
 </head>
-
 <body>
 <nav class="navbar navbar-default" style="margin-bottom: 0;">
     <div class="container">
@@ -62,50 +61,71 @@
                 </li>
             </ul>
         </div>
-        <div class="col-sm-9 col-md-10" style="background-color: white;padding-bottom:250px;">
-                <!--显示当前预定状态-->
-            <div class="manager_settings" style="margin-top: 80px; margin-left: auto">
-                <form role="tabpanel" class="tab-pane fade in active" id="settingsTbl">
-                    <table class="table table-bordered table-striped table-hover" >
+        <div class="col-sm-9 col-md-10" style="background-color: white">
+            <!--显示当前公告-->
+        <div class="manager_settings" style="margin-top: 80px">
+           <form action="{{ url_for('confirm_publish')}}" class="tab-pane fade in active" id="settingsTbl"
+                      method="post">
+                    <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
                             <th>Items</th>
-                            <th>Settings</th>
-                            <th>Edit</th>
+                            <th>Old Settings</th>
+                            <th>New Settings</th>
+
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Reserving Price</td>
-                            <td>$10 per hour</td>
-                            <td><div align="center"><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary">Revert</a>
-                        </div></tr>
-                        <tr>
 
-                            <td>OverStay Fine</td>
-                            <td>$13 per hour</td>
-                            <td><div align="center"><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary">Revert</a>
-                            </div></td>
-                        </tr>
-                        <tr>
+                        {% for p_rice in price_reservation %}
+                            <tr>
+                                <td>Reserving Price</td>
+                                <td>{{ p_rice.price }}$</td>
+                                <td>
+                                    <input type="text" name="reservPrice">
+                                </td>
 
-                            <td>Discount</td>
-                            <td>20% off (Senior Member only)</td>
-                            <td>
-                                <div align="center"><a href="#" class="btn btn-primary">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn btn-primary">Revert</a>
-                        </div></tr>
+                                <!--<td><a href="#" class="btn btn-primary" onclick="setReservingPrice()">Edit</a></td> -->
+                            </tr>
+                        {% endfor %}
+
+                        {% for p_rice in price_overstay %}
+                            <tr>
+                                <td>OverStay Fine</td>
+                                <td>{{ p_rice.price }}$</td>
+                                <td>
+
+                                    <input type="text" name="overstayFine">
+
+                                </td>
+
+
+                                <!-- <td><a href="#" class="btn btn-primary" onclick="setOverstayFine()">Edit</a>
+                                </td>-->
+                            </tr>
+                        {% endfor %}
+
+                        {% for p_rice in price_discount %}
+                            <tr>
+                                <td>Discount</td>
+                                <td>{{ p_rice.price }}$</td>
+                                <td>
+                                    <input type="text" name="discounts">
+                                </td>
+
+
+                                <!-- <td><a href="#" class="btn btn-primary" onclick="setDiscounts()">Edit</a>-->
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
-                    <p align="center">
-                        <a href="#" class="btn btn-primary">Confirm and Publish</a>
+                    <p class="lead" align="center">
+                        <button type="submit" class="btn btn-primary">Confirm and Publish</button>
                     </p>
                 </form>
-            </div>
-
+        </div>
         </div>
     </div>
 </div>
-
-
 </body>
 </html>

@@ -1,4 +1,4 @@
-TempData = None
+TempData = None         # store Reservation
 TempData2 = None
 TempCharge = None
 bfsec = 15*60

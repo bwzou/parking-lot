@@ -63,9 +63,19 @@
         </div>
         <div class="col-sm-9 col-md-10" style="background-color: white">
             <!--显示当前公告-->
-            <form>
+            <form action="/add_promotion" method="post">
             <div class="manager_settings" style="margin-top: 80px">
-                <div class="promotion_1">
+                {% if data %}
+                    <div class="promotion_1">
+                    <h1 >{{ data.title }}</h1>
+                    <p class="lead">{{ data.context }}</p>
+                    <p class="lead" style="margin-right:-20px">
+                        <a href="#" class="btn btn-primary">Edit</a>
+                        <a href="#" class="btn btn-primary">Delete</a>
+                    </p>
+                </div>
+                {% else %}
+                    <div class="promotion_1">
                     <h1 >GET 20% OFF ! :)</h1>
                     <p class="lead">Get registered before May the 15th and prestore $99, then get 20% off as senior members!</p>
                     <p class="lead" style="margin-right:-20px">
@@ -73,10 +83,11 @@
                         <a href="#" class="btn btn-primary">Delete</a>
                     </p>
                 </div>
+                {% endif %}
                 <div class="promotion_2">
-                    <input class="proHead" type="text" value="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
-                    <textarea class="proContent" style="width: 100%;height: 200px">Add new promotions here</textarea>
-                    <a href="#" class="btn btn-primary" style="margin-top: 20px">Add</a>
+                    <input class="proHead" type="text" name="addtitle" value="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
+                    <textarea class="proContent" style="width: 100%;height: 200px" name="addcontext">Add new promotions here</textarea>
+                    <button class="btn btn-primary" type="submit" style="margin-top: 20px">Add</button>
                 </div>
             </div>
             </form>
