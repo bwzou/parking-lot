@@ -91,7 +91,9 @@ function deleteReservation(bookid){
                                 <td>{{ book.EndTime }}</td>
 								<td><div align="center">
                                     <a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a>
+									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+                                    <a title="You have payed" href="#" class="btn btn-success" disabled="disabled" ><i class="fa fa-usd" aria-hidden="true"></i></a>
+                                    <a title="Please pay" href="#" class="btn btn-warning" ><i class="fa fa-usd" aria-hidden="true"></i></a>
                                 </div></td>
                             </tr>
                         {% endfor %}
@@ -140,7 +142,7 @@ function deleteReservation(bookid){
 </div>
 {#<div class="mastfoot">          {# 这里有问题，日后再改 #}
 {#    <div class="inner">#}
-{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a#}
+{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by #}
 {#                href="https://twitter.com/mdo">@mdo</a>.#}
 {#        </p>#}
 {#    </div>#}
