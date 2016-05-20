@@ -8,25 +8,41 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
     <title>PAD</title>
     <link href="{{ url_for('static', filename='css/pad1.css') }}" rel="stylesheet">
-
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
     <script>
         $(document).ready(function(){
-            $(".input-content").addClass("closed");
-            $(".glyphicon-menu-right").first().addClass("glyphicon-menu-down").removeClass("glyphicon-menu-right");
-            $(".input-content").first().removeClass("closed");
-            $(".closed").slideUp()
-            $(".hint").on("click",function(event,ui){
-                $(".input-content").addClass("closed");
-                $(".glyphicon-menu-down").addClass("glyphicon-menu-right").removeClass("glyphicon-menu-down");
+            $("#accordion1 .input-content").addClass("closed");
+            $("#accordion1 .glyphicon-menu-right").first().addClass("glyphicon-menu-down").removeClass("glyphicon-menu-right");
+            $("#accordion1 .input-content").first().removeClass("closed");
+            $("#accordion1 .closed").slideUp()
+            $("#accordion1 .hint").on("click",function(event,ui){
+                $("#accordion1 .input-content").addClass("closed");
+                $("#accordion1 .glyphicon-menu-down").addClass("glyphicon-menu-right").removeClass("glyphicon-menu-down");
                 $(this).next().removeClass("closed");
-                $(".closed").slideUp();
+                $("#accordion1 .closed").slideUp();
+                $(this).children().first().addClass("glyphicon-menu-down").removeClass("glyphicon-menu-right");
+                $(this).next().slideDown();
+            });
+
+
+
+            $("#accordion2 .input-content").addClass("closed");
+            $("#accordion2 .glyphicon-menu-right").first().addClass("glyphicon-menu-down").removeClass("glyphicon-menu-right");
+            $("#accordion2 .input-content").first().removeClass("closed");
+            $("#accordion2 .closed").slideUp()
+            $("#accordion2 .hint").on("click",function(event,ui){
+                $("#accordion2 .input-content").addClass("closed");
+                $("#accordion2 .glyphicon-menu-down").addClass("glyphicon-menu-right").removeClass("glyphicon-menu-down");
+                $(this).next().removeClass("closed");
+                $("#accordion2 .closed").slideUp();
                 $(this).children().first().addClass("glyphicon-menu-down").removeClass("glyphicon-menu-right");
                 $(this).next().slideDown();
             });
@@ -66,9 +82,17 @@
 </nav>
 
 <div class="container" >
-    <div id="hea">
+
+    <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#hea" aria-controls="hea" role="tab"
+                                                          data-toggle="tab" id="tri-hea">Parking</a></li>
+                <li role="presentation"><a href="#hee" aria-controls="hee" role="tab" data-toggle="tab"
+                                           id="tri-hee">Leaving</a></li>
+    </ul>
+    <div class="tab-content">
+    <div id="hea" role="tabpanel" class="tab-pane fade in active">
     <form class="form-signin" action="/getlotname" method="post">
-        <div id="accordion" >
+        <div id="accordion1">
             <div class="hint">
                 <span class="glyphicon glyphicon-menu-right"></span>
                 <span style="cursor:pointer">Please input order number</span>
@@ -109,9 +133,10 @@
         </script>
     </form>
     </div>
-    <div id="hee">
+
+    <div id="hee" role="tabpanel" class="tab-pane fade">
     <form class="form-signin" action="/leave" method="post">
-        <div id="accordion" >
+        <div id="accordion2" >
             <div class="hint">
                 <span class="glyphicon glyphicon-menu-right"></span>
                 <span style="cursor:pointer">Please input order number</span>
@@ -123,15 +148,27 @@
             <div class="hint">
                 <span class="glyphicon glyphicon-menu-right"></span>
                 <span style="cursor:pointer">or license plate number</span>
-    </div>
+            </div>
             <div class="input-content">
                 <label for="inputLicenseNumber2" class="sr-only">License plate number</label>
                 <input type="text" id="inputLicenseNumber2" name="inputLicenseNumber2" class="form-control" placeholder="License number" >
             </div>
         </div>
 
-		<button class="btn btn-default btn-lg btn-block" type="submit" style="margin-top: 50px">Leaving</button>
+		<button id="btn_submit2" class="btn btn-default btn-lg btn-block" type="submit" style="margin-top: 50px">Leaving</button>
+         <script>
+            $("#btn_submit").click(function(){
+                var inputNumber = $("#inputNumber").val();
+                var inputLicenseNumber=$("#inputLicenseNumber").val();
+                console.log(inputNumber,inputLicenseNumber);
+                if(inputNumber=="" && inputLicenseNumber==""){
+                    alert("请输入至少一个号码");
+                    return false;
+                    }
+            });
+        </script>
     </form>
+    </div>
     </div>
 
     <!--<div id="bot">-->
