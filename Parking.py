@@ -5,19 +5,22 @@ import json
 import Manage
 import Util           # 控制层
 
-
+from RedisQueue import RedisQueue
+from pickle import dumps,loads          # 字符串跟字典间的转换
+# json.dumps : dict转成str
+# json.loads : str转成dict
 
 from flask import Flask, request, render_template, session,\
     redirect, flash, url_for, make_response
 from globle import gl, Temp
-
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
 from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
 
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
-
+app.config['REDIS_QUEUE_KEY'] = 'my_queue'
+queue = RedisQueue(app.config['REDIS_QUEUE_KEY'])        # 根据Redis生成queue
 
 # ------------------------用户登录注册--------------------------------------------
 @app.route('/')
@@ -48,6 +51,8 @@ def quick():
 
 @app.route('/index')
 def index():
+    if request.cookies.get('username') is not None:
+        return redirect('quick')
     return render_template('index.html')
 
 
