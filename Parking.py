@@ -27,7 +27,7 @@ app.config['REDIS_QUEUE_KEY'] = 'my_queue'
 app.register_blueprint(blue_customer)   # 注册蓝图,可以多次注册
 app.register_blueprint(blue_customer, url_prefix='/customer')
 app.register_blueprint(blue_manager)
-app.register_blueprint(blue_customer, url_prefix='/manager')
+app.register_blueprint(blue_manager, url_prefix='/manager')
 
 queue = RedisQueue(app.config['REDIS_QUEUE_KEY'])        # 根据Redis生成queue
 

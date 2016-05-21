@@ -1,7 +1,7 @@
 # --coding:utf8--
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
-from Parking import queue
+# from Parking import queue  相互导会出现问题
 
 blue_customer = Blueprint('blue_customer', __name__, template_folder='templates')   # 注册蓝图
 
