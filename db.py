@@ -144,18 +144,18 @@ class Booking(object):
         else:
             self.leaveTime = timetime
             return 2
-            conn = get_conn()
-            cur = conn.cursor()
-            try:
-                cur.execute("update `order` set `leaveTime`='%s' where \
-                            `ID`='%s'" % (time, self.ID))
-                conn.commit()
-                result = "success"
-            except:
-                conn.rollback()
-                result = "failture"
-            conn.close()
-            return result
+            # conn = get_conn()
+            # cur = conn.cursor()
+            # try:
+                # cur.execute("update `order` set `leaveTime`='%s' where \
+                            # `ID`='%s'" % (time, self.ID))
+                # conn.commit()
+                # result = "success"
+            # except:
+                # conn.rollback()
+                # result = "failture"
+            # conn.close()
+            # return result
 
     def pay_charge(self):
         conn = get_conn()
@@ -164,6 +164,8 @@ class Booking(object):
             cur.execute("update `order` set `overpay`='%s', \
                         `overpay_state`='%s', `leaveTime`='%s' where `ID`='%s'"
                         % (self.overpay, "1", self.leaveTime, self.ID))
+            conn.commit()
+            cur.execute("delete from `order` where `ID`='%s'" % self.ID)
             conn.commit()
             result = "success"
         except:

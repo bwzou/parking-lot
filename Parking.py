@@ -66,7 +66,16 @@ def customer_index():
         data, history = Manage.Reservation.diplay_book(session["username"])
         history_data = Manage.Reservation.diplay_history_book(
             session["username"])
-        history += history_data
+        if history is None:
+            if history_data == []:
+                pass
+            else:
+                data = []
+                history = history_data
+        elif history == [] and history_data == []:
+            pass
+        else:
+            history += history_data
         return render_template('home01.html', data=data, history=history)
     # 根据data判断如何显示
 

@@ -169,7 +169,7 @@ class Reservation(object):
 
     @staticmethod
     def diplay_history_book(name):
-        history = Booking.diplay_book(name)
+        history = Booking.diplay_history_book(name)
         return history
 
     @staticmethod

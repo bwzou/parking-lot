@@ -1,7 +1,7 @@
-€}q(Ualipay]Ualgorithm.setup]qUMODqaU	algorithm]Utest]qUmainqaUManage]q(U	cal_moneyqUuser_registerqUall_lotq	U
-user_loginq
-U	match_LotqUset_promotionqU	get_priceqUoneday_order_lotqUmanager_loginqUset_lot_statusqUall_lot_statusqUReservationqU	set_priceqUget_promotionqeUdb]q(UCustomerqUPriceqU
-ParkingLotqUManagerqU	PromotionqUBookingqeUUtil]q(Uget_connqUget_timenowqUchange_booktoqUchange_timeq Udivide_dataq!Uchange_timetostrq"eUgloble]Ugloble.Temp]q#(U
-TempChargeq$UTempDataq%Ubfsecq&Uafsecq'hU	TempData2q(eUParking]q)(Uregisterq*Ucustomer_indexq+Uappq,Ubusiness_promotionq-Ureserverq.Umanager_pageq/Uindexq0Uchangereserveq1Ulotq2U	paychangeq3Uhello_worldq4Ufinish3q5U
-payreserveq6Uchange2q7Ufinishq8Ubusiness_priceq9Upay2q:Uinternal_errorq;Uconfirm_publishq<Umanage_indexq=U	paychargeq>Ulogoutq?Upage_not_foundq@Ushow_reservation1qAUcancelreserveqBU
-getlotnameqCUchangeqDUadd_promotionqEhUleaveqFUfinish2qGUloginqHUshow_reservationqIUreserveqJeU	globle.gl]qK(ULots_lenqLUdict1qMUdict2qNeUTest]qOUmainqPaUalgorithm.mytest]u.
+€}q(Ualipay]Ualgorithm.setup]qUMODqaU	algorithm]UManage]q(U	cal_moneyqUuser_registerqUall_lotqU
+user_loginqU	match_Lotq	Uset_promotionq
+U	get_priceqUoneday_order_lotqUmanager_loginqUset_lot_statusqUall_lot_statusqUReservationqU	set_priceqUget_promotionqeUdb]q(UCustomerqUPriceqU
+ParkingLotqUManagerqU	PromotionqUBookingqeUUtil]q(Uget_connqUget_timenowqUchange_booktoqUchange_timeqUdivide_dataqUchange_timetostrq eUgloble]Ugloble.Temp]q!(U
+TempChargeq"UTempDataq#Ubfsecq$Uafsecq%Umainq&U	TempData2q'eU	globle.gl]q((ULots_lenq)Udict1q*Udict2q+eUTest]q,Umainq-aUParking]q.(Uregisterq/Ucustomer_indexq0Uappq1Ubusiness_promotionq2Ureserverq3Umanager_pageq4Uindexq5Uchangereserveq6Ulotq7U	paychangeq8Uhello_worldq9Ufinish3q:U
+payreserveq;Uchange2q<Ufinishq=Ubusiness_priceq>Upay2q?Uinternal_errorq@Uconfirm_publishqAUmanage_indexqBU	paychargeqCUlogoutqDUpage_not_foundqEUshow_reservation1qFUcancelreserveqGU
+getlotnameqHUchangeqIUadd_promotionqJhUleaveqKUfinish2qLUloginqMUshow_reservationqNUreserveqOeUtest]qPh&aUalgorithm.mytest]u.
