@@ -149,7 +149,8 @@ class Reservation(object):
                        PlateNumber=self.PlateNumber,
                        Price=self.Price)
         result = book.book()
-        return result
+        return result, book.ProduceTime
+
 
     def alter_book(self):
         book = Booking(ID=self.ID,
@@ -168,6 +169,12 @@ class Reservation(object):
         return data, history
 
     @staticmethod
+
+    def diplay_history_book(name):
+        history = Booking.diplay_history_book(name)
+        return history
+
+    @staticmethod
     def update_lot(to, id):
         result = Booking.update_Lot(to, id)
         return result
@@ -184,9 +191,16 @@ class Reservation(object):
                        StartTime=self.StartTime,
                        EndTime=self.EndTime,
                        PlateNumber=self.PlateNumber,
+                       ProduceTime=self.ProduceTime,
                        Price=self.Price)
 
-        result = book.alter_book()
+        result = book.query_ID()
+        # result = book.alter_book()
+        return result
+
+    def pay_debt(self):
+        book = Booking(ID=self.ID)
+        result = book.pay_debt()
         return result
 
     @staticmethod

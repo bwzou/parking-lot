@@ -8,7 +8,7 @@ def get_conn():
     # return MySQLdb.connect(user="root", passwd="root", db="parkingLot",
     # unix_socket="/opt/lampp/var/mysql/mysql.sock")
     return MySQLdb.connect(host="121.42.43.36", user="root", passwd="root",
-                           db="parkinglot", port=3306, charset='utf8')        # charset='utf8'为了显示中文字符集
+                           db="parkinglot", port=3306, charset='utf8')
 
 
 def get_timenow():

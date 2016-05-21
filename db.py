@@ -144,18 +144,6 @@ class Booking(object):
         else:
             self.leaveTime = timetime
             return 2
-            conn = get_conn()
-            cur = conn.cursor()
-            try:
-                cur.execute("update `order` set `leaveTime`='%s' where \
-                            `ID`='%s'" % (time, self.ID))
-                conn.commit()
-                result = "success"
-            except:
-                conn.rollback()
-                result = "failture"
-            conn.close()
-            return result
 
     def pay_charge(self):
         conn = get_conn()
@@ -164,6 +152,8 @@ class Booking(object):
             cur.execute("update `order` set `overpay`='%s', \
                         `overpay_state`='%s', `leaveTime`='%s' where `ID`='%s'"
                         % (self.overpay, "1", self.leaveTime, self.ID))
+            conn.commit()
+            cur.execute("delete from `order` where `ID`='%s'" % self.ID)
             conn.commit()
             result = "success"
         except:
@@ -202,6 +192,21 @@ class Booking(object):
             result = None
         conn.close()
         return result
+
+    def pay_debt(self):
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "update `order` set `PayStatus`='%s' where ID='%s'" % (1, self.ID)
+        try:
+            cur.execute(sql)
+            conn.commit()
+            result = "success"
+        except:
+            conn.rollback()
+            result = "fail"
+        conn.close()
+        return result
+
 
     @staticmethod
     def query_book_by_plate(plate_number):   # 考虑plate_number不唯一的问题
@@ -279,7 +284,6 @@ class Booking(object):
                 ID = m[0]
         except:
             ID = "failture"
-
         conn.close()
         return ID
 
@@ -325,6 +329,37 @@ class Booking(object):
             conn.commit()
             conn.close()
             return divide_data(temp)
+
+    @staticmethod
+    def diplay_history_book(Name):
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(("SELECT * FROM `history` WHERE  `Name`='%s'" % (Name)))
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return None
+        else:
+            temp = []
+            for row in result:
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStatus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7],
+                               comeTime=row[9],
+                               leaveTime=row[10],
+                               overpay=row[11],
+                               overpay_state=row[12])
+                temp.append(book)
+            conn.commit()
+            conn.close()
+            return temp
 
     @staticmethod
     def select_order(start_time):   # 根据时间查询当前订单及往后两天内的所有预定

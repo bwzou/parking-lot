@@ -2,7 +2,9 @@
 import datetime
 import sys
 import json
-import Manage, Util           # 控制层
+import Manage
+import Util           # 控制层
+
 
 
 from flask import Flask, request, render_template, session,\
@@ -11,6 +13,7 @@ from globle import gl, Temp
 
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
 from ParkingAlgorithm import insert                                 # pycharm报错，但不影响
+
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
@@ -49,9 +52,7 @@ def login():
     result = Manage.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        data, history = Manage.Reservation.diplay_book(session["username"])
-        # data, history = Util.divide_data(data)
-        return render_template('home01.html', data=data, history=history)
+        return redirect('customer_index')
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
@@ -63,6 +64,18 @@ def customer_index():
         redirect('/')
     else:
         data, history = Manage.Reservation.diplay_book(session["username"])
+        history_data = Manage.Reservation.diplay_history_book(
+            session["username"])
+        if history is None:
+            if history_data == []:
+                pass
+            else:
+                data = []
+                history = history_data
+        elif history == [] and history_data == []:
+            pass
+        else:
+            history += history_data
         return render_template('home01.html', data=data, history=history)
     # 根据data判断如何显示
 
@@ -127,30 +140,31 @@ def reserver():
 
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
+        result, Temp.TempData.ProduceTime = Temp.TempData.reserve()
+        Temp.TempData.ID = Temp.TempData.query_ID()
         return render_template('pay1.html', timeprice=timeprice,
                                timeintervel=timeintervel)
-        # result = Book.book()
-        # if result == "success":
-            # return redirect('/customer_index')
-        # else:
-            # flash(u'failed to summit the order,please try again', 'error')
-            # # 消息错误提示
-            # return render_template('reserve.html')
     else:
         return redirect('/customer_index')
 
 
 @app.route('/pay2')
 def pay2():
-    Temp.TempData.reserve()
-    Temp.TempData.ID = Temp.TempData.query_ID()
+    result = Temp.TempData.pay_debt()
+    if result == "fail":
+        return "false"
     return render_template('pay2.html', date=Temp.TempData)
 
 
 @app.route('/paychange')
 def paychange():
-    Temp.TempData.alter_book()
     return redirect('customer_index')
+
+
+@app.route('/payreserve/<Id>')
+def payreserve(Id):
+    Temp.TempData = Manage.Reservation.query_book(Id)
+    return redirect('finish')
 
 
 @app.route('/paycharge')
@@ -164,7 +178,8 @@ def paycharge():
 
 @app.route('/changereserve/<ID>', methods=["POST", "GET"])
 def changereserve(ID):
-    result =Manage.Reservation.query_book(ID)
+
+    result = Manage.Reservation.query_book(ID)
     if result is not None:
         result = Util.change_bookto(result)
     return render_template('reserve.html', result=result)
@@ -218,15 +233,10 @@ def change(Id):
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
         Temp.TempData2 = Manage.Reservation.query_book(Id)
+
+        Temp.TempData.alter_book()
         return render_template('change1.html', timeprice=timeprice,
                                timeintervel=timeintervel)
-        # result = Book.alter_book()
-        # if result == "success":
-        #     return redirect('/customer_index')
-        # else:
-        #     flash(u'failed to summit the order,please try again', 'error')
-        #     消息错误提示
-        #     return render_template('reserve.html')
 
 
 @app.route('/cancelreserve/<ID>', methods=["POST", "GET"])
@@ -270,16 +280,22 @@ def getlotname():
                 else:
                     flash(u'The plate number is not existing,please try again ', 'error')  # 消息错误提示)
                     return render_template('pad1.html')
+
+        print result.PayStatus
+        if result.PayStatus == '0':
+            flash(u'No Pay ', 'error')  # 消息错误提示)
+            return render_template('pad1.html')
         number = result.insert_parktime()
 
         if number == 0:
-            return "15 minues ago"
+            flash(u'15 minues ago ', 'error')  # 消息错误提示)
             return render_template('pad1.html')
         elif number == 1:
-            return "30 minutes behind"
+            flash(u'30 minutes behind ', 'error')  # 消息错误提示)
             return render_template('pad1.html')
         elif number == 3:
-            return "car is already there"
+            flash(u'car is already there ', 'error')  # 消息错误提示)
+            return render_template('pad1.html')
         else:
             return render_template('pad2.html', result=result)
 
@@ -342,7 +358,23 @@ def change2():
 # ---------------------------经理相关--------------------------------------------
 @app.route('/manager_page')
 def manager_page():
-    return render_template("manager_login.html");
+    return render_template("manager_login.html")
+
+
+@app.route('/manager_login', methods=["POST", "GET"])
+def manager_login():
+    """  check ording"""
+    phone = request.form.get('inputPhoneNumber')
+    password = request.form.get('inputPassword')
+    result = Manage.manager_login(phone, password)
+    print result
+    if result == "success":
+        session['manager_username'] = phone                     # 添加到session
+        return redirect(url_for('manage_index'))
+    else:
+        flash(u'Invalid password or username provided', 'error')        # 消息错误提示
+        return render_template('manager_login.html')
+
 
 
 @app.route('/manager_login', methods=["POST", "GET"])
