@@ -73,4 +73,17 @@ body {
     border: 6px solid #f6931f;
     height: 4px;
     top: -1px;
-    transition: all 0.2s ease-out; }
+    transition: all 0.2s ease-out;
+}
+
+
+#time-hour .ui-slider-tip {
+    visibility: visible;
+    opacity: 1;
+    top: -30px;
+}
+#time-minute .ui-slider-tip {
+    visibility: visible;
+    opacity: 1;
+    top: -30px;
+}

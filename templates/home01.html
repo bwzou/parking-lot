@@ -59,7 +59,7 @@ function deleteReservation(bookid){
         </div>
     </div>
 </nav>
-<div class="container">
+<div class="hidden-xs container">
 
     <!--显示当前预定状态-->
     {% if data or history %}
@@ -98,7 +98,7 @@ function deleteReservation(bookid){
 									{% if book.PayStatus == '0' %}
 									<a title="Please pay" href="/payreserve/{{ book.ID }}" class="btn btn-warning" ><i class="fa fa-usd" aria-hidden="true"></i></a>
 									{% endif %}
-                                </div></td>
+                                    </div></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -144,9 +144,65 @@ function deleteReservation(bookid){
         </div>
     {% endif %}
 </div>
+
+
+<div class="visible-xs container">
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#mobile-reservation-list" aria-controls="mobile-list" role="tab" data-toggle="tab">Valid Reservation</a>
+        </li>
+        <li role="presentation" ><a href="#mobile-history-list" aria-controls="mobile-history-list" role="tab" data-toggle="tab">History</a>
+        </li>
+    </ul>
+    {% if data or history %}
+        <div class="tab-content" style="padding-top: 10px;">
+            <div  role="tabpanel" class="tab-pane fade in active" id="mobile-reservation-list">
+                {% for book in data %}
+                    <div class="panel panel-default reservation-item">
+                        <div class="panel-body reservation-info">
+                            <div class="order-id" >id:{{ book.ID }}</div>
+                            <div class="start-time">From:{{ book.StartTime }}</div>
+                            <div class="end-time">To:{{ book.EndTime }}</div>
+                        </div>
+                        <div class="panel-footer reservation-operation" >
+                            <a href="/changereserve/{{ book.ID }}" class="btn btn-primary" style="width: 32%"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
+                            <a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})" style="width: 32%"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Cancel</a>
+                            <a title="You have payed" href="#" class="btn btn-success" disabled="disabled" style="width: 32%"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;pay</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                <p align="center"><a href="{{ url_for('reserve') }}" class="btn btn-lg btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a></p>
+            </div>
+
+            <div  role="tabpanel" class="tab-pane fade" id="mobile-history-list">
+                {% for book in history %}
+                    <div class="panel panel-default payment-item">
+                        <div class="panel-body reservation-info">
+                            <div class="order-id"  >id:{{ book.ID }}</div>
+                            <div class="start-time" >From:{{ book.StartTime }}</div>
+                            <div class="end-time" >To:{{ book.EndTime }}</div>
+                            <div class="payment">Payment:${{ book.Price }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="inner cover">
+                <h1 class="cover-heading">Thank u for registration! :)</h1>
+                <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try
+                    now!</p>
+                <p class="lead">
+                    <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+</div>
+
+
+
 {#<div class="mastfoot">          {# 这里有问题，日后再改 #}
 {#    <div class="inner">#}
-{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a#}
+{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by #}
 {#                href="https://twitter.com/mdo">@mdo</a>.#}
 {#        </p>#}
 {#    </div>#}

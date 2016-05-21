@@ -40,3 +40,30 @@ input[type="text"]{
 .head-nav > .active > a:hover{
     border-bottom-color: rgba(0,0,0,.25);
 }
+
+
+
+.reservation-item{
+
+}
+.reservation-info{
+    text-align: left;
+}
+.order-id{
+    font-size: 2em;
+}
+.start-time{
+    font-size: 1.5em;
+}
+.end-time{
+    font-size: 1.5em;
+}
+.reservation-operation{
+
+}
+.payment-item{
+
+}
+.payment{
+    font-size: 1.5em;
+}
