@@ -376,22 +376,6 @@ def manager_login():
         return render_template('manager_login.html')
 
 
-
-@app.route('/manager_login', methods=["POST", "GET"])
-def manager_login():
-    """  check ording"""
-    phone = request.form.get('inputPhoneNumber')
-    password = request.form.get('inputPassword')
-    result = Manage.manager_login(phone, password)
-    print result
-    if result == "success":
-        session['manager_username'] = phone                     # 添加到session
-        return redirect(url_for('manage_index'))
-    else:
-        flash(u'Invalid password or username provided', 'error')        # 消息错误提示
-        return render_template('manager_login.html')
-
-
 @app.route('/manage_index')
 def manage_index():
     lots_status = Manage.all_lot_status()

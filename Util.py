@@ -5,8 +5,6 @@ import MySQLdb
 
 
 def get_conn():
-    # return MySQLdb.connect(user="root", passwd="root", db="parkingLot",
-    # unix_socket="/opt/lampp/var/mysql/mysql.sock")
     return MySQLdb.connect(host="121.42.43.36", user="root", passwd="root",
                            db="parkinglot", port=3306, charset='utf8')
 
