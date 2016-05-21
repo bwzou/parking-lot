@@ -53,7 +53,7 @@
 </nav>
 
 
-<div class="container">
+<div class="hidden-xs container">
     <!--日期选择器-->
     {% if not result %}
         <form id="reserve-form" action="/reserver" method="post">
@@ -106,6 +106,101 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">change</button>
     {% endif %}
     </form>
+</div>
+
+
+<div class="visible-xs container" style="background-color: snow;">
+    {% if not result %}
+        <form id="reserve-form-mobile" action="/reserver" method="post"  style="padding: 0.5em;">
+    {% else %}
+        <form id="reserve-form-mobile" action="/change/{{ result.ID }}" method="post"  style="padding: 0.5em;">
+    {% endif %}
+            <div id="legend" class="">
+                <legend class="">Your Reservation</legend>
+            </div>
+            <div class="form-group">
+                <!-- Text input-->
+                <label class="control-label" for="picker-mobile">Parking Date</label>
+                {% if not result %}
+                <input  name="picker" type="text" placeholder="" readonly="true"  id="picker-mobile" class="form-control">
+                 {% else %}
+                   <input  name="picker" type="text" placeholder="" readonly="true"  id="picker-mobile" class="form-control"
+                   value="{{ result.ProduceTime }}">
+                {% endif %}
+                <p class="help-block">Your Parking Date</p>
+            </div>
+            <div class="form-group">
+                <!-- Text input-->
+                <label class="control-label" for="start-time" style="display: block">Start Time</label>
+                 {% if not result %}
+                <input  type="text" id="start-time" readonly="true" style="display:inline;border:0; background-color:snow;color:#f6931f; font-weight:bold; font-size: 2em">
+                {% else %}
+                <input  type="text" id="start-time" readonly="true" value="12:30" style="display:inline;border:0; background-color:snow;color:#f6931f; font-weight:bold; font-size: 2em" value="11:10">
+                {% endif %}
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#timeModal" data-whatever="Start" >Change</button>
+                <p class="help-block">When will you start parking</p>
+            </div>
+            <div class="form-group">
+                <!-- Text input-->
+                <label class="control-label" for="end-time" style="display: block">End Time</label>
+                {% if not result %}
+                <input  type="text" id="end-time" readonly="true" style="display:inline;border:0; background-color:snow;color:#f6931f; font-weight:bold; font-size: 2em">
+                {% else %}
+                <input  type="text" id="end-time" readonly="true" value="1:30" style="display:inline;border:0; background-color:snow;color:#f6931f; font-weight:bold; font-size: 2em" value="16:20">
+                {% endif %}
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#timeModal" data-whatever="End" >Change</button>
+                <p class="help-block">When will you leave</p>
+            </div>
+            <div class="form-group">
+                <label for="plate" class="control-label" >Plate number</label>
+                <input type="text" name="plate" class="form-control">
+            </div>
+            <input type="hidden" name="slider_value" id="slider-value-mobile">
+
+             {% with messages = get_flashed_messages(with_categories=true) %} {# 添加消息闪现 #}
+                {% if messages %}
+                    {% for category,message in messages %}
+                        {# category 为消息闪现类型 #}
+                        <div id="myAlert" class="alert alert-danger">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>{{ category }}：</strong>{{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if not result %}
+            <a  role="button" href="javascript:void(0)" class="btn btn-lg btn-primary btn-block" id="submit-btn-mobile">reserve</a>
+             {% else %}
+            <a  role="button" href="javascript:void(0)" class="btn btn-lg btn-primary btn-block" id="submit-btn-mobile">change</a>
+            {% endif %}
+    </form>
+</div>
+
+<!--模态框-->
+<div class="modal fade" id="timeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="time-hour" class="control-label">Hour:</label>
+                        <div id="time-hour" class="mobile-slider"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="time-minute" class="control-label">Minute:</label>
+                        <div id="time-minute" class="mobile-slider"></div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btn-done" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

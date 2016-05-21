@@ -34,8 +34,9 @@ GetDefaultDate=function(){
 }
 GetDefaultFromTime = function(){
     var from=new Date();
-    if($("#time-from").val()=="") {
-        $("#time-from").val(from.getTime());
+    if($("#time-from").val()==""||$("#end-time").val()=="") {
+        $("#time-from").val(checkTime(from.getHours())+':'+checkTime(from.getMinutes()))
+        $("#start-time").val(checkTime(from.getHours())+':'+checkTime(from.getMinutes()))
     }
     else{
         from=new Date(Number($("#time-from").val()));
@@ -46,16 +47,42 @@ GetDefaultToTime = function(){
     var to=new Date();
     var today= new Date()
     to.setHours(to.getHours()+4);
-    if(to.getDate()!=today.getDate())
+    if(to.getDate()!=today.getDate()){
         to.setHours(23);
-    if($("#time-to").val()=="") {
-        $("#time-to").val(to.getTime());
+        to.setMinutes(45);
+    }
+   if($("#time-to").val()==""||$("#end-time").val()==""){
+        $("#time-to").val(checkTime(to.getHours())+':'+checkTime(to.getMinutes()));
+        $("#end-time").val(checkTime(to.getHours())+':'+checkTime(to.getMinutes()))
     }
     else{
         to=new Date(Number($("#time-to").val()));
     }
     return to.getHours()*4+Math.ceil(to.getMinutes()/15);
 }
+
+
+function isBefore(tx_start,tx_end){
+    var start = tx_start.split(':');
+    var end = tx_end.split(':');
+    console.log(start,end);
+    if(parseInt(start[0])*100+parseInt(start[1])>=parseInt(end[0])*100+parseInt(end[1]))
+        return false
+    else return true
+}
+function NormalizeTime(tx_time){
+    var arr=tx_time.split(':');
+    var hour=Number(arr[0]);
+    var minute=Number(arr[1]);
+    hour+=Math.floor(Math.ceil(minute/15)*15/60)
+    minute=Math.ceil(minute/15)*15%60;
+    if(hour==24){
+        hour=23;
+        minute=45
+    }
+    return checkTime(hour)+':'+checkTime(minute)
+}
+
 $(document).ready(function(){
     //��ʼ��datepicker
     var date = GetDefaultDate();
@@ -115,6 +142,85 @@ $(document).ready(function(){
 
         $("#time-from").val(from.getTime());
         $("#time-to").val(to.getTime());
-        $('form').submit();
+        $('#reserve-form').submit();
     });
+
+
+    //picker for mobile
+    $("#picker-mobile").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        minDate: new Date(),
+        showAnim: "slideDown",
+        defaultDate: date,
+        preText: "pre Month",
+        nextText: "Next Month"
+    });
+    $("#picker-mobile").datepicker( "setDate", date );
+
+    //slider for mobile
+    var curr=new Date();
+    $("#time-hour").slider({
+        max: 23,
+        value:curr.getHours()
+    }).slider("pips", {
+        rest: "label",
+        step:3
+    }).slider("float");
+
+    $("#time-minute").slider({
+        max: 59,
+        value:curr.getMinutes()
+    }).slider("pips", {
+        rest: "label",
+        step:15,
+    }).slider("float");
+
+    $('#timeModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var content = button.data('whatever') // Extract info from data-* attributes
+        var modal = $(this)
+        modal.find('.modal-title').text(content)
+        if(content=='Start'){
+            var hour=Number($('#start-time').val().split(':')[0]);
+            var minute=Number($('#start-time').val().split(':')[1]);
+            $("#time-hour").slider('option','value',hour);
+            $('#time-minute').slider('option','value',minute)
+        }
+        else if(content=='End'){
+            var hour=Number($('#end-time').val().split(':')[0]);
+            var minute=Number($('#end-time').val().split(':')[1]);
+            $("#time-hour").slider('option','value',hour);
+            $('#time-minute').slider('option','value',minute)
+        }
+    })
+    $('#btn-done').on('click',function(event){
+        var modal = $('#timeModal')
+        var title = modal.find('.modal-title').text();
+        var hour = $( "#time-hour").slider( 'option','value');
+        var minute = $( "#time-minute").slider( 'option','value');
+        if(title=='Start'){
+            $('#start-time').val(NormalizeTime(checkTime(hour)+':'+checkTime(minute)));
+        }
+        else if(title=='End'){
+            $('#end-time').val(NormalizeTime(checkTime(hour)+':'+checkTime(minute)));
+        }
+        $('#timeModal').modal('hide')
+    });
+    $('#submit-btn-mobile').on('click',function(event){
+        var tx_start=NormalizeTime($('#start-time').val())
+        var tx_end=NormalizeTime($('#end-time').val())
+        if(isBefore(tx_start,tx_end))
+        {
+            console.log('start time is before leaving time')
+            $('#slider-value-mobile').val("from: "+tx_start + " to: "+tx_end)
+            console.log( $('#slider-value-mobile').val())
+            $('#reserve-form-mobile').submit();
+        }
+        else {
+            alert('start time is after leaving time');
+            console.log('start time is after leaving time')
+        }
+    });
+
 });
