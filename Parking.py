@@ -160,7 +160,6 @@ def reserver():
                 return render_template('reserve.html')
             for i in range(dict_len):
                 if i == 0:
-
                     Temp.TempData = Manage.Reservation(PID=gl.dict1[mov_dict[0].get('to')],
                                                        Name=session["username"],
                                                        StartTime=beginTime,
@@ -169,7 +168,6 @@ def reserver():
                                                        Price=sustain)
                 else:
                     Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
-
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
         result, Temp.TempData.ProduceTime = Temp.TempData.reserve()
@@ -210,7 +208,6 @@ def paycharge():
 
 @app.route('/changereserve/<ID>', methods=["POST", "GET"])
 def changereserve(ID):
-
     result = Manage.Reservation.query_book(ID)
     if result is not None:
         result = Util.change_bookto(result)
@@ -232,6 +229,16 @@ def change(Id):
         temp = request.form["picker"] + "/" + endTime
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
+        # dict={}       # 存list字典
+        # dict['beginTime'] = beginTime
+        # dict['endTime'] = endTime
+        # dict['id'] = Id
+        # dict['username'] = session["username"]
+        # dict['PlateNumber'] = request.form["plate"]
+        # dict['type'] = 'change'
+        # str = dumps(dict)
+
+
         """ we should ascertain whether there is a lot available """
         orders, begin, sustain = Manage.all_lot(beginTime, endTime)
         if len(orders) == 0:
@@ -245,7 +252,6 @@ def change(Id):
             # 根据sustain来计费
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-            print mov_dict
             dict_len = len(mov_dict)
             if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
                 flash(u'Sorry! There is no a Parkinglot \

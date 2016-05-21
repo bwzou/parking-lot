@@ -18,6 +18,7 @@ def queue_daemon(app, rv_ttl=500):         # rv_ttl是等待时常
         if msg is not None:
             dict = loads(msg)           # 调用数据库查询程序(下单，修改，取消)
             print dict
+
         else:                          # flask端用get()或者size()判断
             time.sleep(1)
     return 0
