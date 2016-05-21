@@ -8,7 +8,7 @@ import Util           # 控制层
 
 
 from flask import Flask, request, render_template, session,\
-    redirect, flash, url_for
+    redirect, flash, url_for, make_response
 from globle import gl, Temp
 
 sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
@@ -22,7 +22,28 @@ app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
 # ------------------------用户登录注册--------------------------------------------
 @app.route('/')
 def hello_world():
+    if request.cookies.get('username') is not None:
+        return redirect('quick')
+    # app.make_response(redirect('quick'))
     return render_template('index.html')
+
+
+@app.route('/quick')
+def quick():
+    username = request.cookies.get('username')
+    password = request.cookies.get('password')
+    if username is None or password is None:
+        return render_template('index.html')
+    result = Manage.user_login(username, password)
+    if result == "success":
+        session['username'] = username                     # 添加到session
+        repr = make_response(redirect('customer_index'))
+        repr.set_cookie('username', username, 1800)
+        repr.set_cookie('password', password, 1800)
+        return repr
+    else:
+        flash(u'Invalid password or username provided', 'error')        # 消息错误提示
+        return render_template('index.html')
 
 
 @app.route('/index')
@@ -47,12 +68,18 @@ def register():
 @app.route('/login', methods=["POST"])
 def login():
     """  check ording"""
+
     phone = request.form.get('inputPhoneNumber')
     password = request.form.get('inputPassword')
     result = Manage.user_login(phone, password)
     if result == "success":
         session['username'] = phone                     # 添加到session
-        return redirect('customer_index')
+        repr = make_response(redirect('customer_index'))
+        repr.set_cookie('username', phone, 1800)
+        repr.set_cookie('password', password, 1800)
+        # repr.set_cookie('password', password)
+        return repr
+        # return redirect('customer_index')
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
