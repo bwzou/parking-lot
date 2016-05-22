@@ -38,8 +38,8 @@ def quick():
     if result == "success":
         session['username'] = username                     # 添加到session
         repr = make_response(redirect('customer_index'))
-        repr.set_cookie('username', username)
-        repr.set_cookie('password', password)
+        repr.set_cookie('username', username, 1800)
+        repr.set_cookie('password', password, 1800)
         # repr.set_cookie('password', password)
         return repr
         # return redirect('customer_index')
@@ -132,7 +132,7 @@ def reserver():
         if endTime == "24:00":
             endTime = "23:59"
 
-        timeintervel = beginTime + "   to   " + endTime
+        # timeintervel = beginTime + "   to   " + endTime
         temp = request.form["picker"] + "/" + beginTime
         beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
         temp = request.form["picker"] + "/" + endTime
@@ -170,30 +170,28 @@ def reserver():
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
         result, Temp.TempData.ProduceTime = Temp.TempData.reserve()
-        Temp.TempData.ID = Temp.TempData.query_ID()
-        return render_template('pay1.html', timeprice=timeprice,
-                               timeintervel=timeintervel)
+        # Temp.TempData.ID = Temp.TempData.query_ID()
+        # return render_template('pay1.html', timeprice=timeprice,
+                               # timeintervel=timeintervel)
+        return redirect('/customer_index')
     else:
         return redirect('/customer_index')
 
 
 @app.route('/pay2')
 def pay2():
-    result = Temp.TempData.pay_debt()
-    if result == "fail":
-        return "false"
     return render_template('pay2.html', date=Temp.TempData)
-
-
-@app.route('/paychange')
-def paychange():
-    return redirect('customer_index')
 
 
 @app.route('/payreserve/<Id>')
 def payreserve(Id):
     Temp.TempData = Manage.Reservation.query_book(Id)
-    return redirect('finish')
+    if Temp.TempData.diff == '0':
+        return render_template('pay2.html', date=Temp.TempData)
+    else:
+        return render_template('change2.html', Data=Temp.TempData)
+    # return redirect('finish')
+    return redirect('pay2')
 
 
 @app.route('/paycharge')
@@ -260,8 +258,9 @@ def change(Id):
                     Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
-        Temp.TempData2 = Manage.Reservation.query_book(Id)
+        # Temp.TempData2 = Manage.Reservation.query_book(Id)
         Temp.TempData.alter_book()
+        return redirect('/customer_index')
         return render_template('change1.html', timeprice=timeprice,
                                timeintervel=timeintervel)
 
@@ -362,24 +361,20 @@ def leave():
 
 @app.route('/finish')
 def finish():
+    result = Temp.TempData.pay_debt()
+    if result == "fail":
+        return "false"
+    return redirect('/customer_index')
+
+
+@app.route('/finishpayreserve')
+def finishpayreserve():
     return render_template('finish.html')
-
-
-@app.route('/finish2')
-def finish2():
-    return render_template('finish2.html')
 
 
 @app.route('/finish3')
 def finish3():
     return render_template('finish3.html')
-
-
-@app.route('/change2')
-def change2():
-    diff = int(Temp.TempData.Price) - int(Temp.TempData2.Price)
-    return render_template('change2.html', Data=Temp.TempData,
-                           Data2=Temp.TempData2, diff=diff)
 
 
 # ---------------------------经理相关--------------------------------------------

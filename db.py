@@ -57,7 +57,7 @@ class Booking(object):
     """Docstring for Booking. """
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStatus="",
                  ProduceTime="", StartTime="", EndTime="", PID="", comeTime="",
-                 leaveTime="", overpay="", overpay_state=""):
+                 leaveTime="", overpay="", overpay_state="", diff=""):
         """TODO: to be defined1. """
         self.ID = ID
         self.Name = Name
@@ -72,6 +72,7 @@ class Booking(object):
         self.leaveTime = leaveTime
         self.overpay = overpay
         self.overpay_state = overpay_state
+        self.diff = diff
 
     def book(self):
         conn = get_conn()
@@ -95,9 +96,17 @@ class Booking(object):
     def alter_book(self):
         conn = get_conn()
         cur = conn.cursor()
-        sql = "update `order` set `PID`= '%s', `StartTime` = '%s' , \
-            `EndTime` = '%s' , `Price` = '%s' where `ID`='%s'" % \
-            (self.PID, self.StartTime, self.EndTime, self.Price, self.ID)
+        originbook = Booking.query_book(self.ID)
+        if originbook.PayStatus == '0':
+            sql = "update `order` set `PID`= '%s', `StartTime` = '%s' , \
+                `EndTime` = '%s' , `Price` = '%s' where `ID`='%s'" % \
+                (self.PID, self.StartTime, self.EndTime, self.Price, self.ID)
+        elif originbook.PayStatus == '1':
+            self.diff = int(originbook.Price) - int(self.Price)
+            sql = "update `order` set `PID`='%s', `StartTime`='%s', \
+                `PayStatus`='%s', `EndTime`='%s', `diff`='%s' where `ID`='%s'" \
+                % (self.PID, self.StartTime, 0, self.EndTime, self.diff,
+                   self.ID)
         try:
             cur.execute(sql)
             conn.commit()
@@ -197,7 +206,8 @@ class Booking(object):
                                  comeTime=row[9],
                                  leaveTime=row[10],
                                  overpay=row[11],
-                                 overpay_state=row[12])
+                                 overpay_state=row[12],
+                                 diff=row[13])
             conn.commit()
         except:
             conn.rollback()
@@ -208,7 +218,13 @@ class Booking(object):
     def pay_debt(self):
         conn = get_conn()
         cur = conn.cursor()
-        sql = "update `order` set `PayStatus`='%s' where ID='%s'" % (1, self.ID)
+        if self.diff == '0':
+            sql = "update `order` set `PayStatus`='%s' where ID='%s'" \
+                % (1, self.ID)
+        else:
+            money = int(self.Price) + int(self.diff)
+            sql = "update `order` set `PayStatus`='%s', Price='%s', diff='%s' \
+                where ID='%s'" % (1, money, 0, self.ID)
         try:
             cur.execute(sql)
             conn.commit()
