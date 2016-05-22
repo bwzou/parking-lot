@@ -40,14 +40,14 @@
                 <li>
                     <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
                     <ul id="menu_condition" class="nav second-menu collapse in">
-                        <li><a href="{{ url_for('manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
-                        <li><a href="{{ url_for('show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                        <li><a href="{{ url_for('blue_manager.manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="{{ url_for('blue_manager.show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#menu_business" data-toggle="collapse" class="collapsed"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp; Business</a>
                     <ul id="menu_business" class="nav second-menu collapse">
-                        <li><a href="/business_price"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp; price</a></li>
+                        <li><a href="{{ url_for('blue_manager.business_price') }}"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp; price</a></li>
                         <li><a href="/business_promotion"><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp; promotion</a></li>
                     </ul>
                 </li>
