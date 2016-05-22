@@ -100,3 +100,5 @@ def show_reservation1(date):
     order_date = Manage.oneday_order_lot(the_date)
     print json.dumps(order_date)
     return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
+
+

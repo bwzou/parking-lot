@@ -36,15 +36,16 @@
 
         <div class="cover-container">
 
-            <div class="inner cover">
+             <div class="inner cover">
 
+				<h1 class="cover-heading">Complete! Your number is {{ Data.ID }}.</h1>
+				<p class="lead">{{ Data.Name }} your license number is {{ Data.PlateNumber }},cut-off interval: </p>
+				<p class="lead">You Have Changed Your Order</p>
 				<p class="lead">Order Time Now: {{ Data.StartTime }} -- {{ Data.EndTime }}</p>
-				<p class="lead">Order Time Origin:{{ Data2.StartTime }} -- {{ Data2.EndTime }}</p>
-				<h1 class="cover-heading">You need to pay {{ Data.Price }}.</h1>
-				<p class="lead">You have paid {{ Data2.Price }}.</p>
-				<h1 class="cover-heading">Please pay the difference {{ diff }}.</h1>
+				<p class="lead">You have paid {{ Data.Price }}.</p>
+				<h1 class="cover-heading">Please pay the difference {{ Data.diff }}.</h1>
                 <p class="lead">
-                    <a href="/finish2" class="btn btn-lg btn-default">Confirm</a>
+                    <a href="/finishpayreserve" class="btn btn-lg btn-default">Confirm</a>
                 </p>
             </div>
 

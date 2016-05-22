@@ -1,6 +1,7 @@
 # --coding:utf8--
 from db import *
 
+
 # ------------------------转换成可以匹配的数据-----------------------------------------
 # match ParkingLot
 def match_Lot():
@@ -125,7 +126,7 @@ class Reservation(object):
     """Docstring for Booking. """
     def __init__(self, ID="", Name="", PlateNumber="", Price="", PayStatus="",
                  ProduceTime="", StartTime="", EndTime="", PID="", comeTime="",
-                 leaveTime="", overpay="", overpay_state=""):
+                 leaveTime="", overpay="", overpay_state="", diff=""):
         """TODO: to be defined1. """
         self.ID = ID
         self.Name = Name
@@ -140,6 +141,7 @@ class Reservation(object):
         self.leaveTime = leaveTime
         self.overpay = overpay
         self.overpay_state = overpay_state
+        self.diff = diff
 
     def reserve(self):
         book = Booking(PID=self.PID,
@@ -199,7 +201,15 @@ class Reservation(object):
         return result
 
     def pay_debt(self):
-        book = Booking(ID=self.ID)
+        book = Booking(ID=self.ID,
+                       PID=self.PID,
+                       Name=self.Name,
+                       StartTime=self.StartTime,
+                       EndTime=self.EndTime,
+                       PlateNumber=self.PlateNumber,
+                       ProduceTime=self.ProduceTime,
+                       Price=self.Price,
+                       diff=self.diff)
         result = book.pay_debt()
         return result
 

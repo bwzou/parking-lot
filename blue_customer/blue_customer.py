@@ -65,7 +65,7 @@ def reserver():
         if endTime == "24:00":
             endTime = "23:59"
 
-        timeintervel = beginTime + "   to   " + endTime
+        # timeintervel = beginTime + "   to   " + endTime
         temp = request.form["picker"] + "/" + beginTime
         beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
         temp = request.form["picker"] + "/" + endTime
@@ -87,9 +87,10 @@ def reserver():
             if dict_len == 0:             # 如果没有可以用返回[]
                 flash(u'Sorry! There is no a Parkinglot available now', 'error')
                 # 消息错误提示
-                return render_template('templates/reserve.html')
+                return render_template('reserve.html')
             for i in range(dict_len):
                 if i == 0:
+
                     Temp.TempData = Manage.Reservation(PID=gl.dict1[mov_dict[0].get('to')],
                                                        Name=session["username"],
                                                        StartTime=beginTime,
@@ -98,36 +99,32 @@ def reserver():
                                                        Price=sustain)
                 else:
                     Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
+
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
         result, Temp.TempData.ProduceTime = Temp.TempData.reserve()
-        Temp.TempData.ID = Temp.TempData.query_ID()
-        return render_template('pay1.html', timeprice=timeprice,
-                               timeintervel=timeintervel)
+        return redirect('/customer_index')
     else:
         return redirect('/customer_index')
 
 
 @blue_customer.route('/pay2')
 def pay2():
-    result = Temp.TempData.pay_debt()
-    if result == "fail":
-        return "false"
     return render_template('pay2.html', date=Temp.TempData)
-
-
-@blue_customer.route('/paychange')
-def paychange():
-    return redirect('customer_index')
 
 
 @blue_customer.route('/payreserve/<Id>')
 def payreserve(Id):
     Temp.TempData = Manage.Reservation.query_book(Id)
-    return redirect('finish')
+    if Temp.TempData.diff == '0':
+        return render_template('pay2.html', date=Temp.TempData)
+    else:
+        return render_template('change2.html', Data=Temp.TempData)
+    # return redirect('finish')
+    return redirect('pay2')
 
 
-@blue_customer.route('/paycharge')
+@blue_customer.route('/paycharge/<Id>')
 def paycharge():
     result = Temp.TempCharge.pay_charge()
     if result == "success":
@@ -159,16 +156,6 @@ def change(Id):
         temp = request.form["picker"] + "/" + endTime
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
-        # dict={}       # 存list字典
-        # dict['beginTime'] = beginTime
-        # dict['endTime'] = endTime
-        # dict['id'] = Id
-        # dict['username'] = session["username"]
-        # dict['PlateNumber'] = request.form["plate"]
-        # dict['type'] = 'change'
-        # str = dumps(dict)
-
-
         """ we should ascertain whether there is a lot available """
         orders, begin, sustain = Manage.all_lot(beginTime, endTime)
         if len(orders) == 0:
@@ -182,6 +169,7 @@ def change(Id):
             # 根据sustain来计费
         else:
             mov_dict = insert(orders, gl.Lots_len, begin, sustain)
+            print mov_dict
             dict_len = len(mov_dict)
             if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
                 flash(u'Sorry! There is no a Parkinglot \
@@ -200,9 +188,9 @@ def change(Id):
                     Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
         timeprice = Manage.cal_money(beginTime, endTime, 1)
         Temp.TempData.Price = timeprice
-        Temp.TempData2 = Manage.Reservation.query_book(Id)
-
+        # Temp.TempData2 = Manage.Reservation.query_book(Id)
         Temp.TempData.alter_book()
+        return redirect('/customer_index')
         return render_template('change1.html', timeprice=timeprice,
                                timeintervel=timeintervel)
 
@@ -217,21 +205,17 @@ def cancelreserve(ID):
 
 @blue_customer.route('/finish')
 def finish():
+    result = Temp.TempData.pay_debt()
+    if result == "fail":
+        return "false"
+    return redirect('/customer_index')
+
+
+@blue_customer.route('/finishpayreserve')
+def finishpayreserve():
     return render_template('finish.html')
-
-
-@blue_customer.route('/finish2')
-def finish2():
-    return render_template('finish2.html')
 
 
 @blue_customer.route('/finish3')
 def finish3():
     return render_template('finish3.html')
-
-
-@blue_customer.route('/change2')
-def change2():
-    diff = int(Temp.TempData.Price) - int(Temp.TempData2.Price)
-    return render_template('blue_customer/templates/change2.html', Data=Temp.TempData,
-                           Data2=Temp.TempData2, diff=diff)
