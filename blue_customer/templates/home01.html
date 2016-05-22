@@ -90,8 +90,8 @@ function deleteReservation(bookid){
                                 <td>{{ book.StartTime }}</td>
                                 <td>{{ book.EndTime }}</td>
 								<td><div align="center">
-                                    <a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a>
+                                    <a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>&nbsp;&nbsp;
 									{% if book.PayStatus == '1' %}
 									<a title="You have payed" href="#" class="btn btn-success" disabled="disabled" ><i class="fa fa-usd" aria-hidden="true"></i></a>
 									{% endif %}
