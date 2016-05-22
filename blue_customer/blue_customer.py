@@ -116,7 +116,7 @@ def pay2():
 @blue_customer.route('/payreserve/<Id>')
 def payreserve(Id):
     Temp.TempData = Manage.Reservation.query_book(Id)
-    if Temp.TempData.diff == '0':
+    if Temp.TempData.diff == '0' or Temp.TempData.diff is None:
         return render_template('pay2.html', date=Temp.TempData)
     else:
         return render_template('change2.html', Data=Temp.TempData)
