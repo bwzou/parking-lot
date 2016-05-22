@@ -41,8 +41,8 @@
                 <li>
                     <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
                     <ul id="menu_condition" class="nav second-menu collapse in">
-                        <li><a href="{{ url_for('manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
-                        <li><a href="{{ url_for('show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                        <li><a href="{{ url_for('blue_manager.manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="{{ url_for('blue_manager.show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
                     </ul>
                 </li>
                 <li>
@@ -85,8 +85,8 @@
                 </div>
                 {% endif %}
                 <div class="promotion_2">
-                    <input class="proHead" type="text" name="addtitle" value="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
-                    <textarea class="proContent" style="width: 100%;height: 200px" name="addcontext">Add new promotions here</textarea>
+                    <input class="proHead" type="text" name="addtitle" placeholder="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
+                    <textarea class="proContent" style="width: 100%;height: 200px" name="addcontext" placeholder="Add new promotions here"></textarea>
                     <button class="btn btn-primary" type="submit" style="margin-top: 20px">Add</button>
                 </div>
             </div>

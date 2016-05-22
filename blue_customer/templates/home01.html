@@ -47,7 +47,7 @@ function deleteReservation(bookid){
                     <a href="#">Home</a>
                 </li>
                 <li>
-                    <a href="{{ url_for('reserve') }}">Reserve</a>
+                    <a href="{{ url_for('blue_customer.reserve') }}">Reserve</a>
                 </li>
                 <li>
                     <a href="{{ url_for('lot') }}">GetLot</a>
@@ -104,7 +104,7 @@ function deleteReservation(bookid){
                         </tbody>
                     </table>
                     <p class="lead" align="center">
-                        <a href="{{ url_for('reserve') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a>
+                        <a href="{{ url_for('blue_customer.reserve') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a>
                     </p>
                 </form>
 
@@ -139,7 +139,7 @@ function deleteReservation(bookid){
             <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try
                 now!</p>
             <p class="lead">
-                <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+                <a href="{{ url_for('blue_customer.reserve') }}" class="btn btn-primary">Add a Reservation</a>
             </p>
         </div>
     {% endif %}
@@ -170,7 +170,7 @@ function deleteReservation(bookid){
                         </div>
                     </div>
                 {% endfor %}
-                <p align="center"><a href="{{ url_for('reserve') }}" class="btn btn-lg btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a></p>
+                <p align="center"><a href="{{ url_for('blue_customer.reserve') }}" class="btn btn-lg btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a></p>
             </div>
 
             <div  role="tabpanel" class="tab-pane fade" id="mobile-history-list">
@@ -191,7 +191,7 @@ function deleteReservation(bookid){
                 <p class="lead">Park-a-Lot is made to help customers quickly and easily access to his vehicle.Give it a try
                     now!</p>
                 <p class="lead">
-                    <a href="{{ url_for('reserve') }}" class="btn btn-primary">Add a Reservation</a>
+                    <a href="{{ url_for('blue_customer.reserve') }}" class="btn btn-primary">Add a Reservation</a>
                 </p>
             </div>
             {% endif %}

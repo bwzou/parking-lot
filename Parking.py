@@ -7,11 +7,8 @@ import Util           # 控制层
 
 from blue_customer.blue_customer import blue_customer
 from blue_manager.blue_manager import blue_manager
-
 from RedisQueue import RedisQueue
 from pickle import dumps,loads          # 字符串跟字典间的转换
-# json.dumps : dict转成str
-# json.loads : str转成dict
 
 from flask import Flask, request, render_template, session,\
     redirect, flash, url_for, make_response
@@ -74,7 +71,7 @@ def register():
         request.form["registUsername"],
         request.form["registPassword"])
     if result == "success":
-        return render_template('home01.html', data=None, history=None)
+        return render_template('blue_customer/templates/home01.html', data=None, history=None)
     elif result == "exist":
         flash(u'Username is used, please try another', 'error')  # 用户名已经被使用
         return render_template('index.html')
@@ -92,34 +89,10 @@ def login():
         repr = make_response(redirect('customer_index'))
         repr.set_cookie('username', phone, 1800)
         repr.set_cookie('password', password, 1800)
-        # repr.set_cookie('password', password)
         return repr
-        # return redirect('customer_index')
     else:
         flash(u'Invalid password or username provided', 'error')        # 消息错误提示
         return render_template('index.html')
-
-
-@app.route('/customer_index')
-def customer_index():
-    if session.get('username') is None:
-        redirect('/')
-    else:
-        data, history = Manage.Reservation.diplay_book(session["username"])
-        history_data = Manage.Reservation.diplay_history_book(
-            session["username"])
-        if history is None:
-            if history_data == []:
-                pass
-            else:
-                data = []
-                history = history_data
-        elif history == [] and history_data == []:
-            pass
-        else:
-            history += history_data
-        return render_template('home01.html', data=data, history=history)
-    # 根据data判断如何显示
 
 
 @app.route('/logout')
@@ -129,171 +102,6 @@ def logout():
 
 
 # ------------------------用户预定和修改订单--------------------------------------------
-@app.route('/reserve')
-def reserve():
-    """ information about book"""
-    # flash(u'Sorry! There is no a Parkinglot available now', 'error')  # 消息错误提示
-    return render_template('reserve.html')
-
-
-@app.route('/reserver', methods=["POST", "GET"])
-def reserver():
-    if request.method == "POST":
-        Time = request.form['slider_value']
-        beginTime, endTime = Time[6:11], Time[16:21]
-
-        if endTime == "24:00":
-            endTime = "23:59"
-
-        timeintervel = beginTime + "   to   " + endTime
-        temp = request.form["picker"] + "/" + beginTime
-        beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
-        temp = request.form["picker"] + "/" + endTime
-        endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
-
-        """ we should ascertain whether there is a lot available """
-        orders, begin, sustain = Manage.all_lot(beginTime, endTime)
-        if len(orders) == 0:
-            Temp.TempData = Manage.Reservation(PID='A101',
-                                               Name=session["username"],
-                                               StartTime=beginTime,
-                                               EndTime=endTime,
-                                               PlateNumber=request.form["plate"],
-                                               Price=sustain)
-        else:
-            mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-            print mov_dict
-            dict_len = len(mov_dict)
-            if dict_len == 0:             # 如果没有可以用返回[]
-                flash(u'Sorry! There is no a Parkinglot available now', 'error')
-                # 消息错误提示
-                return render_template('reserve.html')
-            for i in range(dict_len):
-                if i == 0:
-                    Temp.TempData = Manage.Reservation(PID=gl.dict1[mov_dict[0].get('to')],
-                                                       Name=session["username"],
-                                                       StartTime=beginTime,
-                                                       EndTime=endTime,
-                                                       PlateNumber=request.form["plate"],
-                                                       Price=sustain)
-                else:
-                    Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
-        timeprice = Manage.cal_money(beginTime, endTime, 1)
-        Temp.TempData.Price = timeprice
-        result, Temp.TempData.ProduceTime = Temp.TempData.reserve()
-        Temp.TempData.ID = Temp.TempData.query_ID()
-        return render_template('pay1.html', timeprice=timeprice,
-                               timeintervel=timeintervel)
-    else:
-        return redirect('/customer_index')
-
-
-@app.route('/pay2')
-def pay2():
-    result = Temp.TempData.pay_debt()
-    if result == "fail":
-        return "false"
-    return render_template('pay2.html', date=Temp.TempData)
-
-
-@app.route('/paychange')
-def paychange():
-    return redirect('customer_index')
-
-
-@app.route('/payreserve/<Id>')
-def payreserve(Id):
-    Temp.TempData = Manage.Reservation.query_book(Id)
-    return redirect('finish')
-
-
-@app.route('/paycharge')
-def paycharge():
-    result = Temp.TempCharge.pay_charge()
-    if result == "success":
-        return render_template('pad1.html')
-    else:
-        return "fail"
-
-
-@app.route('/changereserve/<ID>', methods=["POST", "GET"])
-def changereserve(ID):
-    result = Manage.Reservation.query_book(ID)
-    if result is not None:
-        result = Util.change_bookto(result)
-    return render_template('reserve.html', result=result)
-
-
-@app.route('/change/<Id>', methods=["POST", "GET"])
-def change(Id):
-    if request.method == "POST":
-        Time = request.form['slider_value']
-        beginTime, endTime = Time[6:11], Time[16:21]
-
-        if endTime == "24:00":
-            endTime = "23:59"
-
-        timeintervel = beginTime + "   to   " + endTime
-        temp = request.form["picker"] + "/" + beginTime
-        beginTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
-        temp = request.form["picker"] + "/" + endTime
-        endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
-
-        # dict={}       # 存list字典
-        # dict['beginTime'] = beginTime
-        # dict['endTime'] = endTime
-        # dict['id'] = Id
-        # dict['username'] = session["username"]
-        # dict['PlateNumber'] = request.form["plate"]
-        # dict['type'] = 'change'
-        # str = dumps(dict)
-
-
-        """ we should ascertain whether there is a lot available """
-        orders, begin, sustain = Manage.all_lot(beginTime, endTime)
-        if len(orders) == 0:
-            Temp.TempData = Manage.Reservation(ID=Id,
-                                               PID='A101',
-                                               Name=session["username"],
-                                               StartTime=beginTime,
-                                               EndTime=endTime,
-                                               PlateNumber=request.form["plate"],
-                                               Price=sustain)  # 根据sustain来计费
-            # 根据sustain来计费
-        else:
-            mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-            dict_len = len(mov_dict)
-            if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
-                flash(u'Sorry! There is no a Parkinglot \
-                      available now,failed to alter order', 'error')  # 消息错误提示
-                return render_template('reserve.html')
-            for i in range(dict_len):
-                if i == 0:
-                    Temp.TempData = Manage.Reservation(ID=Id,
-                                                       PID=gl.dict1[mov_dict[0].get('to')],
-                                                       Name=session["username"],
-                                                       StartTime=beginTime,
-                                                       EndTime=endTime,
-                                                       PlateNumber=request.form["plate"],
-                                                       Price=sustain)
-                else:
-                    Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
-        timeprice = Manage.cal_money(beginTime, endTime, 1)
-        Temp.TempData.Price = timeprice
-        Temp.TempData2 = Manage.Reservation.query_book(Id)
-
-        Temp.TempData.alter_book()
-        return render_template('change1.html', timeprice=timeprice,
-                               timeintervel=timeintervel)
-
-
-@app.route('/cancelreserve/<ID>', methods=["POST", "GET"])
-def cancelreserve(ID):
-    result = Manage.Reservation.cancel_book(ID)
-    if result == "success":
-        return redirect('/customer_index')
-    else:
-        return result
 
 
 # ---------------------------获取停车位信息--------------------------------------
@@ -381,114 +189,7 @@ def leave():
         return render_template('leave.html')
 
 
-@app.route('/finish')
-def finish():
-    return render_template('finish.html')
-
-
-@app.route('/finish2')
-def finish2():
-    return render_template('finish2.html')
-
-
-@app.route('/finish3')
-def finish3():
-    return render_template('finish3.html')
-
-
-@app.route('/change2')
-def change2():
-    diff = int(Temp.TempData.Price) - int(Temp.TempData2.Price)
-    return render_template('change2.html', Data=Temp.TempData,
-                           Data2=Temp.TempData2, diff=diff)
-
-
 # ---------------------------经理相关--------------------------------------------
-@app.route('/manager_page')
-def manager_page():
-    return render_template("manager_login.html")
-
-
-@app.route('/manager_login', methods=["POST", "GET"])
-def manager_login():
-    """  check ording"""
-    phone = request.form.get('inputPhoneNumber')
-    password = request.form.get('inputPassword')
-    result = Manage.manager_login(phone, password)
-    print result
-    if result == "success":
-        session['manager_username'] = phone                     # 添加到session
-        return redirect(url_for('manage_index'))
-    else:
-        flash(u'Invalid password or username provided', 'error')        # 消息错误提示
-        return render_template('manager_login.html')
-
-
-@app.route('/manage_index')
-def manage_index():
-    lots_status = Manage.all_lot_status()
-    print json.dumps(lots_status)
-    return render_template('console.html', lots_status=json.dumps(lots_status))
-
-
-@app.route('/show_reservation')
-def show_reservation():
-    return render_template('show-reservation.html')
-
-
-@app.route('/business_price', methods=['GET', 'POST'])
-def business_price():  # 显示
-    price_reservation = Manage.get_price('0')  # 三种价格：正常价罚款折扣
-    price_overstay = Manage.get_price('1')
-    price_discount = Manage.get_price('2')
-    return render_template('business_price.html', price_reservation=price_reservation, price_overstay=price_overstay,
-                           price_discount=price_discount)
-
-
-@app.route('/confirm_publish', methods=['GET', 'POST'])
-def confirm_publish():
-    if request.method == "POST":
-        reservprice = request.form['reservPrice']
-        overstayfine = request.form['overstayFine']
-        discounts = request.form['discounts']
-        result = Manage.set_price(reservprice, overstayfine, discounts)
-        if result == "success":
-            print result
-            return redirect(url_for('business_price'))
-        else:
-            flash(u'failed to summit the price,please try again', 'error')
-            return render_template('business_price.html')
-    return render_template('business_price.html')
-
-
-@app.route('/business_promotion')
-def business_promotion():
-    data = Manage.get_promotion()
-    return render_template('business-promotion.html', data=data)
-
-
-@app.route('/add_promotion', methods=["POST", "GET"])
-def add_promotion():
-    if request.method == "POST":
-        title = request.form['addtitle']
-        context = request.form['addcontext']
-        print context
-        result = Manage.set_promotion(title, context)
-        print result
-        if result == "success":
-            return redirect(url_for('business_promotion'))
-        else:
-            flash(u'failed to summit the promotion,please try again', 'error')
-            return redirect('/business_promotion')
-    return redirect('/business_promotion')
-
-
-@app.route('/show_reservation1/<date>')
-def show_reservation1(date):
-    the_date = datetime.datetime.strptime(date, '%Y-%m-%d')
-    order_date = Manage.oneday_order_lot(the_date)
-    print json.dumps(order_date)
-    return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
 
 
 # ---------------------------系统错误处理----------------------------------------

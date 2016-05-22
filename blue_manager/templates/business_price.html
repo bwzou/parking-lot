@@ -41,8 +41,8 @@
                 <li>
                     <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
                     <ul id="menu_condition" class="nav second-menu collapse in">
-                        <li><a href="{{ url_for('manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
-                        <li><a href="{{ url_for('show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                        <li><a href="{{ url_for('blue_manager.manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="{{ url_for('blue_manager.show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
                     </ul>
                 </li>
                 <li>
@@ -64,7 +64,7 @@
         <div class="col-sm-9 col-md-10" style="background-color: white">
             <!--显示当前公告-->
         <div class="manager_settings" style="margin-top: 80px">
-           <form action="{{ url_for('confirm_publish')}}" class="tab-pane fade in active" id="settingsTbl"
+           <form action="{{ url_for('blue_manager.confirm_publish')}}" class="tab-pane fade in active" id="settingsTbl"
                       method="post">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
