@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Waiting</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="font-awesome-4.6.1/css/font-awesome.min.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/wait.js"></script>
+</head>
+<body>
+
+<!--导航条-->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"  href="#">Parking Lot</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right" id="navbar">
+            <ul  class="nav navbar-nav head-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="#">Reserve</a>
+                </li>
+                <li>
+                    <a href="#">Edit</a>
+                </li>
+                <li>
+                    <a href="#">Others</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--点预约之后的模态框-->
+<div class="modal fade" id="reserveModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">In Process</h4>
+            </div>
+            <div class="modal-body">
+                <p id="loadinfo"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                        Loading...
+                </p>
+                <p id="failinfo" hidden="hidden"><i class="fa fa-exclamation-triangle fa-3x fa-fw" aria-hidden="true"></i>
+                    <span class="sr-only">Fail</span>
+                    There is no space there at that time.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_changetime" type="button" class="btn btn-default" style="display: none">Change time</button>
+                <button id="btn_returnhome" type="button" class="btn btn-primary">Return Home</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+</html>
