@@ -121,6 +121,11 @@ def set_promotion(title, context):
     return result
 
 
+def delete_promotion(ID):
+    result = Promotion.delete_promotion(ID)
+    return result
+
+
 # -------------------订单相关-------------------------------------------------------
 class Reservation(object):
     """Docstring for Booking. """

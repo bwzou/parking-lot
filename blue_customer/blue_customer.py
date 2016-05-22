@@ -201,6 +201,7 @@ def cancelreserve(ID):
     else:
         return result
 
+
 @blue_customer.route('/finish')
 def finish():
     result = Temp.TempData.pay_debt()

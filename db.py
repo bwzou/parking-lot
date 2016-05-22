@@ -585,7 +585,7 @@ class Promotion(object):
 
     @staticmethod
     def get_promotion():
-        sql = "SELECT * FROM `promotion` ORDER BY `time`DESC"          # 根据时间最新来显示
+        sql = "SELECT * FROM `promotion` ORDER BY `time`DESC"  # 根据时间最新来显示
         conn = get_conn()
         cur = conn.cursor()
         cur.execute(sql)
@@ -595,13 +595,29 @@ class Promotion(object):
             conn.close()
             return "haha there is nothing"
         else:
-            p_rice = None
+            price_all = []
             for r in result:
                 p_rice = Promotion(ID=r[0], title=r[1], context=r[2], time=r[3])
-                conn.commit()
-                conn.close()
-                return p_rice
-            return p_rice      # 只需要获取一条
+                price_all.append(p_rice)
+            conn.commit()
+            conn.close()
+
+            return price_all  # 只需要获取一条
+
+    @staticmethod
+    def delete_promotion(ID):
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "delete from `promotion` where `ID`='%s'" % ID
+        try:
+            cur.execute(sql)
+            conn.commit()
+            result = "success"
+        except:
+            conn.rollback()
+            result = "fail"
+        conn.close()
+        return result
 
     @staticmethod
     def set_promotion(title, context):

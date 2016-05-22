@@ -16,6 +16,16 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui.min.js') }}"></script>
     <script src="{{ url_for('static',filename='d3/d3.min.js') }}" type="text/javascript"></script>
 </head>
+<script>
+    function deletePromotion(proid){
+        if(!window.confirm("Delete it?")){
+            alert("press false");
+        }
+        else{
+            window.location="/delete_promotion/"+proid;
+        }
+    };
+</script>
 <body>
 <nav class="navbar navbar-default" style="margin-bottom: 0;">
     <div class="container">
@@ -62,34 +72,42 @@
             </ul>
         </div>
         <div class="col-sm-9 col-md-10" style="background-color: white">
+            <div class="manager_settings" style="margin-top: 80px">
+                <form action="{{ url_for('blue_manager.business_promotion')}}" method="post">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Time</th>
+                            <th>Headlines</th>
+                            <th>New settings</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for pros in data %}
+                            <tr>
+                                <td>{{ pros.ID}}</td>
+                                <td>{{ pros.time }}</td>
+                                <td><a href="#">{{ pros.title }}</a></td>
+                                <td><div align="center">
+                                    <a href="javascript:void(0)" class="btn btn-warning"  onclick="deletePromotion({{ pros.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a>
+                                </div></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
             <!--显示当前公告-->
             <form action="/add_promotion" method="post">
-            <div class="manager_settings" style="margin-top: 80px">
-                {% if data %}
-                    <div class="promotion_1">
-                    <h1 >{{ data.title }}</h1>
-                    <p class="lead">{{ data.context }}</p>
-                    <p class="lead" style="margin-right:-20px">
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-primary">Delete</a>
-                    </p>
+                <div class="manager_settings" style="margin-top: 80px">
+
+                    <div class="promotion_2">
+                        <input class="proHead" type="text" name="addtitle" placeholder="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
+                        <textarea class="proContent" style="width: 100%;height: 200px" name="addcontext" placeholder="Add new promotions here"></textarea>
+                        <button class="btn btn-primary" type="submit" style="margin-top: 20px">Add</button>
+                    </div>
                 </div>
-                {% else %}
-                    <div class="promotion_1">
-                    <h1 >GET 20% OFF ! :)</h1>
-                    <p class="lead">Get registered before May the 15th and prestore $99, then get 20% off as senior members!</p>
-                    <p class="lead" style="margin-right:-20px">
-                        <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-primary">Delete</a>
-                    </p>
-                </div>
-                {% endif %}
-                <div class="promotion_2">
-                    <input class="proHead" type="text" name="addtitle" placeholder="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
-                    <textarea class="proContent" style="width: 100%;height: 200px" name="addcontext" placeholder="Add new promotions here"></textarea>
-                    <button class="btn btn-primary" type="submit" style="margin-top: 20px">Add</button>
-                </div>
-            </div>
             </form>
         </div>
     </div>
