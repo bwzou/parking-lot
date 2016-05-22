@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Console</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-theme.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/console.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
+    <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
+    <!--<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='d3/d3.min.js') }}" type="text/javascript"></script>
+</head>
+ <script>
+function deletePromotion(proid){
+ if(!window.confirm("Delete it?")){
+    alert("press false");
+ }
+ else{
+    window.location="/delete_promotion/"+proid;
+ }
+};
+ </script>
+<body>
+<nav class="navbar navbar-default" style="margin-bottom: 0;">
+    <div class="container">
+        <div class="navbar-header pull-left">
+            <a href="console.html" class="navbar-brand"><i class="fa fa-area-chart" aria-hidden="true"></i>&nbsp; Console</a>
+        </div>
+        <div class="navbar-header pull-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp; feedback<span class="badge">42</span> </a>
+                </li>
+                <li>
+                    <a href="#"> feedback<span class="badge">42</span> </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row" style="background-color:#f5f5f5;">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav" >
+                <li>
+                    <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
+                    <ul id="menu_condition" class="nav second-menu collapse in">
+                        <li><a href="{{ url_for('manage_index') }}"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="{{ url_for('show_reservation') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_business" data-toggle="collapse" class="collapsed"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp; Business</a>
+                    <ul id="menu_business" class="nav second-menu collapse">
+                        <li><a href="/business_price"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp; price</a></li>
+                        <li><a href="/business_promotion"><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp; promotion</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_user" data-toggle="collapse" class="collapsed"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Users</a>
+                    <ul id="menu_user" class="nav second-menu collapse">
+                        <li><a href="#"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;classify</a></li>
+                        <li><a href="#"><i class="fa fa-percent" aria-hidden="true"></i>&nbsp;distribution</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10" style="background-color: white">
+        <div class="manager_settings" style="margin-top: 80px">
+           <form action="{{ url_for('business_promotion')}}" method="post">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Time</th>
+                            <th>Headlines</th>
+                            <th>New settings</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for pros in data %}
+                        <tr>
+                            <td>{{ pros.ID}}</td>
+							<td>{{ pros.time }}</td>
+							<td><a href="#">{{ pros.title }}</a></td>
+                            <td><div align="center">
+									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deletePromotion({{ pros.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a>
+                                </div></td>
+                        </tr>
+						{% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+        </div>
+            <!--显示当前公告-->
+            <form action="/add_promotion" method="post">
+            <div class="manager_settings" style="margin-top: 80px">
+
+                <div class="promotion_2">
+                    <input class="proHead" type="text" name="addtitle" value="New Promotion Headline" style="margin-bottom: 20px;margin-top: 20px"/>
+                    <textarea class="proContent" style="width: 100%;height: 200px" name="addcontext">Add new promotions here</textarea>
+                    <button class="btn btn-primary" type="submit" style="margin-top: 20px">Add</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
