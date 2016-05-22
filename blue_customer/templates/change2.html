@@ -49,16 +49,15 @@
     </nav>
 
     <div class="cover-container">
-         <div class="inner cover">
-
-            <h1 class="cover-heading">Complete! Your number is {{ Data.ID }}.</h1>
-            <p class="lead">{{ Data.Name }} your license number is {{ Data.PlateNumber }},cut-off interval: </p>
-            <p class="lead">You Have Changed Your Order</p>
-            <p class="lead">Order Time Now: {{ Data.StartTime }} -- {{ Data.EndTime }}</p>
-            <p class="lead">You have paid {{ Data.Price }}.</p>
-            <h1 class="cover-heading">Please pay the difference {{ Data.diff }}.</h1>
-            <p class="lead">
-                <a href="/finishpayreserve" class="btn btn-lg btn-default">Confirm</a>
+         <div align="center" style="background-color:white; margin:10px auto;padding:100px 0">
+            <h1 >Complete! Your number is {{ Data.ID }}.</h1>
+            <p>{{ Data.Name }} your license number is {{ Data.PlateNumber }},cut-off interval: </p>
+            <p>You Have Changed Your Order</p>
+            <p>Order Time Now: {{ Data.StartTime }} -- {{ Data.EndTime }}</p>
+            <p>You have paid {{ Data.Price }}.</p>
+            <h1>Please pay the difference {{ Data.diff }}.</h1>
+            <p>
+                <a href="/finishpayreserve" class="btn btn-lg btn-primary" style="width:80%">Confirm</a>
             </p>
         </div>
     </div>
