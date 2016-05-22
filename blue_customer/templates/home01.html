@@ -90,8 +90,8 @@ function deleteReservation(bookid){
                                 <td>{{ book.StartTime }}</td>
                                 <td>{{ book.EndTime }}</td>
 								<td><div align="center">
-                                    <a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;</a>
+                                    <a href="/changereserve/{{ book.ID }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+									<a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})"><i class="fa fa-trash-o" aria-hidden="true"></i></a>&nbsp;&nbsp;
 									{% if book.PayStatus == '1' %}
 									<a title="You have payed" href="#" class="btn btn-success" disabled="disabled" ><i class="fa fa-usd" aria-hidden="true"></i></a>
 									{% endif %}
@@ -166,7 +166,12 @@ function deleteReservation(bookid){
                         <div class="panel-footer reservation-operation" >
                             <a href="/changereserve/{{ book.ID }}" class="btn btn-primary" style="width: 32%"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>
                             <a href="javascript:void(0)" class="btn btn-warning"  onclick="deleteReservation({{ book.ID }})" style="width: 32%"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Cancel</a>
-                            <a title="You have payed" href="#" class="btn btn-success" disabled="disabled" style="width: 32%"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;pay</a>
+                            {% if book.PayStatus == '1' %}
+                            <a title="You have payed" href="#" class="btn btn-success" disabled="disabled" style="width: 32%"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;Payed</a>
+							{% endif %}
+							{% if book.PayStatus == '0' %}
+							<a title="Please pay" href="/payreserve/{{ book.ID }}" class="btn btn-warning"style="width: 32%" ><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;Pay</a>
+							{% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -197,15 +202,5 @@ function deleteReservation(bookid){
             {% endif %}
         </div>
 </div>
-
-
-
-{#<div class="mastfoot">          {# 这里有问题，日后再改 #}
-{#    <div class="inner">#}
-{#        <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by #}
-{#                href="https://twitter.com/mdo">@mdo</a>.#}
-{#        </p>#}
-{#    </div>#}
-{#</div>#}
 </body>
 </html>
