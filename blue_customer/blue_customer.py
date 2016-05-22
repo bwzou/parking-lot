@@ -191,8 +191,6 @@ def change(Id):
         # Temp.TempData2 = Manage.Reservation.query_book(Id)
         Temp.TempData.alter_book()
         return redirect('/customer_index')
-        return render_template('change1.html', timeprice=timeprice,
-                               timeintervel=timeintervel)
 
 
 @blue_customer.route('/cancelreserve/<ID>', methods=["POST", "GET"])
