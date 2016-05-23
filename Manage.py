@@ -154,7 +154,10 @@ class Reservation(object):
                        StartTime=self.StartTime,
                        EndTime=self.EndTime,
                        PlateNumber=self.PlateNumber,
+                       ProduceTime=self.ProduceTime,
                        Price=self.Price)
+        print '-------------------------------------------------------------------'
+        print self.ProduceTime
         result = book.book()
         return result, book.ProduceTime
 
@@ -166,6 +169,7 @@ class Reservation(object):
                        StartTime=self.StartTime,
                        EndTime=self.EndTime,
                        PlateNumber=self.PlateNumber,
+                       ProduceTime=self.ProduceTime,
                        Price=self.Price)
         result = book.alter_book()
         return result
@@ -176,7 +180,6 @@ class Reservation(object):
         return data, history
 
     @staticmethod
-
     def diplay_history_book(name):
         history = Booking.diplay_history_book(name)
         return history
@@ -228,3 +231,7 @@ class Reservation(object):
         ans = Booking.query_book_by_plate(plate_number)
         return ans
 
+    @staticmethod
+    def query_by_name_produceTime(dt, name):
+        ans = Booking.query_by_name_produceTime(dt, name)
+        return ans

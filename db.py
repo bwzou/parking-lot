@@ -78,7 +78,7 @@ class Booking(object):
         conn = get_conn()
         cur = conn.cursor()
         try:
-            self.ProduceTime = get_timenow()        # 获取现在时间
+            # self.ProduceTime = get_timenow()        # 获取现在时间
             cur.execute("INSERT INTO `order`( `PID`, `StartTime`, `EndTime`, \
                         `PlateNumber`, `Name`, `ProduceTime`, `Price`) VALUES \
                         ('%s','%s','%s','%s','%s','%s','%s')" %
@@ -99,13 +99,13 @@ class Booking(object):
         originbook = Booking.query_book(self.ID)
         if originbook.PayStatus == '0':
             sql = "update `order` set `PID`= '%s', `StartTime` = '%s' , \
-                `EndTime` = '%s' , `Price` = '%s' where `ID`='%s'" % \
-                (self.PID, self.StartTime, self.EndTime, self.Price, self.ID)
+                `EndTime` = '%s' ,`ProduceTime`='%s', `Price` = '%s' where `ID`='%s'" % \
+                (self.PID, self.StartTime, self.EndTime, self.ProduceTime, self.Price, self.ID)
         elif originbook.PayStatus == '1':
             self.diff = int(originbook.Price) - int(self.Price)
             sql = "update `order` set `PID`='%s', `StartTime`='%s', \
-                `PayStatus`='%s', `EndTime`='%s', `diff`='%s' where `ID`='%s'" \
-                % (self.PID, self.StartTime, 0, self.EndTime, self.diff,
+                `PayStatus`='%s', `EndTime`='%s', `ProduceTime`='%s',`diff`='%s' where `ID`='%s'" \
+                % (self.PID, self.StartTime, 0, self.EndTime, self.ProduceTime, self.diff,
                    self.ID)
         try:
             cur.execute(sql)
@@ -439,6 +439,34 @@ class Booking(object):
             conn.commit()
             conn.close()
             print temp
+            return temp
+
+    @staticmethod
+    def query_by_name_produceTime(dt, name):
+        conn = get_conn()
+        cur = conn.cursor()
+        sql = "SELECT * FROM `order` WHERE  `ProduceTime`='%s'AND `Name` = '%s'" % (dt, name)
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return None
+        else:
+            temp = []
+            for row in result:
+                book = Booking(ID=row[8],
+                               Name=row[0],
+                               PlateNumber=row[1],
+                               Price=row[2],
+                               PayStatus=row[3],
+                               ProduceTime=row[4],
+                               PID=row[5],
+                               StartTime=row[6],
+                               EndTime=row[7])
+                temp.append(book)
+            conn.commit()
+            conn.close()
             return temp
 
 
