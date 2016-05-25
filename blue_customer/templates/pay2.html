@@ -7,7 +7,6 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Home Page for first-time customers</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
@@ -18,9 +17,37 @@
 </head>
 
 <body>
-
-<!--导航条-->
-<nav class="navbar navbar-default navbar-static-top">
+    <!--导航条-->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Parking Lot</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-right" id="navbar">
+                <ul class="nav navbar-nav head-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('blue_customer.reserve') }}">Reserve</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('lot') }}">GetLot</a>
+                    </li>
+                    <li>
+                        <a href="#">Others</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -61,4 +88,3 @@
 </div>
 </body>
 </html>
-
