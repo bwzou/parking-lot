@@ -70,6 +70,11 @@ def set_lot_status(PID):
     return ans
 
 
+def set_lot_status_idle(PID):
+    ans = ParkingLot.set_lot_status_idle(PID)
+    return ans
+
+
 # -----------------------用户注册登录------------------------------------------------
 def user_register(name, email, phonenumber, password):
     result = Customer.user_register(Customer, name, email, phonenumber, password)   # Customer代表self

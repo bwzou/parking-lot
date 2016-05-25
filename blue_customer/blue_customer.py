@@ -189,17 +189,7 @@ def get_result():
     ans = Manage.Reservation.query_by_name_produceTime(time1, name)
     if ans is not None:
         result = 'success'
-    # Next = 2
-    # while Next != 0:
-    #     ans = Manage.Reservation.query_by_name_produceTime(time1, name)
-    #     if ans is not None:
-    #         result = 'success'
-    #         return result
-    #     else:
-    #         if queue.qsize() == 0:
-    #             time.sleep(5)
-    #             result = 'fail'
-    #     Next = Next - 1
+
     return result
 
 

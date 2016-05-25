@@ -528,6 +528,23 @@ class ParkingLot(object):
             conn.close()
             return "fail"
 
+    @staticmethod
+    def set_lot_status_idle(ID):
+        sql = "Update `parkingspace` SET `NowStatus`='idle' WHERE \
+            `ID`='%s'" % ID
+        conn = get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+            return "success"
+        except:
+            conn.rollback()
+            conn.commit()
+            conn.close()
+            return "fail"
+
 
 class Price(object):
     def __init__(self, price, changeTime, type, ID):

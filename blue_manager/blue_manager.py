@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, abort, request, render_template, session, \
     redirect, flash, url_for, make_response
 from jinja2 import TemplateNotFound
-from RedisQueue import RedisQueue         # 统计当前在线用户
+import Util
 
 import datetime
 import json
@@ -111,3 +111,16 @@ def show_reservation1(date):
     return render_template('show-reservation.html', reservation=json.dumps(order_date), date=date)
 
 
+@blue_manager.route('/profit')
+def profit():
+    mlist = Util.get_ex_day_list()
+    pp = []
+    for t2 in mlist:
+        m = Util.salary(t2)
+        m.get_all_today_money()
+        print m.profit, m.reservation, m.date
+        pp.append(m)
+        print Util.class_to_dict(pp)
+    d = Util.class_to_dict(pp)
+    d  = json.dumps(d)
+    return render_template('profit.html', date=d)

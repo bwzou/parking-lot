@@ -152,17 +152,17 @@ def leave():
         order_number = request.form['inputNumber2']
         plate_number = request.form['inputLicenseNumber2']
         if order_number == "" and plate_number == "":
-            redirect('/lot')
+            return redirect('/lot')
         else:
             if order_number != "":
                 result = Manage.Reservation.query_book(order_number)
                 if result:
-                    Manage.set_lot_status(result.PID)    # 开后设置车位状态有问题
+                    Manage.set_lot_status_idle(result.PID)    # 开后设置车位状态有问题
             else:
                 result = Manage.Reservation.query_book_by_plate(plate_number)
                 # plate_number不是唯一，这里要修正
                 if result:
-                    Manage.set_lot_status(result.PID)
+                    Manage.set_lot_status_idle(result.PID)
             min = result.insert_leavetime()
             if min == 0:
                 return "car is not here"
