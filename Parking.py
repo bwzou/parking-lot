@@ -9,6 +9,7 @@ import Util           # 控制层
 from flask import Flask, request, render_template, session,\
     redirect, flash, url_for, make_response
 from globle import gl, Temp
+from flask.ext.paginate import Pagination
 
 # sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")
 # 请把该路径改成你项目lib.win32-2.7的路径
@@ -26,6 +27,22 @@ def hello_world():
         return redirect('quick')
     # app.make_response(redirect('quick'))
     return render_template('index.html')
+
+
+@app.route('/profit')
+def profit():
+    mlist = Util.get_ex_day_list()
+    pp = []
+    for t2 in mlist:
+        m = Util.salary(t2)
+        m.get_all_today_money()
+        print m.profit, m.reservation, m.date
+        pp.append(m)
+    print Util.class_to_dict(pp)
+    d = Util.class_to_dict(pp)
+    date = json.dumps(d)
+    print date
+    return render_template('profit.html', date=d)
 
 
 @app.route('/quick')
@@ -105,7 +122,15 @@ def customer_index():
             pass
         else:
             history += history_data
-        return render_template('home01.html', data=data, history=history)
+        search = False
+        q = request.args.get('q')
+        if q:
+            search = True
+        page = request.args.get('page', type=int, default=1)
+        m = data[(10*(page-1)):(10*page)]
+        p1 = Pagination(page=page, total=len(data), search=search,
+                        record_name="data")
+        return render_template('home01.html', data=m, p1=p1, history=history)
     # 根据data判断如何显示
 
 
@@ -186,7 +211,7 @@ def pay2():
 @app.route('/payreserve/<Id>')
 def payreserve(Id):
     Temp.TempData = Manage.Reservation.query_book(Id)
-    if Temp.TempData.diff == '0':
+    if Temp.TempData.diff == '0' or Temp.TempData.diff is None:
         return render_template('pay2.html', date=Temp.TempData)
     else:
         return render_template('change2.html', Data=Temp.TempData)

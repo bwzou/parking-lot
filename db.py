@@ -218,7 +218,7 @@ class Booking(object):
     def pay_debt(self):
         conn = get_conn()
         cur = conn.cursor()
-        if self.diff == '0':
+        if self.diff == '0' or self.diff is None:
             sql = "update `order` set `PayStatus`='%s' where ID='%s'" \
                 % (1, self.ID)
         else:

@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Profit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/console.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='d3/d3.min.js') }}" type="text/javascript"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+    <div class="container">
+        <div class="navbar-header pull-left">
+            <a href="console.html" class="navbar-brand"><i class="fa fa-area-chart" aria-hidden="true"></i>&nbsp; Console</a>
+        </div>
+        <div class="navbar-header pull-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#"><i class="fa fa-bell" aria-hidden="true"></i>&nbsp; feedback<span class="badge">42</span> </a>
+                </li>
+                <li>
+                    <a href="#"> feedback<span class="badge">42</span> </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row" style="background-color:#f5f5f5;">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav" >
+                <li>
+                    <a href="#menu_condition" data-toggle="collapse"> <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;  Monitor</a>
+                    <ul id="menu_condition" class="nav second-menu collapse ">
+                        <li><a href="#"><i class="fa fa-car" aria-hidden="true"></i>&nbsp; parking</a></li>
+                        <li><a href="show-reservation.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp; reservation</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_business" data-toggle="collapse" class="collapsed"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp; Business</a>
+                    <ul id="menu_business" class="nav second-menu collapse  ">
+                        <li><a href="#"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp; price</a></li>
+                        <li><a href="#"><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp; promotion</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#menu_user" data-toggle="collapse" class="collapsed"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Profit</a>
+                    <ul id="menu_user" class="nav second-menu collapse in">
+                        <li><a href="#"><i class="fa fa-tag " aria-hidden="true"></i>&nbsp;Profit</a></li>
+                        <li><a href="#"><i class="fa fa-percent" aria-hidden="true"></i>&nbsp;distribution</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <style>
+            .axis path,
+            .axis line{
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
+            .x.axis path {
+                display: none;
+            }
+            .axis text {
+                font-family: sans-serif;
+                font-size: 11px;
+            }
+            .line {
+                fill: none;
+                stroke: steelblue;
+                stroke-width: 1.5px;
+            }
+            .line2 {
+                fill: none;
+                stroke: red;
+                stroke-width: 1.5px;
+            }
+    </style>
+
+        <div class="col-sm-9 col-md-10" style="background-color: white" >
+            <h1>Profit</h1>
+            <div id="figure-profit" style="margin-top: 50px; margin-left: auto;border: 1px solid gray"></div>
+            <script>
+                var margin = {top: 20, right: 20, bottom: 30, left: 50},
+                        width = 960 - margin.left - margin.right,
+                        height = 500 - margin.top - margin.bottom;
+                var dataset=1;
+                var x = d3.time.scale()
+                        .range([0, width]);
+                var y = d3.scale.linear()
+                        .range([height, 0]);
+                var y2=d3.scale.linear()
+                        .range([height, 0]);
+                var xAxis = d3.svg.axis()
+                        .scale(x)
+                        .orient("bottom");
+                var yAxis = d3.svg.axis()
+                        .scale(y)
+                        .orient("left");
+                var yAxis2 = d3.svg.axis()
+                        .scale(y2)
+                        .orient("left");
+                var formatDate = d3.time.format("%d-%b-%y");
+                <!--var data=[{'date':'4-Apr-12','profit':100,'reservation':20},{'date':'5-Apr-12','profit':150,'reservation':30},-->
+                    <!--{'date':'6-Apr-12','profit':130,'reservation':25},{'date':'7-Apr-12','profit':170,'reservation':24},-->
+                    <!--{'date':'8-Apr-12','profit':120,'reservation':21},{'date':'9-Apr-12','profit':140,'reservation':26},-->
+                    <!--{'date':'10-Apr-12','profit':156,'reservation':23}]-->
+				var data=eval(document.getElementById('get_severvation')).value;
+                var profitline=d3.svg.line()
+                        .interpolate("basis")
+                        .x(function(d,i){
+                            return x(formatDate.parse(d.date))
+                        })
+                        .y(function(d,i){
+                            return y(d.profit)
+                        })
+                var reservationline=d3.svg.line()
+                        .interpolate("basis")
+                        .x(function(d,i){
+                            console.log("横2"+x(formatDate.parse(d.date)))
+                            return x(formatDate.parse(d.date))
+                        })
+                        .y(function(d,i){
+                            console.log( "纵2"+y2(d.reservation))
+                            return y2(d.reservation)
+                        })
+                x.domain(d3.extent(data, function(d,i){
+                    return formatDate.parse(d.date);
+                }));
+                y.domain(d3.extent(data, function(d,i) {
+                    return d.profit;
+                }));
+                y2.domain(d3.extent(data,function(d,i){
+                    console.log(d.reservation)
+                    return d.reservation;
+                }))
+                var svg=d3.select("#figure-profit")
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                svg.append("g")
+                        .attr("class", "axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis);
+                svg.append("g")
+                        .attr("class", "axis")
+                        .style("fill","steelblue")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Benefit ($)");
+                svg.append("g")
+                        .attr("class", "axis")
+                        .style("fill","red")
+                        .attr("transform", "translate(" + width + ",0)")
+                        .call(yAxis2)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Reservation count");
+                svg.append("path")
+                        .attr("class","line")
+                        .attr("d",profitline(data))
+                svg.append("path")
+                        .attr("class","line2")
+                        .attr("d",reservationline(data))
+            </script>
+        </div>
+    </div>
+</div>
+ {% if date %}
+         <input id="get_severvation" name="get_severvation" value="{{ date  }}" type="hidden" >
+{% endif %}
+
+</body>
+</html>

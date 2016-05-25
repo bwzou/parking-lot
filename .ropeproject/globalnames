@@ -1,7 +1,8 @@
-€}q(Ualipay]Ualgorithm.setup]qUMODqaU	algorithm]UManage]q(U	cal_moneyqUuser_registerqUall_lotqU
-user_loginqU	match_Lotq	Uset_promotionq
-U	get_priceqUoneday_order_lotqUmanager_loginqUset_lot_statusqUall_lot_statusqUReservationqU	set_priceqUget_promotionqeUdb]q(UCustomerqUPriceqU
-ParkingLotqUManagerqU	PromotionqUBookingqeUUtil]q(Uget_connqUget_timenowqUchange_booktoqUchange_timeqUdivide_dataqUchange_timetostrq eUgloble]Ugloble.Temp]q!(U
-TempChargeq"UTempDataq#Ubfsecq$Uafsecq%Umainq&U	TempData2q'eU	globle.gl]q((ULots_lenq)Udict1q*Udict2q+eUTest]q,Umainq-aUParking]q.(Uregisterq/Ucustomer_indexq0Uappq1Ubusiness_promotionq2Ureserverq3Umanager_pageq4Uindexq5Uchangereserveq6Ulotq7Uhello_worldq8Ufinishpayreserveq9U
-payreserveq:Ufinishq;Ubusiness_priceq<Upay2q=Uinternal_errorq>Uconfirm_publishq?Umanage_indexq@U	paychargeqAUlogoutqBUpage_not_foundqCUshow_reservation1qDUcancelreserveqEU
-getlotnameqFUchangeqGUfinish3qHUadd_promotionqIhUleaveqJUquickqKUloginqLUshow_reservationqMUreserveqNeUtest]qOh&aUalgorithm.mytest]u.
+€}q(Ualipay]Ualgorithm.setup]qUMODqaU	algorithm]Utest]qUmainqaUManage]q(U	cal_moneyqUuser_registerqUall_lotq	U
+user_loginq
+U	match_LotqUset_promotionqU	get_priceqUoneday_order_lotqUmanager_loginqUset_lot_statusqUall_lot_statusqUReservationqU	set_priceqUget_promotionqeUdb]q(UCustomerqUPriceqU
+ParkingLotqUManagerqU	PromotionqUBookingqeUUtil]q(UsalaryqUget_connqUget_timenowqUget_day_zeroq Uconvert_to_dictsq!Uchange_booktoq"Uchange_timeq#U	select_dbq$U
+get_ex_dayq%Uclass_to_dictq&Udivide_dataq'Uget_day_formq(Uget_single_moneyq)Uget_ex_day_listq*Uchange_timetostrq+U	get_todayq,Uget_days_formq-Uconvert_to_dictq.eUgloble]Ugloble.Temp]q/(U
+TempChargeq0UTempDataq1Ubfsecq2Uafsecq3hU	TempData2q4eUParking]q5(Uregisterq6Ucustomer_indexq7Uappq8Ubusiness_promotionq9Ureserverq:Umanager_pageq;Uindexq<Uprofitq=Uchangereserveq>Ulotq?Uhello_worldq@UfinishpayreserveqAU
+payreserveqBUfinishqCUbusiness_priceqDUpay2qEUinternal_errorqFUconfirm_publishqGUmanage_indexqHU	paychargeqIUlogoutqJUpage_not_foundqKUshow_reservation1qLUcancelreserveqMU
+getlotnameqNUchangeqOUfinish3qPUadd_promotionqQhUleaveqRUquickqSUloginqTUshow_reservationqUUreserveqVeU	globle.gl]qW(ULots_lenqXUdict1qYUdict2qZeUTest]q[Umainq\aUalgorithm.mytest]u.

@@ -14,6 +14,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/pagination.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome-4.6.1/css/font-awesome.min.css') }}">
 <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
  <script>
@@ -74,9 +75,11 @@ function deleteReservation(bookid){
             </ul>
             <div class="tab-content">
                 <form role="tabpanel" class="tab-pane fade in active" id="reservTbl">
+					{{ p1.info }}
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
+							<th>#</th>
                             <th>Order_ID</th>
                             <th>StartTime</th>
                             <th>EndTime</th>
@@ -86,6 +89,7 @@ function deleteReservation(bookid){
                         <tbody>
                         {% for book in data %}
                             <tr>
+								<td>{{ loop.index }}</td>
                                 <td>{{ book.ID }}</td>
                                 <td>{{ book.StartTime }}</td>
                                 <td>{{ book.EndTime }}</td>
@@ -103,6 +107,7 @@ function deleteReservation(bookid){
                         {% endfor %}
                         </tbody>
                     </table>
+					{{ p1.links }}
                     <p class="lead" align="center">
                         <a href="{{ url_for('reserve') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;Add a Reservation</a>
                     </p>
