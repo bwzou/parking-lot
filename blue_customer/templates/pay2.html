@@ -7,7 +7,6 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Home Page for first-time customers</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
@@ -18,7 +17,6 @@
 </head>
 
 <body>
-
     <!--导航条-->
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
@@ -50,7 +48,6 @@
             </div>
         </div>
     </nav>
-
     <div class="container">
         <div align="center" style="background-color:white; margin:10px auto;padding:100px 0">
             <h1>Complete! Your number is {{ date.ID }}.</h1>
@@ -61,4 +58,3 @@
     </div>
 </body>
 </html>
-
