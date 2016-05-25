@@ -26,9 +26,9 @@ def customer_index(page):
     if session.get('username') is None:
         return redirect('/')
     else:
+        pro_data = Manage.get_promotion()
         data, history = Manage.Reservation.diplay_book(session["username"])
-        history_data = Manage.Reservation.diplay_history_book(
-            session["username"])
+        history_data = Manage.Reservation.diplay_history_book(session["username"])
         if history is None:
             if history_data == []:
                 pass
@@ -40,9 +40,15 @@ def customer_index(page):
         else:
             history += history_data
         try:
-            return render_template('%s.html' % page, data=data, history=history)  # 打印相应的页
+            return render_template('%s.html' % page, data=data, history=history, pro_data=pro_data)  # 打印相应的页
         except TemplateNotFound:
             abort(404)
+
+
+@blue_customer.route('/cus_show_pro/<Id>')
+def get_single_promotion(Id):
+    data = Manage.get_single_promotion(Id)
+    return render_template('customer-promotion.html', data=data)
 
 
 @blue_customer.route('/reserve')

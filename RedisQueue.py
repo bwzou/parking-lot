@@ -21,7 +21,6 @@ def queue_daemon(app, rv_ttl=500):         # rv_ttl是等待时常
         msg = q.get_nowait()
         if msg is not None:
             dict = loads(msg)           # 调用数据库查询程序(下单，修改，取消)
-            print dict
             if dict.get('type') == 'change':
                 """ we should ascertain whether there is a lot available """
                 orders, begin, sustain = Manage.all_lot(dict.get('beginTime'), dict.get('endTime'))

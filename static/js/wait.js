@@ -12,18 +12,17 @@ polling=function(){
             if(data=='success'){
                 window.location.href="/customer_index"
             }
-            else if(data=='wait'){
-                time --;
-                if (time>0){
-                    var t=setTimeout("polling()",1000)
-                }else{
+            else if(data=='wait') {
+                time--;
+                if (time > 0) {
+                    var t = setTimeout("polling()", 1000)
+                } else {
                     $("#loadinfo").toggle()
                     $("#failinfo").toggle()
                     $("#btn_changetime").toggle()
                     $("#btn_returnhome").toggle()
                 }
             }
-            
         })
 }
 
