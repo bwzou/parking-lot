@@ -181,7 +181,6 @@ class Booking(object):
             results = cur.fetchall()
             result = None
             for row in results:
-                print row
                 result = Booking(ID=row[8],
                                  Name=row[0],
                                  PlateNumber=row[1],
@@ -236,7 +235,6 @@ class Booking(object):
             results = cur.fetchall()
             result = None
             for row in results:
-                print row
                 result = Booking(ID=row[8],
                                  Name=row[0],
                                  PlateNumber=row[1],
@@ -295,7 +293,6 @@ class Booking(object):
         try:
             cur.execute(sql)
             temp = cur.fetchall()
-            print temp
             for m in temp:
                 ID = m[0]
         except:
@@ -392,7 +389,6 @@ class Booking(object):
         else:
             temp = []
             for row in result:
-                print row
                 book = Booking(ID=row[8],
                                Name=row[0],
                                PlateNumber=row[1],
@@ -425,7 +421,6 @@ class Booking(object):
         else:
             temp = []
             for row in result:
-                print row
                 book = Booking(ID=row[8],
                                Name=row[0],
                                PlateNumber=row[1],
@@ -438,7 +433,6 @@ class Booking(object):
                 temp.append(book)
             conn.commit()
             conn.close()
-            print temp
             return temp
 
     @staticmethod
@@ -500,10 +494,6 @@ class ParkingLot(object):
             conn.commit()
             conn.close()
             return temp
-
-    @staticmethod
-    def set_price():
-        pass
 
     @staticmethod
     def get_price(ID):        # return price from database

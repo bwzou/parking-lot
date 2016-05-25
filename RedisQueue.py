@@ -22,9 +22,6 @@ def queue_daemon(app, rv_ttl=500):         # rv_ttl是等待时常
         if msg is not None:
             dict = loads(msg)           # 调用数据库查询程序(下单，修改，取消)
             print dict
-            print '---------------------------------------------------------------------'
-            print dict.get('time')
-
             if dict.get('type') == 'change':
                 """ we should ascertain whether there is a lot available """
                 orders, begin, sustain = Manage.all_lot(dict.get('beginTime'), dict.get('endTime'))
@@ -38,11 +35,8 @@ def queue_daemon(app, rv_ttl=500):         # rv_ttl是等待时常
                                                      PlateNumber=dict.get('PlateNumber'),
                                                      ProduceTime=dict.get('time'),
                                                      Price=timeprice)  # 根据sustain来计费
-                    # 根据sustain来计费
                 else:
                     mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-                    print '----------------------------------------------------------------------------'
-                    print mov_dict
                     dict_len = len(mov_dict)
                     if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
                         continue    # u'Sorry! There is no a Parkinglotavailable now,failed to alter order', 'error')
@@ -89,7 +83,7 @@ def queue_daemon(app, rv_ttl=500):         # rv_ttl是等待时常
                             Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
                 reservation = reservation.reserve()
             elif dict.get('type') == 'cancel':
-                ID = dict.get('ID')
+                ID = dict.get('id')
                 Manage.Reservation.cancel_book(ID)   # 取消订单
         else:                          # flask端用get()或者size()判断
             time.sleep(1)

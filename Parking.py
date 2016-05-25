@@ -8,7 +8,6 @@ from flask import Flask, request, render_template, session,\
     redirect, flash, make_response
 from globle import Temp
 
-
 app = Flask(__name__)
 app.secret_key = 'A0Zr98KK/WDW3A/3yX R~XHH!jmN]LWX/,?RT'
 app.config['REDIS_QUEUE_KEY'] = 'my_queue'
@@ -93,9 +92,6 @@ def logout():
     return render_template('index.html')
 
 
-# ------------------------用户预定和修改订单--------------------------------------------
-
-
 # ---------------------------获取停车位信息--------------------------------------
 @app.route('/lot')
 def lot():
@@ -161,7 +157,7 @@ def leave():
             if order_number != "":
                 result = Manage.Reservation.query_book(order_number)
                 if result:
-                    Manage.set_lot_status(result.PID)    # ################################################离开后设置车位状态有问题
+                    Manage.set_lot_status(result.PID)    # 开后设置车位状态有问题
             else:
                 result = Manage.Reservation.query_book_by_plate(plate_number)
                 # plate_number不是唯一，这里要修正
@@ -179,9 +175,6 @@ def leave():
                 return render_template('leave.html', result=result, Total=TotalMoney)
     else:
         return render_template('leave.html')
-
-
-# ---------------------------经理相关--------------------------------------------
 
 
 # ---------------------------系统错误处理----------------------------------------

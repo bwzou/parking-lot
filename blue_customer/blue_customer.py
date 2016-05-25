@@ -24,7 +24,7 @@ queue = RedisQueue('my_queue')        # 根据Redis生成queue
 @blue_customer.route('/<page>')
 def customer_index(page):
     if session.get('username') is None:
-        redirect('/')
+        return redirect('/')
     else:
         data, history = Manage.Reservation.diplay_book(session["username"])
         history_data = Manage.Reservation.diplay_history_book(
@@ -80,7 +80,7 @@ def reserver():
         str = dumps(dict)
         queue.put(str)  # 添加到队列里面
 
-        return render_template('wait.html', time=produceTime)
+    return render_template('wait.html', time=produceTime)
 
 
 @blue_customer.route('/pay2')
@@ -132,31 +132,33 @@ def change(Id):
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
         dict = {}
+        produceTime = Util.get_timenow()
         dict['type'] = 'change'
         dict['id'] = Id
         dict['beginTime'] = beginTime
         dict['endTime'] = endTime
         dict['name'] = session["username"]
         dict['PlateNumber'] = request.form["plate"]
-        dict['time'] = Util.get_timenow()     # 不知道出现什么问题
+        dict['time'] = produceTime
         str = dumps(dict)
         queue.put(str)      # 添加到队列里面
-        return render_template('wait.html')
+        return render_template('wait.html', time=produceTime)
 
 
 @blue_customer.route('/cancelreserve/<ID>', methods=["POST", "GET"])
 def cancelreserve(ID):
     dict = {}
+    produceTime = Util.get_timenow()
     dict['type'] = 'cancel'
     dict['id'] = ID
     dict['beginTime'] = None
     dict['endTime'] = None
     dict['name'] = session["username"]
     dict['PlateNumber'] = None
-    dict['time'] = Util.get_timenow()  # 不知道出现什么问题
+    dict['time'] = Util.get_timenow()
     str = dumps(dict)
     queue.put(str)  # 添加到队列里面
-    return render_template('wait.html')
+    return render_template('wait1.html', time=ID)
 
 
 @blue_customer.route('/finish')
@@ -180,26 +182,36 @@ def finish3():
 @blue_customer.route('/get_result')
 def get_result():
     result = 'wait'
+
     time1 = request.args.get('name', 0, type=str)
     name = session.get('username')
-    print '------------------------------------------------------------------'
-    print name, time1
 
     ans = Manage.Reservation.query_by_name_produceTime(time1, name)
+    if ans is not None:
+        result = 'success'
+    # Next = 2
+    # while Next != 0:
+    #     ans = Manage.Reservation.query_by_name_produceTime(time1, name)
+    #     if ans is not None:
+    #         result = 'success'
+    #         return result
+    #     else:
+    #         if queue.qsize() == 0:
+    #             time.sleep(5)
+    #             result = 'fail'
+    #     Next = Next - 1
+    return result
 
-    print '------------------------------------------------------------------'
+
+@blue_customer.route('/get_cancel_result')
+def get_cancel_result():
+    result = 'wait'
+
+    time1 = request.args.get('name', 0, type=str)
+    print time1
+    ans = Manage.Reservation.query_book(time1)
+
     print ans
-
-    while ans is None:
-        time.sleep(5)
-        ans = Manage.Reservation.query_by_name_produceTime(time1, name)
-        print ans
-        if ans is not None:
-            result = 'success'
-            break
-        else:
-            if queue.qsize() == 0:
-                result = 'fail'
-            break
-
+    if ans is None:
+        result = 'success'
     return result

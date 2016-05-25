@@ -3,7 +3,6 @@ from db import *
 
 
 # ------------------------转换成可以匹配的数据-----------------------------------------
-# match ParkingLot
 def match_Lot():
     Lots = ParkingLot.all_Lot()
     gl.Lots_len = len(Lots)
@@ -29,7 +28,6 @@ def all_lot(beginTime, endTime):
             sustaine = \
                 int(((row.EndTime - row.StartTime) / 900).total_seconds())
             order_datas.append((row.ID, gl.dict2[row.PID], startime, sustaine))
-        print order_datas
 
     startime = int(((beginTime - flag) / 900).total_seconds()) + 1
     sustaine = int(((endTime - beginTime) / 900).total_seconds())
@@ -50,7 +48,6 @@ def oneday_order_lot(date):
             one_order['from'] = startime
             one_order['to'] = sustaine
             order_datas.append(one_order)
-        print order_datas
     return order_datas
 
 
@@ -65,7 +62,6 @@ def all_lot_status():
             one_order['pid'] = row.ID
             one_order['state'] = row.NowStatus
             lots_datas.append(one_order)
-        print lots_datas
     return lots_datas
 
 
@@ -156,8 +152,6 @@ class Reservation(object):
                        PlateNumber=self.PlateNumber,
                        ProduceTime=self.ProduceTime,
                        Price=self.Price)
-        print '-------------------------------------------------------------------'
-        print self.ProduceTime
         result = book.book()
         return result, book.ProduceTime
 
@@ -235,3 +229,8 @@ class Reservation(object):
     def query_by_name_produceTime(dt, name):
         ans = Booking.query_by_name_produceTime(dt, name)
         return ans
+
+    @staticmethod
+    def query_book(ID):
+        result = Booking.query_book(ID)
+        return result

@@ -2,8 +2,9 @@
  * Created by zuodexin on 2016/5/22.
  */
 
+//��ѯ
 polling=function(){
-    $.get("/get_result",
+    $.get("/get_cancel_result",
         {
             name: $('input[name="a"]').val(),
         },
@@ -27,4 +28,6 @@ polling=function(){
 $(document).ready(function(){
    $('#reserveModal').modal('show')
     polling();
-});
+});/**
+ * Created by zbw on 2016/5/25.
+ */
