@@ -49,12 +49,42 @@
         </div>
     </nav>
     <div class="container">
-        <div align="center" style="background-color:white; margin:10px auto;padding:100px 0">
-            <h1>Complete! Your number is {{ date.ID }}.</h1>
-            <p>{{ date.Name }} your license number is {{ date.PlateNumber }},cut-off interval: </p>
-            <h1>{{ date.StartTime }} -- {{ date.EndTime }} </h1>
-            <a href="{{ url_for('blue_customer.finishpayreserve') }}" class="btn btn-primary btn-lg"style="width:80%">Confirm</a>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Parking Lot</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right" id="navbar">
+            <ul class="nav navbar-nav head-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('blue_customer.reserve') }}">Reserve</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('lot') }}">GetLot</a>
+                </li>
+                <li>
+                    <a href="#">Others</a>
+                </li>
+            </ul>
         </div>
     </div>
+</nav>
+
+<div class="container">
+    <div align="center" style="background-color:white; margin:10px auto;padding:100px 0">
+        <h1>Complete! Your number is {{ date.ID }}.</h1>
+        <p>{{ date.Name }} your license number is {{ date.PlateNumber }},cut-off interval: </p>
+        <h1>{{ date.StartTime }} -- {{ date.EndTime }} </h1>
+        <a href="{{ url_for('blue_customer.finishpayreserve') }}" class="btn btn-primary btn-lg"style="width:80%">Confirm</a>
+    </div>
+</div>
 </body>
 </html>

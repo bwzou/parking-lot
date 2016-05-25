@@ -1,20 +1,12 @@
 # --coding:utf8--
-import datetime
-import sys
-import json
 import Manage
-import Util           # 控制层
 
 from blue_customer.blue_customer import blue_customer
 from blue_manager.blue_manager import blue_manager
 from RedisQueue import RedisQueue
-from pickle import dumps,loads          # 字符串跟字典间的转换
-
 from flask import Flask, request, render_template, session,\
-    redirect, flash, url_for, make_response
-from globle import gl, Temp
-sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
-from ParkingAlgorithm import insert                                  # pycharm报错，但不影响
+    redirect, flash, make_response
+from globle import Temp
 
 
 app = Flask(__name__)

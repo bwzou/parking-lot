@@ -3,22 +3,18 @@ from flask import Blueprint, render_template, abort, request, render_template, s
     redirect, flash, url_for, make_response
 from jinja2 import TemplateNotFound
 from RedisQueue import RedisQueue
-from pickle import dumps,loads          # 字符串跟字典间的转换
+from pickle import dumps, loads          # 字符串跟字典间的转换
 
 # json.dumps : dict转成str
 # json.loads : str转成dict
 # from Parking import queue  相互导会出现问题
 
+import datetime,time
 
-import datetime
 import sys
-import json
 import Manage
 import Util           # 控制层
 from globle import gl, Temp
-sys.path.append("F:\\pycharmproject\\ParkingLotQQ\\build\\lib.win32-2.7")  # 请把该路径改成你项目lib.win32-2.7的路径
-from ParkingAlgorithm import insert                                  # pycharm报错，但不影响
-
 
 blue_customer = Blueprint('blue_customer', __name__, template_folder='templates')   # 注册蓝图
 queue = RedisQueue('my_queue')        # 根据Redis生成queue
@@ -71,41 +67,20 @@ def reserver():
         temp = request.form["picker"] + "/" + endTime
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
-        """ we should ascertain whether there is a lot available """
-        orders, begin, sustain = Manage.all_lot(beginTime, endTime)
-        if len(orders) == 0:
-            Temp.TempData = Manage.Reservation(PID='A101',
-                                               Name=session["username"],
-                                               StartTime=beginTime,
-                                               EndTime=endTime,
-                                               PlateNumber=request.form["plate"],
-                                               Price=sustain)
-        else:
-            mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-            print mov_dict
-            dict_len = len(mov_dict)
-            if dict_len == 0:             # 如果没有可以用返回[]
-                flash(u'Sorry! There is no a Parkinglot available now', 'error')
-                # 消息错误提示
-                return render_template('reserve.html')
-            for i in range(dict_len):
-                if i == 0:
+        produceTime= Util.get_timenow()
+        print produceTime
+        dict={}
+        dict['type'] = 'create'
+        dict['id'] = None
+        dict['beginTime'] = beginTime
+        dict['endTime'] = endTime
+        dict['name'] = session["username"]
+        dict['PlateNumber'] = request.form["plate"]
+        dict['time'] = produceTime   # 不知道出现什么问题
+        str = dumps(dict)
+        queue.put(str)  # 添加到队列里面
 
-                    Temp.TempData = Manage.Reservation(PID=gl.dict1[mov_dict[0].get('to')],
-                                                       Name=session["username"],
-                                                       StartTime=beginTime,
-                                                       EndTime=endTime,
-                                                       PlateNumber=request.form["plate"],
-                                                       Price=sustain)
-                else:
-                    Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
-
-        timeprice = Manage.cal_money(beginTime, endTime, 1)
-        Temp.TempData.Price = timeprice
-        result, Temp.TempData.ProduceTime = Temp.TempData.reserve()
-        return redirect('/customer_index')
-    else:
-        return redirect('/customer_index')
+        return render_template('wait.html', time=produceTime)
 
 
 @blue_customer.route('/pay2')
@@ -156,50 +131,33 @@ def change(Id):
         temp = request.form["picker"] + "/" + endTime
         endTime = datetime.datetime.strptime(temp, '%m/%d/%Y/%H:%M')
 
-        """ we should ascertain whether there is a lot available """
-        orders, begin, sustain = Manage.all_lot(beginTime, endTime)
-        if len(orders) == 0:
-            Temp.TempData = Manage.Reservation(ID=Id,
-                                               PID='A101',
-                                               Name=session["username"],
-                                               StartTime=beginTime,
-                                               EndTime=endTime,
-                                               PlateNumber=request.form["plate"],
-                                               Price=sustain)  # 根据sustain来计费
-            # 根据sustain来计费
-        else:
-            mov_dict = insert(orders, gl.Lots_len, begin, sustain)
-            print mov_dict
-            dict_len = len(mov_dict)
-            if dict_len == 0:  # 如果没有可以用返回[],此时可以给予提示
-                flash(u'Sorry! There is no a Parkinglot \
-                      available now,failed to alter order', 'error')  # 消息错误提示
-                return render_template('reserve.html')
-            for i in range(dict_len):
-                if i == 0:
-                    Temp.TempData = Manage.Reservation(ID=Id,
-                                                       PID=gl.dict1[mov_dict[0].get('to')],
-                                                       Name=session["username"],
-                                                       StartTime=beginTime,
-                                                       EndTime=endTime,
-                                                       PlateNumber=request.form["plate"],
-                                                       Price=sustain)
-                else:
-                    Manage.Reservation.update_lot(mov_dict[i].get('to'), mov_dict[i].get('id'))
-        timeprice = Manage.cal_money(beginTime, endTime, 1)
-        Temp.TempData.Price = timeprice
-        # Temp.TempData2 = Manage.Reservation.query_book(Id)
-        Temp.TempData.alter_book()
-        return redirect('/customer_index')
+        dict = {}
+        dict['type'] = 'change'
+        dict['id'] = Id
+        dict['beginTime'] = beginTime
+        dict['endTime'] = endTime
+        dict['name'] = session["username"]
+        dict['PlateNumber'] = request.form["plate"]
+        dict['time'] = Util.get_timenow()     # 不知道出现什么问题
+        str = dumps(dict)
+        queue.put(str)      # 添加到队列里面
+        return render_template('wait.html')
 
 
 @blue_customer.route('/cancelreserve/<ID>', methods=["POST", "GET"])
 def cancelreserve(ID):
-    result = Manage.Reservation.cancel_book(ID)
-    if result == "success":
-        return redirect('/customer_index')
-    else:
-        return result
+    dict = {}
+    dict['type'] = 'cancel'
+    dict['id'] = ID
+    dict['beginTime'] = None
+    dict['endTime'] = None
+    dict['name'] = session["username"]
+    dict['PlateNumber'] = None
+    dict['time'] = Util.get_timenow()  # 不知道出现什么问题
+    str = dumps(dict)
+    queue.put(str)  # 添加到队列里面
+    return render_template('wait.html')
+
 
 @blue_customer.route('/finish')
 def finish():
@@ -217,3 +175,31 @@ def finishpayreserve():
 @blue_customer.route('/finish3')
 def finish3():
     return render_template('finish3.html')
+
+
+@blue_customer.route('/get_result')
+def get_result():
+    result = 'wait'
+    time1 = request.args.get('name', 0, type=str)
+    name = session.get('username')
+    print '------------------------------------------------------------------'
+    print name, time1
+
+    ans = Manage.Reservation.query_by_name_produceTime(time1, name)
+
+    print '------------------------------------------------------------------'
+    print ans
+
+    while ans is None:
+        time.sleep(5)
+        ans = Manage.Reservation.query_by_name_produceTime(time1, name)
+        print ans
+        if ans is not None:
+            result = 'success'
+            break
+        else:
+            if queue.qsize() == 0:
+                result = 'fail'
+            break
+
+    return result

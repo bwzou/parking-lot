@@ -78,6 +78,15 @@ def business_promotion():
     return render_template('business-promotion.html', data=data)
 
 
+@blue_manager.route('/delete_promotion/<ID>', methods=["POST", "GET"])
+def delete_promotion(ID):
+    result = Manage.delete_promotion(ID)
+    if result == "success":
+        return redirect('/business_promotion')
+    else:
+        return result
+
+
 @blue_manager.route('/add_promotion', methods=["POST", "GET"])
 def add_promotion():
     if request.method == "POST":

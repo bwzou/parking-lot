@@ -2,11 +2,15 @@
  * Created by zuodexin on 2016/5/22.
  */
 
-//ÂÖÑ¯
+//ï¿½ï¿½Ñ¯
 polling=function(){
-    $.get("url",{},function(data){
+    $.get("/get_result",
+        {
+            name: $('input[name="a"]').val()
+        },
+        function(data){
         if(data=='success'){
-            window.location.href="home"
+            window.location.href="/customer_index"
         }
         else if(data=='wait'){
             var t=setTimeout("polling()",1000)
