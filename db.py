@@ -670,6 +670,25 @@ class Promotion(object):
             conn.close()
             return "fail"
 
+    @staticmethod
+    def get_single_promotion(ID):
+        sql = "SELECT * FROM `promotion` WHERE `ID`='%s'" % ID  # 根据时间最新来显示
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(sql)
+        result = cur.fetchall()
+        if len(result) == 0:
+            conn.commit()
+            conn.close()
+            return "haha there is nothing"
+        else:
+            price_all = []
+            for r in result:
+                p_rice = Promotion(ID=r[0], title=r[1], context=r[2], time=r[3])
+                price_all.append(p_rice)
+            conn.commit()
+            conn.close()
+            return price_all
 
 class Manager(object):
     def __init__(self, manager_name, password, authority, time):

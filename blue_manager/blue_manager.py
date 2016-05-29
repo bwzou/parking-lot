@@ -78,6 +78,13 @@ def business_promotion():
     return render_template('business-promotion.html', data=data)
 
 
+@blue_manager.route('/man_show_pro/<Id>')
+def get_single_promotion(Id):
+    data = Manage.get_single_promotion(Id)
+    print data
+    return render_template('specific-promotion.html', data=data)
+
+
 @blue_manager.route('/delete_promotion/<ID>', methods=["POST", "GET"])
 def delete_promotion(ID):
     result = Manage.delete_promotion(ID)

@@ -60,19 +60,15 @@ function deleteReservation(bookid){
     </div>
 </nav>
 <div class="hidden-xs container">
-    <div align="center">
+     <div align="center">
         <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="5">
             <tr>
                 <td valign="top" align="center">
                     <marquee id="scrollarea" direction="up" scrolldelay="100" scrollamount="2" width=100% height="100" onmouseover="this.stop();" onmouseout="this.start();">
                         <div align="middle">
-                            <h1><a href="customer-promotion.html"> Get 20% off NOW!  :)</a></h1>
-                            <h1><a href="customer-promotion.html">RDJ  :)</a></h1>
-                            <h1><a href="customer-promotion.html">Oh NOOOOO!!!!  :'(</a></h1>
-                            <h1><a href="customer-promotion.html">Too Sweet  :'(</a></h1>
-                            <h1><a href="customer-promotion.html">帅哥你好呀  :D</a></h1>
-                            <h1><a href="customer-promotion.html">狗子且慢！！  >_<</a></h1>
-                            <h1><a href="customer-promotion.html">Tony还在乎我，Steve傻乎乎地想道。</a></h1>
+                            {% for pros in pro_data %}
+                                <h1><a href="/cus_show_pro/{{ pros.ID }}">{{ pros.title }}</a></h1>
+                            {% endfor %}
                         </div>
 
                     </marquee>

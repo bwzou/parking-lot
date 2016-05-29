@@ -9,14 +9,14 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Home Page for first-time customers</title>
+    <title>Home Page</title>
     <!--Cover Template for Bootstrap-->
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
 
     <!-- Custom styles for this template -->
-    <link href="{{url_for('static',filename='css/cover.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/cover.css') }}">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -43,7 +43,7 @@
                 <p class="lead">{{ pros.context }}</p>
                 {% endfor %}
                 <p class="lead">
-                    <a href="/customer_index" class="btn btn-primary">Back</a>
+                    <a href="/business_promotion" class="btn btn-primary">Back</a>
                 </p>
             </div>
 

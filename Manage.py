@@ -117,6 +117,11 @@ def get_promotion():
     return result
 
 
+def get_single_promotion(ID):
+    result = Promotion.get_single_promotion(ID)
+    return result
+
+
 def set_promotion(title, context):
     result = Promotion.set_promotion(title, context)
     return result
