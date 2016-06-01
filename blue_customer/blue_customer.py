@@ -1,4 +1,7 @@
 # --coding:utf8--
+"""
+Created by Zou Bowen, Zhang Biao, Feng Fan
+"""
 from flask import Blueprint, render_template, abort, request, render_template, session, \
     redirect, flash, url_for, make_response
 from jinja2 import TemplateNotFound

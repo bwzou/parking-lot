@@ -1,4 +1,7 @@
 # --coding:utf8--
+"""
+coding by Zou Bowen, Zhang Biao,Feng Fan
+"""
 import datetime
 import time
 import MySQLdb

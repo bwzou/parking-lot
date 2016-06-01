@@ -1,3 +1,6 @@
+/*
+coding by Zuo Dexin
+*/
 #include <stdio.h>
 #include<stdlib.h>
 #include<memory.h>

@@ -1,3 +1,6 @@
+"""
+coding by Zuo Dexin
+"""
 start /D .\install_redis\redis-server.exe /B
 
 python daemon.py

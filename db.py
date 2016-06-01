@@ -1,4 +1,7 @@
 # --coding:utf8--
+"""
+coding by Zou Bowen, Zhang Biao,Feng Fan
+"""
 from Util import *          # 导入需要的工具
 from globle import gl, Temp
 

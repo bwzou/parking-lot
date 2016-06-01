@@ -1,4 +1,7 @@
 # --coding:utf8--
+"""
+coding by Zou Bowen, Zhang Biao,Feng Fan
+"""
 import Manage
 
 from blue_customer.blue_customer import blue_customer
